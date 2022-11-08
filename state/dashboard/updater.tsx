@@ -1,9 +1,8 @@
 import { MultiCallABI } from '@constants/multiCallABI';
 import { allTokensInOrder } from '@constants/tokenList';
-import { convertToString, formatNumber } from '@utils/bignumber';
-import { getTokenPrice } from '@utils/coingecko';
 import { useState } from 'react';
 import { useContractReads, erc20ABI, useAccount } from 'wagmi';
+import { db } from '../../pages/db';
 
 const tokenContracts = (walletAddress: string) => {
   return {
@@ -36,70 +35,42 @@ function ERC20Balance() {
   const [totalValue, setTotalValue] = useState(0);
   const { address } = useAccount();
   const { contracts, tokens } = tokenContracts(address!);
-  // console.log({ contracts, tokens, address });
-
-  // const updatePrice = async (assets: any) => {
-  //   let sum = 0;
-  //   const assetValues = [];
-  //   for (let i = 0; i < assets.length; i++) {
-  //     const asset = assets[i];
-  //     if (!asset.price) {
-  //       // const assetPrice = 10;
-
-  //       const assetPrice = await getTokenPrice(asset.symbol);
-  //       // if (assetPrice) {
-  //       //   const assetValue =
-  //       //     parseFloat(assetPrice) *
-  //       //     parseFloat(String(asset.balance / 10 ** asset.decimals));
-  //       //   assetValues.push(assetValue);
-  //       //   asset.price = assetPrice;
-  //       //   sum += assetValue;
-  //       // }
-  //     }
-  //   }
-  //   return { sum, assets };
-  // };
-  console.log({ allTokensInOrder, contracts });
-
   const { data, isError, isLoading, error } = useContractReads({
-    contracts , onSettled(data, error) {
-      console.log({data, error});
+    contracts,
+    onSettled(data, error) {
       if (!error) return;
       else return data;
-    },onError(err) {
-      console.log({err});
     },
+    onError(err) {
+      console.log({ err });
+    },
+    staleTime: 10_000,
   });
 
-  // console.log({ isLoading, data, isError, error });
-  const resBalances: any[] = [];
-  const _resBalances: any[] = [];
-  if (data)
-    data.map((balance, index: number) => {
-      const convertedBalance = String(balance);
-      const token = tokens[index];
-      resBalances.push({
-        balance: convertedBalance,
-        chainId: token.chain_id,
-        ...token,
+  console.log(data);
+
+  const userBalances = () => {
+    if (!data) return;
+
+    const acceptedBalances: any[] = [];
+    data.forEach(async (balance, index: number) => {
+      if (!balance || Number(balance) <= 0) return;
+      acceptedBalances.push({
+        id: index,
+        balance: String(balance),
+        ...tokens[index],
       });
     });
 
-  if (resBalances.length !== 0) {
-    resBalances.map((fullToken) =>
-      fullToken.balance && Number(fullToken.balance) > 0
-        ? _resBalances.push(fullToken)
-        : fullToken
-    );
+    try {
+      db.balances.bulkPut(acceptedBalances).then((lastKey) => {});
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    console.log({ _resBalances, data , contracts, tokens });
-  }
+  userBalances();
 
-  return (
-    <div style={{ width: '65vw', padding: '15px' }}>
-      <h1>💰 Token Balances</h1>
-      <h2>➕ Total : ${totalValue}</h2>
-    </div>
-  );
+  return <></>;
 }
 export default ERC20Balance;

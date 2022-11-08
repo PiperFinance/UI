@@ -6,23 +6,21 @@ import {
   chain,
   configureChains,
   createClient,
-  defaultChains,
   WagmiConfig,
 } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { infuraProvider } from 'wagmi/providers/infura';
+import ERC20Balance from '../state/dashboard/updater';
 
 const { chains, provider } = configureChains(
-  [chain.polygon ,chain.mainnet],
+  [chain.polygon, chain.mainnet],
   [
     // alchemyProvider({ apiKey: 'pv-xSVPKpdeM_NXPsyr1n8rhpxvTnIDx' }),
     // infuraProvider({ apiKey: 'yourInfuraApiKey' }),
     publicProvider(),
   ]
 );
-
-console.log({chains: JSON.stringify(chains), provider , providerStringed : JSON.stringify(provider)});
 
 const { connectors } = getDefaultWallets({
   appName: 'Cross',
@@ -39,6 +37,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains} modalSize="compact">
+        <ERC20Balance />
         <Component {...pageProps} />
       </RainbowKitProvider>
     </WagmiConfig>

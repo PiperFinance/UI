@@ -12,6 +12,8 @@ specifiers:
   bignumber.js: ^9.1.0
   class-variance-authority: ^0.2.4
   coingecko-api: ^1.0.10
+  dexie: ^3.2.2
+  dexie-react-hooks: ^1.1.1
   eslint: 8.26.0
   eslint-config-next: 13.0.1
   ethers: ^5.7.2
@@ -31,6 +33,8 @@ dependencies:
   bignumber.js: 9.1.0
   class-variance-authority: 0.2.4_typescript@4.8.4
   coingecko-api: 1.0.10
+  dexie: 3.2.2
+  dexie-react-hooks: 1.1.1_7m7odtripqggibhngjoiupm4ge
   ethers: 5.7.2
   next: 13.0.1_biqbaboplfbrettd7655fr4n2y
   postcss: 8.4.18
@@ -1927,6 +1931,23 @@ packages:
       acorn-node: 1.8.2
       defined: 1.0.1
       minimist: 1.2.7
+    dev: false
+
+  /dexie-react-hooks/1.1.1_7m7odtripqggibhngjoiupm4ge:
+    resolution: {integrity: sha512-Cam5JP6PxHN564RvWEoe8cqLhosW0O4CAZ9XEVYeGHJBa6KEJlOpd9CUpV3kmU9dm2MrW97/lk7qkf1xpij7gA==}
+    peerDependencies:
+      '@types/react': '>=16'
+      dexie: '>=3.1.0-alpha.1 <5.0.0'
+      react: '>=16'
+    dependencies:
+      '@types/react': 18.0.24
+      dexie: 3.2.2
+      react: 18.2.0
+    dev: false
+
+  /dexie/3.2.2:
+    resolution: {integrity: sha512-q5dC3HPmir2DERlX+toCBbHQXW5MsyrFqPFcovkH9N2S/UW/H3H5AWAB6iEOExeraAu+j+zRDG+zg/D7YhH0qg==}
+    engines: {node: '>=6.0'}
     dev: false
 
   /didyoumean/1.2.2:

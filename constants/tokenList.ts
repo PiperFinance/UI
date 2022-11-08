@@ -15212,8 +15212,8 @@ export const allTokensInOrder = (() => {
   const t: IToken[] = [];
 
   Object.keys(tokenList).forEach(
-    // (chain) => t.push((tokenList as any)[chain])
-    (chain) => Number(chain) === 137 && t.push((tokenList as any)[chain])
+    (chain) => t.push((tokenList as any)[chain])
+    // (chain) => Number(chain) === 137 && t.push((tokenList as any)[chain])
   );
   return t.flat();
 })();

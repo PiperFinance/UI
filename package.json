@@ -16,6 +16,8 @@
     "bignumber.js": "^9.1.0",
     "class-variance-authority": "^0.2.4",
     "coingecko-api": "^1.0.10",
+    "dexie": "^3.2.2",
+    "dexie-react-hooks": "^1.1.1",
     "ethers": "^5.7.2",
     "next": "13.0.1",
     "postcss": "^8.4.18",
