@@ -47,7 +47,6 @@ function ERC20Balance() {
     staleTime: 10_000,
   });
 
-  console.log(data);
 
   const userBalances = () => {
     if (!data) return;

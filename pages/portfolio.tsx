@@ -2,7 +2,7 @@ import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useLiveQuery } from 'dexie-react-hooks';
-import Image from 'next/image';
+import Default from '../components/layout/Default';
 import { db } from './db';
 
 export default function Dashboard() {
@@ -10,8 +10,7 @@ export default function Dashboard() {
 
   if (!balances) return;
   return (
-    <>
-      <ConnectButton />
+    <Default pageName="Portfolio">
       <div className="grid place-content-center w-screen h-screen">
         <section className="w-full min-w-fit max-w-screen-lg border p-2 rounded-lg border-x-gray-300 ">
           <table className="table-auto w-full max-w-screen-lg">
@@ -68,6 +67,6 @@ export default function Dashboard() {
           </table>
         </section>
       </div>
-    </>
+    </Default>
   );
 }
