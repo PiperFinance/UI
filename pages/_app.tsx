@@ -72,27 +72,50 @@ const solanaChain: Chain = {
   testnet: false,
 };
 
-const tronChain: any = {
-  name: 'Tron',
-  network: 'tron',
+
+const avalancheChain: Chain = {
+  id: 43_114,
+  name: 'Avalanche',
+  network: 'avalanche',
   iconUrl: 'https://example.com/icon.svg',
   iconBackground: '#fff',
   nativeCurrency: {
     decimals: 18,
-    name: 'Tron',
-    symbol: 'TRX',
+    name: 'Avalanche',
+    symbol: 'AVAX',
   },
   rpcUrls: {
-    default: 'https://api.mainnet-beta.solana.com',
+    default: 'https://api.avax.network/ext/bc/C/rpc',
   },
   blockExplorers: {
-    default: { name: 'tronscan', url: 'https://tronscan.org/#/' },
+    default: { name: 'SnowTrace', url: 'https://snowtrace.io' },
+    etherscan: { name: 'SnowTrace', url: 'https://snowtrace.io' },
+  },
+  testnet: false,
+};
+
+const bscChain: Chain = {
+  id: 56,
+  name: 'BSC Chain',
+  network: 'binance smart chain',
+  iconUrl: 'https://example.com/icon.svg',
+  iconBackground: '#fff',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'BSC Chain',
+    symbol: 'BSC',
+  },
+  rpcUrls: {
+    default: 'https://bsc-dataseed1.ninicoin.io/',
+  },
+  blockExplorers: {
+    default: { name: 'BscScan', url: 'https://bscscan.come' },
   },
   testnet: false,
 };
 
 const { chains, provider } = configureChains(
-  [chain.polygon, chain.mainnet],
+  [chain.polygon, chain.mainnet, avalancheChain, bscChain],
   [
     // alchemyProvider({ apiKey: 'pv-xSVPKpdeM_NXPsyr1n8rhpxvTnIDx' }),
     // infuraProvider({ apiKey: 'yourInfuraApiKey' }),
@@ -150,15 +173,14 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains} modalSize="compact">
-        <ConnectionProvider endpoint={endpoint}>
+        {/* <ConnectionProvider endpoint={endpoint}>
           <WalletProvider wallets={wallets} autoConnect>
             <WalletModalProvider>
               <WalletMultiButton />
               <WalletDisconnectButton />
-              {/* Your app's components go here, nested within the context providers. */}
             </WalletModalProvider>
           </WalletProvider>
-        </ConnectionProvider>
+        </ConnectionProvider> */}
         <ERC20Balance />
         <Component {...pageProps} />
       </RainbowKitProvider>

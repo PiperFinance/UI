@@ -14,8 +14,10 @@ const Default: FC<{ children: ReactNode; pageName: string }> = ({
     </Head>
 
     <Sidebar />
-    <main className='overflow-hidden'>
-      <ConnectButton />
+    <main className="overflow-hidden w-full">
+      <div className="w-full flex justify-end items-end p-3">
+        <ConnectButton />
+      </div>
       {children}
     </main>
   </div>
