@@ -1,13 +1,12 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
-import '@rainbow-me/rainbowkit/styles.css';
 import {
   Chain,
-  connectorsForWallets,
-  getDefaultWallets,
-  RainbowKitProvider,
-} from '@rainbow-me/rainbowkit';
-import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
+  chain,
+  configureChains,
+  createClient,
+  WagmiConfig,
+} from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { infuraProvider } from 'wagmi/providers/infura';
@@ -56,8 +55,6 @@ const solanaChain: Chain = {
   id: 103,
   name: 'Solana',
   network: 'solana',
-  iconUrl: 'https://example.com/icon.svg',
-  iconBackground: '#fff',
   nativeCurrency: {
     decimals: 18,
     name: 'Solana',
@@ -72,13 +69,10 @@ const solanaChain: Chain = {
   testnet: false,
 };
 
-
 const avalancheChain: Chain = {
   id: 43_114,
   name: 'Avalanche',
   network: 'avalanche',
-  iconUrl: 'https://example.com/icon.svg',
-  iconBackground: '#fff',
   nativeCurrency: {
     decimals: 18,
     name: 'Avalanche',
@@ -98,8 +92,6 @@ const bscChain: Chain = {
   id: 56,
   name: 'BSC Chain',
   network: 'binance smart chain',
-  iconUrl: 'https://example.com/icon.svg',
-  iconBackground: '#fff',
   nativeCurrency: {
     decimals: 18,
     name: 'BSC Chain',
@@ -128,28 +120,8 @@ const { chains, provider } = configureChains(
 //   chains,
 // });
 
-const connectors = connectorsForWallets([
-  {
-    groupName: 'Wallets',
-    wallets: [
-      injectedWallet({ chains }),
-      metaMaskWallet({ chains }),
-      coinbaseWallet({ chains, appName: 'Cross' }),
-      walletConnectWallet({ chains }),
-      trustWallet({ chains }),
-      braveWallet({ chains }),
-      argentWallet({ chains }),
-      omniWallet({ chains }),
-      imTokenWallet({ chains }),
-      rainbowWallet({ chains }),
-      phantom({ chains: [solanaChain] }),
-    ],
-  },
-]);
-
 const wagmiClient = createClient({
   autoConnect: true,
-  connectors,
   provider,
 });
 
@@ -172,8 +144,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains} modalSize="compact">
-        {/* <ConnectionProvider endpoint={endpoint}>
+      {/* <ConnectionProvider endpoint={endpoint}>
           <WalletProvider wallets={wallets} autoConnect>
             <WalletModalProvider>
               <WalletMultiButton />
@@ -181,9 +152,8 @@ export default function App({ Component, pageProps }: AppProps) {
             </WalletModalProvider>
           </WalletProvider>
         </ConnectionProvider> */}
-        <ERC20Balance />
-        <Component {...pageProps} />
-      </RainbowKitProvider>
+      <ERC20Balance />
+      <Component {...pageProps} />
     </WagmiConfig>
   );
 }

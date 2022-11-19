@@ -8,6 +8,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'tokens.1inch.io',
       },
+      {
+        protocol: 'https',
+        hostname: 'token.metaswap.codefi.network',
+      },
     ],
   },
 };

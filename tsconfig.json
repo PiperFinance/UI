@@ -15,7 +15,7 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@ui/*": ["./components/ui/*"],
+      "@ui/*": ["./components/UI/*"],
       "@hooks/*": ["./hooks/*"],
       "@utils/*": ["./utils/*"],
       "@constants/*": ["./constants/*"]
