@@ -29,18 +29,6 @@ export default function Sidebar() {
       link: '/cross',
       icon: <ArrowsPointingOutIcon className={iconClass} />,
     },
-    {
-      id: 2,
-      name: 'Bridge',
-      link: '/bridge',
-      icon: <ArrowsUpDownIcon className={iconClass} />,
-    },
-    {
-      id: 3,
-      name: 'Swap',
-      link: '/swap',
-      icon: <ArrowsRightLeftIcon className={iconClass} />,
-    },
   ]);
 
   return (
