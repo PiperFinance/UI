@@ -18,6 +18,7 @@
     "@solana/wallet-adapter-react-ui": "^0.9.22",
     "@solana/wallet-adapter-wallets": "^0.19.5",
     "@solana/web3.js": "^1.66.2",
+    "@tanstack/react-query": "^4.16.1",
     "autoprefixer": "^10.4.13",
     "bignumber.js": "^9.1.0",
     "class-variance-authority": "^0.2.4",
@@ -32,6 +33,7 @@
     "wagmi": "^0.7.12"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^4.15.1",
     "@types/coingecko-api": "^1.0.10",
     "@types/node": "18.11.9",
     "@types/react": "18.0.24",

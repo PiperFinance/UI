@@ -9,15 +9,15 @@ import TableFooter from './TableFooter';
 interface ITable {
   rowsPerPage: number;
   data: any;
+  label: string;
 }
 
-export default function Table({ data, rowsPerPage }: ITable) {
+export default function Table({ data, rowsPerPage, label }: ITable) {
   const [page, setPage] = useState<number>(1);
   const { slice, range } = useTable({ data, page, rowsPerPage });
 
   return (
-    <Container style="max-w-5xl border border-gray-500 sm:rounded-3xl">
-      <h1 className="text-2xl my-3 font-semibold text-gray-100">Portfolio</h1>
+    <>
       <table className="w-full text-md text-left text-gray-800 dark:text-gray-300 my-7">
         <thead className="uppercase dark:border-gray-500 text-xs text-gray-400">
           <tr className="border-b dark:border-gray-500 py-3">
@@ -29,195 +29,76 @@ export default function Table({ data, rowsPerPage }: ITable) {
           </tr>
         </thead>
         <tbody>
-          <tr className="border-b dark:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer group last:border-b-0">
-            <td className="p-4">
-              <div className="flex">
-                <Image
-                  src="https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg"
-                  alt="icon"
-                  width={40}
-                  height={40}
-                />
-                <div className="ml-3">
-                  <h6 className="uppercase font-bold">BNB</h6>
-                  <h6 className="text-sm text-gray-400">Binance Coin</h6>
+          {slice.map((row: any) => (
+            <tr
+              key={row.id}
+              className="border-b dark:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer group last:border-b-0"
+            >
+              <td className="p-4">
+                <div className="flex">
+                  <Image
+                    src="https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg"
+                    alt="icon"
+                    width={40}
+                    height={40}
+                  />
+                  <div className="ml-3">
+                    <h6 className="uppercase font-bold">{row.name}</h6>
+                    <h6 className="text-sm text-gray-400">Binance Coin</h6>
+                  </div>
                 </div>
-              </div>
-            </td>
-            <td className="pr-3">
-              <div className="flex">
-                <Image
-                  src="https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg"
-                  alt="icon"
-                  width={30}
-                  height={30}
-                  className="relative right-1 border-2 border-gray-50 rounded-full"
-                />
-                <Image
-                  src="https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg"
-                  alt="icon"
-                  width={30}
-                  height={30}
-                  className="relative right-3 border-2 border-gray-50 rounded-full"
-                />
-                <Image
-                  src="https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg"
-                  alt="icon"
-                  width={30}
-                  height={30}
-                  className="relative right-5 border-2 border-gray-50 rounded-full"
-                />
-                <Image
-                  src="https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg"
-                  alt="icon"
-                  width={30}
-                  height={30}
-                  className="relative right-7 border-2 border-gray-50 rounded-full"
-                />
-              </div>
-            </td>
-            <td className="pr-3">
-              <div>$256.20</div>
-            </td>
-            <td className="pr-3">
-              <div>
-                <b>$2.15</b>
-                <div className="text-sm text-gray-400">
-                  0.0079 <span>BNB</span>
+              </td>
+              <td className="pr-3">
+                <div className="flex">
+                  <Image
+                    src="https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg"
+                    alt="icon"
+                    width={30}
+                    height={30}
+                    className="relative right-1 border-2 border-gray-50 rounded-full"
+                  />
+                  <Image
+                    src="https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg"
+                    alt="icon"
+                    width={30}
+                    height={30}
+                    className="relative right-3 border-2 border-gray-50 rounded-full"
+                  />
+                  <Image
+                    src="https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg"
+                    alt="icon"
+                    width={30}
+                    height={30}
+                    className="relative right-5 border-2 border-gray-50 rounded-full"
+                  />
+                  <Image
+                    src="https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg"
+                    alt="icon"
+                    width={30}
+                    height={30}
+                    className="relative right-7 border-2 border-gray-50 rounded-full"
+                  />
                 </div>
-              </div>
-            </td>
-            <td>
-              <ChevronRightIcon className="w-5 h-5 invisible group-hover:visible group-hover:text-gray-50" />
-            </td>
-          </tr>
-          <tr className="border-b dark:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer group last:border-b-0">
-            <td className="p-4">
-              <div className="flex">
-                <Image
-                  src="https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg"
-                  alt="icon"
-                  width={40}
-                  height={40}
-                />
-                <div className="ml-3">
-                  <h6 className="uppercase font-bold">BNB</h6>
-                  <h6 className="text-sm text-gray-400">Binance Coin</h6>
+              </td>
+              <td className="pr-3">
+                <div>$256.20</div>
+              </td>
+              <td className="pr-3">
+                <div>
+                  <b>$2.15</b>
+                  <div className="text-sm text-gray-400">
+                    0.0079 <span>BNB</span>
+                  </div>
                 </div>
-              </div>
-            </td>
-            <td className="pr-3">
-              <div className="flex">
-                <Image
-                  src="https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg"
-                  alt="icon"
-                  width={30}
-                  height={30}
-                  className="relative right-1 border-2 border-gray-50 rounded-full"
-                />
-                <Image
-                  src="https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg"
-                  alt="icon"
-                  width={30}
-                  height={30}
-                  className="relative right-3 border-2 border-gray-50 rounded-full"
-                />
-                <Image
-                  src="https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg"
-                  alt="icon"
-                  width={30}
-                  height={30}
-                  className="relative right-5 border-2 border-gray-50 rounded-full"
-                />
-                <Image
-                  src="https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg"
-                  alt="icon"
-                  width={30}
-                  height={30}
-                  className="relative right-7 border-2 border-gray-50 rounded-full"
-                />
-              </div>
-            </td>
-            <td className="pr-3">
-              <div>$256.20</div>
-            </td>
-            <td className="pr-3">
-              <div>
-                <b>$2.15</b>
-                <div className="text-sm text-gray-400">
-                  0.0079 <span>BNB</span>
-                </div>
-              </div>
-            </td>
-            <td>
-              <ChevronRightIcon className="w-5 h-5 invisible group-hover:visible group-hover:text-gray-50" />
-            </td>
-          </tr>
-          <tr className="border-b dark:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer group last:border-b-0">
-            <td className="p-4">
-              <div className="flex">
-                <Image
-                  src="https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg"
-                  alt="icon"
-                  width={40}
-                  height={40}
-                />
-                <div className="ml-3">
-                  <h6 className="uppercase font-bold">BNB</h6>
-                  <h6 className="text-sm text-gray-400">Binance Coin</h6>
-                </div>
-              </div>
-            </td>
-            <td className="pr-3">
-              <div className="flex">
-                <Image
-                  src="https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg"
-                  alt="icon"
-                  width={30}
-                  height={30}
-                  className="relative right-1 border-2 border-gray-50 rounded-full"
-                />
-                <Image
-                  src="https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg"
-                  alt="icon"
-                  width={30}
-                  height={30}
-                  className="relative right-3 border-2 border-gray-50 rounded-full"
-                />
-                <Image
-                  src="https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg"
-                  alt="icon"
-                  width={30}
-                  height={30}
-                  className="relative right-5 border-2 border-gray-50 rounded-full"
-                />
-                <Image
-                  src="https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg"
-                  alt="icon"
-                  width={30}
-                  height={30}
-                  className="relative right-7 border-2 border-gray-50 rounded-full"
-                />
-              </div>
-            </td>
-            <td className="pr-3">
-              <div>$256.20</div>
-            </td>
-            <td className="pr-3">
-              <div>
-                <b>$2.15</b>
-                <div className="text-sm text-gray-400">
-                  0.0079 <span>BNB</span>
-                </div>
-              </div>
-            </td>
-            <td>
-              <ChevronRightIcon className="w-5 h-5 invisible group-hover:visible group-hover:text-gray-50" />
-            </td>
-          </tr>
+              </td>
+              <td>
+                <ChevronRightIcon className="w-5 h-5 invisible group-hover:visible group-hover:text-gray-50" />
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
       <TableFooter range={range} slice={slice} setPage={setPage} page={page} />
-    </Container>
+    </>
   );
 }

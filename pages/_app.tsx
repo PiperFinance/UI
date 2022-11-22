@@ -8,45 +8,8 @@ import {
   WagmiConfig,
 } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
-import { alchemyProvider } from 'wagmi/providers/alchemy';
-import { infuraProvider } from 'wagmi/providers/infura';
-import ERC20Balance from '../state/dashboard/updater';
-import {
-  coinbaseWallet,
-  injectedWallet,
-  metaMaskWallet,
-  rainbowWallet,
-  trustWallet,
-  walletConnectWallet,
-  braveWallet,
-  ledgerWallet,
-  argentWallet,
-  omniWallet,
-  imTokenWallet,
-} from '@rainbow-me/rainbowkit/wallets';
-import { phantom } from '../wallets/phantom';
-
-import {
-  ConnectionProvider,
-  WalletProvider,
-} from '@solana/wallet-adapter-react';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
-import {
-  LedgerWalletAdapter,
-  MathWalletAdapter,
-  PhantomWalletAdapter,
-  SolflareWalletAdapter,
-  SolletExtensionWalletAdapter,
-  SolletWalletAdapter,
-  UnsafeBurnerWalletAdapter,
-} from '@solana/wallet-adapter-wallets';
-import {
-  WalletModalProvider,
-  WalletDisconnectButton,
-  WalletMultiButton,
-} from '@solana/wallet-adapter-react-ui';
-import { clusterApiUrl } from '@solana/web3.js';
-import { useMemo } from 'react';
+
 
 // Default styles that can be overridden by your app
 require('@solana/wallet-adapter-react-ui/styles.css');
@@ -128,20 +91,6 @@ const wagmiClient = createClient({
 export default function App({ Component, pageProps }: AppProps) {
   const network = WalletAdapterNetwork.Devnet;
 
-  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
-
-  const wallets = useMemo(
-    () => [
-      new SolletWalletAdapter({ network }),
-      new SolletExtensionWalletAdapter({ network }),
-      new LedgerWalletAdapter(),
-      new SolflareWalletAdapter({ network }),
-      new PhantomWalletAdapter(),
-      new MathWalletAdapter(),
-    ],
-    [network]
-  );
-
   return (
     <WagmiConfig client={wagmiClient}>
       {/* <ConnectionProvider endpoint={endpoint}>
@@ -152,7 +101,6 @@ export default function App({ Component, pageProps }: AppProps) {
             </WalletModalProvider>
           </WalletProvider>
         </ConnectionProvider> */}
-      <ERC20Balance />
       <Component {...pageProps} />
     </WagmiConfig>
   );
