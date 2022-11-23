@@ -1,13 +1,10 @@
 import { Tab } from '@headlessui/react';
 import { Container } from '@ui/Container/Container';
 import Flex from '@ui/Flex/Flex';
+import { classNames } from '@utils/classNames';
 import Default from '../components/layout/Default';
 import List from '../components/List/List';
 import Table from '../components/Table/Table';
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
-}
 
 export default function Dashboard() {
   const balances = [
@@ -118,6 +115,8 @@ export default function Dashboard() {
     },
   ];
 
+  const tabs: string[] = ['Tokens', 'NFTs', 'Liquidities', 'Transactions'];
+
   return (
     <Default pageName="Portfolio">
       <Container>
@@ -131,54 +130,21 @@ export default function Dashboard() {
                 Portfolio
               </h1>
               <div className="space-x-4">
-                <Tab
-                  className={({ selected }) =>
-                    classNames(
-                      'inline-block p-3 outline-none rounded-xl',
-                      selected
-                        ? 'text-blue-700 dark:bg-gray-800 dark:text-blue-300 border border-primary-400'
-                        : 'hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300'
-                    )
-                  }
-                >
-                  Tokens
-                </Tab>
-                <Tab
-                  className={({ selected }) =>
-                    classNames(
-                      'inline-block p-3 outline-none rounded-xl',
-                      selected
-                        ? 'text-blue-600 dark:bg-gray-800 dark:text-blue-300 border border-primary-400'
-                        : 'hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300'
-                    )
-                  }
-                >
-                  NFTs
-                </Tab>
-                <Tab
-                  className={({ selected }) =>
-                    classNames(
-                      'inline-block p-3 outline-none rounded-xl',
-                      selected
-                        ? 'text-blue-600 dark:bg-gray-800 dark:text-blue-300 border border-primary-400'
-                        : 'hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300'
-                    )
-                  }
-                >
-                  Liquidities
-                </Tab>
-                <Tab
-                  className={({ selected }) =>
-                    classNames(
-                      'inline-block p-3 outline-none rounded-xl',
-                      selected
-                        ? 'text-blue-600 dark:bg-gray-800 dark:text-blue-300 border border-primary-400'
-                        : 'hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300'
-                    )
-                  }
-                >
-                  Transactions
-                </Tab>
+                {tabs.map((tab: string) => (
+                  <Tab
+                    key={tab}
+                    className={({ selected }) =>
+                      classNames(
+                        'inline-block p-3 outline-none rounded-xl',
+                        selected
+                          ? 'text-blue-700 dark:bg-gray-800 dark:text-blue-300 border border-primary-400'
+                          : 'hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300'
+                      )
+                    }
+                  >
+                    {tab}
+                  </Tab>
+                ))}
               </div>
             </Tab.List>
             <Tab.Panels>

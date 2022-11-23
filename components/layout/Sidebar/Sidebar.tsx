@@ -2,14 +2,14 @@ import {
   ArrowsPointingOutIcon,
   ChartBarIcon,
   DocumentTextIcon,
-} from '@heroicons/react/20/solid';
+} from '@heroicons/react/24/solid';
 import Link from 'next/link';
 import { useState } from 'react';
 import Logo from '../../Logo/Logo';
 
 export default function Sidebar() {
   const iconClass: string =
-    'w-6 h-6 text-gray-500 duration-75 dark:text-gray-400';
+    'w-5 h-5 text-gray-500 duration-75 dark:text-gray-400';
 
   let [navs] = useState([
     {

@@ -8,6 +8,8 @@ interface ITableFooter {
   setPage: React.Dispatch<React.SetStateAction<number>>;
   page: number;
   slice: any;
+  totalLength: number;
+  rowsPerPage: number;
 }
 
 export default function TableFooter({
@@ -15,8 +17,9 @@ export default function TableFooter({
   setPage,
   page,
   slice,
+  totalLength,
+  rowsPerPage,
 }: ITableFooter) {
-  console.log({ range, setPage, page, slice });
   useEffect(() => {
     if (slice.length < 1 && page !== 1) {
       setPage(page - 1);
@@ -32,11 +35,14 @@ export default function TableFooter({
         <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
           Showing{' '}
           <span className="font-semibold text-gray-900 dark:text-white">
-            1-10
+            {page === 1 ? 1 : page * rowsPerPage - (rowsPerPage - 1)}-
+            {Number(totalLength) < rowsPerPage * page
+              ? totalLength
+              : rowsPerPage * page}
           </span>{' '}
           of{' '}
           <span className="font-semibold text-gray-900 dark:text-white">
-            1000
+            {totalLength}
           </span>
         </span>
         <ul className="inline-flex items-center -space-x-px">

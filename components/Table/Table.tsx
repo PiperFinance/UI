@@ -98,7 +98,7 @@ export default function Table({ data, rowsPerPage, label }: ITable) {
           ))}
         </tbody>
       </table>
-      <TableFooter range={range} slice={slice} setPage={setPage} page={page} />
+      <TableFooter range={range} slice={slice} setPage={setPage} page={page} totalLength={data.length} rowsPerPage={rowsPerPage} />
     </>
   );
 }

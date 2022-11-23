@@ -88,6 +88,8 @@ const wagmiClient = createClient({
   provider,
 });
 
+
+
 export default function App({ Component, pageProps }: AppProps) {
   const network = WalletAdapterNetwork.Devnet;
 
