@@ -15,7 +15,7 @@ export default function Sidebar() {
     {
       id: 0,
       name: "Portfolio",
-      link: "/portfolio",
+      link: "/",
       icon: <ChartBarIcon className={iconClass} />,
     },
     {

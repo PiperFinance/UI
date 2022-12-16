@@ -1,80 +1,32 @@
+import RootLayout from "@components/layout/layout";
+import List from "@components/List/List";
 import { Tab } from "@headlessui/react";
+import useHasMounted from "@hooks/useHasMounted";
 import Container from "@ui/Container/Container";
 import Flex from "@ui/Flex/Flex";
 import { classNames } from "@utils/classNames";
-import RootLayout from "../components/layout/layout";
-import List from "../components/List/List";
-import Table from "../components/Table/Table";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import TokenTable from "./components/TokenTable";
 
-export default function Dashboard() {
-  const balances = [
-    {
-      id: 1,
-      name: "Poland",
-      language: "Polish",
-      capital: "Warsaw",
-    },
-    {
-      id: 2,
-      name: "Bulgaria",
-      language: "Bulgarian",
-      capital: "Sofia",
-    },
-    {
-      id: 3,
-      name: "Hungary",
-      language: "Hungarian",
-      capital: "Budapest",
-    },
-    {
-      id: 4,
-      name: "Moldova",
-      language: "Moldovan",
-      capital: "Chișinău",
-    },
-    {
-      id: 5,
-      name: "Austria",
-      language: "German",
-      capital: "Vienna",
-    },
-    {
-      id: 6,
-      name: "Lithuania",
-      language: "Lithuanian",
-      capital: "Vilnius",
-    },
-    {
-      id: 7,
-      name: "Lithuania",
-      language: "Lithuanian",
-      capital: "Vilnius",
-    },
-    {
-      id: 8,
-      name: "Lithuania",
-      language: "Lithuanian",
-      capital: "Vilnius",
-    },
-    {
-      id: 9,
-      name: "Lithuania",
-      language: "Lithuanian",
-      capital: "Vilnius",
-    },
-    {
-      id: 10,
-      name: "Lithuania",
-      language: "Lithuanian",
-      capital: "Vilnius",
-    },
-    {
-      id: 11,
-      name: "Lithuania",
-      language: "Lithuanian",
-      capital: "Vilnius",
-    },
+export default function Portfolio() {
+  const [tab, setTab] = useState<number>();
+  const router = useRouter();
+  const hasMounted = useHasMounted();
+
+  const tabs: string[] = [
+    "Tokens",
+    "Centralized Tokens",
+    "NFTs",
+    "Liquidities",
+    "Transactions",
   ];
+
+  useEffect(() => {
+    tabs.find(
+      (tab, index) => tab.toLowerCase() === router.query.tab && setTab(index)
+    );
+  }, [hasMounted, router]);
 
   const nfts = [
     {
@@ -115,16 +67,14 @@ export default function Dashboard() {
     },
   ];
 
-  const tabs: string[] = ["Tokens", "NFTs", "Liquidities", "Transactions"];
-
   return (
     <RootLayout pageName="Portfolio">
       <Container>
         <Flex
-          direction="flex-col"
-          customStyle="bg-gray-800 rounded-2xl p-5"
+          direction="column"
+          customStyle="bg-gray-122 rounded-2xl p-5 h-fit"
         >
-          <Tab.Group>
+          <Tab.Group selectedIndex={tab} onChange={setTab}>
             <Tab.List className="flex justify-between text-center text-sm font-medium text-gray-500  dark:border-gray-700 dark:text-gray-400 ">
               <h1 className="my-3 text-2xl font-semibold text-gray-100">
                 Assets
@@ -133,6 +83,7 @@ export default function Dashboard() {
                 {tabs.map((tab: string) => (
                   <Tab
                     key={tab}
+                    onClick={() => router.push(`?tab=${tab.toLowerCase()}`)}
                     className={({ selected }) =>
                       classNames(
                         "inline-block rounded-xl p-3 outline-none",
@@ -149,13 +100,19 @@ export default function Dashboard() {
             </Tab.List>
             <Tab.Panels>
               <Tab.Panel>
-                <Table data={balances} rowsPerPage={5} />
+                <TokenTable />
               </Tab.Panel>
               <Tab.Panel>
-                <Table data={nfts} rowsPerPage={5} />
+                {/* <Table data={balances} rowsPerPage={5} /> */}
+                <TokenTable />
               </Tab.Panel>
               <Tab.Panel>
-                <Table data={balances} rowsPerPage={5} />
+                {/* <Table data={nfts} rowsPerPage={5} /> */}
+                <TokenTable />
+              </Tab.Panel>
+              <Tab.Panel>
+                {/* <Table data={balances} rowsPerPage={5} /> */}
+                <TokenTable />
               </Tab.Panel>
               <Tab.Panel>
                 <List />

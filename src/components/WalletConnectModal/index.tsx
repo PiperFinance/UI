@@ -1,17 +1,16 @@
-import { Button } from "@ui/Button/Button";
-import Container from "@ui/Container/Container";
 import Flex from "@ui/Flex/Flex";
-import React, { useContext } from "react";
+import React from "react";
 import metamask from "@assets/wallets/metamask.svg";
 import phantom from "@assets/wallets/phantom.svg";
 import trust from "@assets/wallets/trust.svg";
 import walletConnect from "@assets/wallets/walletconnect.svg";
 import xdefi from "@assets/wallets/xdefi.svg";
-import coinbase from "@assets/wallets/coinbase.svg";
+import coinbase from "@assets/wallets/coinbase wallet.svg";
 import Image from "next/image";
 import { XMarkIcon } from "@heroicons/react/20/solid";
-import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { useConnect, useDisconnect } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
+import ModalHeader from "../ModalHeader";
 
 type TWalletList = {
   name: string;
@@ -24,21 +23,17 @@ interface IWalletConnectModal {
 }
 
 export default function WalletConnectModal({ onDismiss }: IWalletConnectModal) {
-  const { connect } = useConnect({
-    connector: new InjectedConnector(),
-    onSuccess(data) {
-      onDismiss();
-    },
-  });
-  const { disconnect } = useDisconnect();
+  const { connect, connectors, error, isLoading, pendingConnector } =
+    useConnect({
+      onSuccess() {
+        onDismiss();
+      },
+    });
 
   const walletList: TWalletList[] = [
     {
       name: "Metamask",
       icon: metamask,
-      onClick: function () {
-        connect();
-      },
     },
     {
       name: "Phantom",
@@ -64,37 +59,34 @@ export default function WalletConnectModal({ onDismiss }: IWalletConnectModal) {
 
   return (
     <Flex
-      direction="flex-col"
+      direction="column"
       customStyle="max-w-lg bg-gray-800 rounded-2xl p-5 space-y-2"
     >
-      <Flex
-        position="justify-between"
-        customStyle="text-lg font-bold text-gray-50"
-      >
-        <h1>Connect Wallet</h1>
-        <XMarkIcon
-          onClick={onDismiss}
-          className="h-6 w-6 cursor-pointer transition hover:text-red-400"
-        />
-      </Flex>
-      <Flex position="justify-between" customStyle="flex-wrap">
-        {walletList.map((wallet: TWalletList) => (
+      <ModalHeader title="Connect Wallet" onClick={onDismiss} />
+      <Flex justifyContent="between" customStyle="flex-wrap">
+        {connectors.map((connector) => (
           <Flex
-            key={wallet.name}
-            direction="flex-col"
-            position="justify-evenly items-center text-gray-50 text-sm rounded-2xl bg-gray-999 cursor-pointer"
-            customStyle="basis-32 h-32 my-4"
-            onClick={wallet.onClick}
+            key={connector.id}
+            direction="column"
+            width="basis32"
+            justifyContent="evenly"
+            alignItems="center"
+            customStyle={`text-gray-50 text-sm rounded-2xl bg-gray-999 cursor-pointer h-32 my-4 ${
+              isLoading && connector.id === pendingConnector?.id
+                ? "animate-pulse"
+                : ""
+            }`}
+            onClick={() => connect({ connector })}
           >
             <div className="relative h-12 w-12">
               <Image
                 className="rounded-full"
-                src={wallet.icon}
-                alt={wallet.name}
+                src={`/assets/wallets/${connector.name.toLowerCase()}.svg`}
+                alt={connector.name}
                 fill
               />
             </div>
-            <span>{wallet.name}</span>
+            <span>{connector.name}</span>
           </Flex>
         ))}
       </Flex>

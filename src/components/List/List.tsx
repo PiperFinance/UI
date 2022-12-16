@@ -7,12 +7,12 @@ export default function List() {
   const labels = ["swap", "approve", "bridge", "deposit"];
 
   return (
-    <Flex direction="flex-col" customStyle="p-2 h-full overflow-y-auto">
+    <Flex direction="column" customStyle="p-2 h-full overflow-y-auto">
       <Flex
-        direction="flex-col"
+        direction="column"
         customStyle="py-4 border-b border-gray-500 last:border-b-0"
       >
-        <Flex position="justify-between items-center">
+        <Flex justifyContent="between" alignItems="center">
           <a
             target="_blank"
             rel="noopener noreferrer"
@@ -38,10 +38,10 @@ export default function List() {
       </Flex>
 
       <Flex
-        direction="flex-col"
+        direction="column"
         customStyle="py-4 border-b border-gray-500 last:border-b-0"
       >
-        <Flex position="justify-between items-center">
+        <Flex justifyContent="between" alignItems="center">
           <a
             target="_blank"
             rel="noopener noreferrer"
@@ -66,10 +66,10 @@ export default function List() {
         </Flex>
       </Flex>
       <Flex
-        direction="flex-col"
+        direction="column"
         customStyle="py-4 border-b border-gray-500 last:border-b-0"
       >
-        <Flex position="justify-between items-center">
+        <Flex justifyContent="between" alignItems="center">
           <a
             target="_blank"
             rel="noopener noreferrer"
@@ -94,10 +94,10 @@ export default function List() {
         </Flex>
       </Flex>
       <Flex
-        direction="flex-col"
+        direction="column"
         customStyle="py-4 border-b border-gray-500 last:border-b-0"
       >
-        <Flex position="justify-between items-center">
+        <Flex justifyContent="between" alignItems="center">
           <a
             target="_blank"
             rel="noopener noreferrer"
@@ -122,10 +122,10 @@ export default function List() {
         </Flex>
       </Flex>
       <Flex
-        direction="flex-col"
+        direction="column"
         customStyle="py-4 border-b border-gray-500 last:border-b-0"
       >
-        <Flex position="justify-between items-center">
+        <Flex justifyContent="between" alignItems="center">
           <a
             target="_blank"
             rel="noopener noreferrer"
@@ -150,10 +150,10 @@ export default function List() {
         </Flex>
       </Flex>
       <Flex
-        direction="flex-col"
+        direction="column"
         customStyle="py-4 border-b border-gray-500 last:border-b-0"
       >
-        <Flex position="justify-between items-center">
+        <Flex justifyContent="between" alignItems="center">
           <a
             target="_blank"
             rel="noopener noreferrer"
@@ -178,10 +178,10 @@ export default function List() {
         </Flex>
       </Flex>
       <Flex
-        direction="flex-col"
+        direction="column"
         customStyle="py-4 border-b border-gray-500 last:border-b-0"
       >
-        <Flex position="justify-between items-center">
+        <Flex justifyContent="between" alignItems="center">
           <a
             target="_blank"
             rel="noopener noreferrer"
@@ -206,10 +206,10 @@ export default function List() {
         </Flex>
       </Flex>
       <Flex
-        direction="flex-col"
+        direction="column"
         customStyle="py-4 border-b border-gray-500 last:border-b-0"
       >
-        <Flex position="justify-between items-center">
+        <Flex justifyContent="between" alignItems="center">
           <a
             target="_blank"
             rel="noopener noreferrer"
@@ -234,10 +234,10 @@ export default function List() {
         </Flex>
       </Flex>
       <Flex
-        direction="flex-col"
+        direction="column"
         customStyle="py-4 border-b border-gray-500 last:border-b-0"
       >
-        <Flex position="justify-between items-center">
+        <Flex justifyContent="between" alignItems="center">
           <a
             target="_blank"
             rel="noopener noreferrer"
@@ -262,10 +262,10 @@ export default function List() {
         </Flex>
       </Flex>
       <Flex
-        direction="flex-col"
+        direction="column"
         customStyle="py-4 border-b border-gray-500 last:border-b-0"
       >
-        <Flex position="justify-between items-center">
+        <Flex justifyContent="between" alignItems="center">
           <a
             target="_blank"
             rel="noopener noreferrer"

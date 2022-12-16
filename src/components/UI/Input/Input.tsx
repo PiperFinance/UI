@@ -12,6 +12,7 @@ const inputStyles = cva(
       },
       fontSize: {
         lg: "text-2xl",
+        xl: "text-xl",
         sm: "text-sm",
       },
       fullWidth: {

@@ -17,6 +17,10 @@
     "noUncheckedIndexedAccess": true,
     "paths": {
       "@ui/*": ["./src/components/UI/*"],
+      "@components/*": ["./src/components/*"],
+      "@layout/*": ["./src/components/layout/*"],
+      "@contexts/*": ["./src/contexts/*"],
+      "@views/*": ["./src/views/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@utils/*": ["./src/utils/*"],
       "@constants/*": ["./src/constants/*"],
