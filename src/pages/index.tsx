@@ -1,9 +1,5 @@
-import RootLayout from '../components/layout/layout';
+import Portfolio from "@views/Portfolio";
 
 export default function Home() {
-  return (
-    <RootLayout pageName="Home">
-      <></>
-    </RootLayout>
-  );
+  return <Portfolio />;
 }

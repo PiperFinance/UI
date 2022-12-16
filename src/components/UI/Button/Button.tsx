@@ -14,6 +14,7 @@ const buttonStyles = cva(
           "border border-red-500 hover:bg-red-700 text-red-700 hover:text-gray-50",
         wheat:
           "bg-wheat-900 hover:bg-wheat-600 text-primary-700 hover:text-gray-50",
+        disablePrimary: "bg-primary-700 text-gray-100 hover:text-gray-50",
       },
       width: {
         sm: "w-36",
@@ -30,6 +31,9 @@ const buttonStyles = cva(
         sm: "text-sm",
         md: "text-base",
         lg: "text-lg",
+      },
+      disable: {
+        true: "opacity-70 pointer-events-none select-none",
       },
     },
     defaultVariants: {
@@ -48,11 +52,13 @@ export interface Props
     >,
     VariantProps<typeof buttonStyles> {}
 
-export function Button({ intent, width, height, ...props }: Props) {
+export function Button({ disable, intent, width, height, ...props }: Props) {
   return (
     <button
-      className={buttonStyles({ intent, width, height })}
+      className={buttonStyles({ intent, width, height, disable })}
       {...props}
-    ></button>
+    >
+      {props.children}
+    </button>
   );
 }

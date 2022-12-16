@@ -1,18 +1,12 @@
-import allTokens from "@constants/tokenList.json";
 import useTokenBalances from "@hooks/useTokenBalances";
-import { useAtom } from "jotai";
-import { tokenList } from "@store/store";
-import { useEffect } from "react";
+import { allTokens, balancesList, updateTokenListAtom } from "@store/store";
+import { flattenObject } from "@utils/flattenObject";
+import { atom, useAtom, useAtomValue } from "jotai";
+import { useHydrateAtoms } from "jotai/utils";
+import { InferGetServerSidePropsType } from "next";
+import { useTransition } from "react";
 
-function ERC20Balance() {
-  const [tokens, setTokens] = useAtom(tokenList);
-
-  const fullTokenList = useTokenBalances(allTokens);
-
-  useEffect(() => {
-    setTokens(fullTokenList);
-  }, [fullTokenList]);
-
+function BackgroundFetch() {
   return <></>;
 }
-export default ERC20Balance;
+export default BackgroundFetch;
