@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  user-interface:
+    hostname: UI
+    build:
+      context: .
+    ports:
+      - 4000:4000
