@@ -2,6 +2,7 @@ version: "3.9"
 services:
   ui:
     platform: "linux/amd64"
+    container_name: ui_container
     hostname: UI
     build:
       context: .
