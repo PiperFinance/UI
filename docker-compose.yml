@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  app:
+    platform: "linux/amd64"
+    hostname: UI
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_CLIENTVAR: "clientvar"
+    working_dir: /app
+    ports:
+      - "4000:4000"
+    image: t3-app
+    environment:
+      - DATABASE_URL=database_url_goes_here
