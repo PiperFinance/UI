@@ -1,7 +1,7 @@
 import LIFI, { Route as lifiRoute } from "@lifi/sdk";
 
 import { Path, Route as socketRoute, Socket } from "@socket.tech/socket-v2-sdk";
-import { ITokenDetail } from "@store/store";
+import { ITokenDetail, ITokenDetailDefault } from "@store/store";
 import {
   EvmTransaction,
   MetaResponse,
@@ -14,6 +14,18 @@ import {
   checkApprovalSync,
   prepareEvmTransaction,
 } from "./prepareEvmTransaction";
+
+export interface IRouteInfoPathTool {
+  title: string;
+  logo?: string;
+}
+
+export interface IRouteInfoPath {
+  fromToken: ITokenDetailDefault;
+  toToken: ITokenDetailDefault;
+  tool: IRouteInfoPathTool[];
+  type: string;
+}
 
 export interface IRouteRequest {
   fromToken: ITokenDetail;
@@ -34,6 +46,7 @@ export interface IRouteInfo {
   totalGasFee: string;
   estimateTime: number;
   response: TSelectedRoute;
+  // path: IRouteInfoPath[];
   type: string;
 }
 
@@ -300,4 +313,12 @@ export default class swap {
       next = await execute.next(sendTx.hash);
     }
   };
+
+
+
+
+  private extractPath = (path: lifiRoute[]) => {
+      
+  };
+
 }
