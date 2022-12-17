@@ -14,3 +14,4 @@ services:
     image: t3-app
     environment:
       - DATABASE_URL=database_url_goes_here
+      - PORT=4000
