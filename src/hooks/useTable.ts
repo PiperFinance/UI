@@ -26,6 +26,7 @@ const sliceData = ({ data, page, rowsPerPage }: IUseTable) => {
 };
 
 const useTable = ({ data, page, rowsPerPage }: IUseTable) => {
+  console.log(data)
   const [tableRange, setTableRange] = useState<any>([]);
   const [slice, setSlice] = useState<any>([]);
 
