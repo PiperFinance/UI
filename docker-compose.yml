@@ -1,6 +1,6 @@
 version: "3.9"
 services:
-  app:
+  ui:
     platform: "linux/amd64"
     hostname: UI
     build:
@@ -13,5 +13,5 @@ services:
       - "4000:4000"
     image: t3-app
     environment:
-      - DATABASE_URL=database_url_goes_here
+      - DATABASE_URL=file:./db.sqlite
       - PORT=4000
