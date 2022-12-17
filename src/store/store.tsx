@@ -16,13 +16,16 @@ export interface IToken {
   value?: string;
 }
 
-export interface ITokenDetail {
+export interface ITokenDetailDefault {
   address: string;
   symbol: string;
   decimals: number;
   name: string;
   chainId: number;
   logoURI?: string;
+}
+
+export interface ITokenDetail extends ITokenDetailDefault {
   coingeckoId?: string;
   tags?: string[];
   lifiId: string | null;
