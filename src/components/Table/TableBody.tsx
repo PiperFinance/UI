@@ -8,6 +8,7 @@ interface ITableBody {
 }
 
 export default function TableBody({ slicedList }: ITableBody) {
+  console.log(slicedList)
   return (
     <tbody>
       {slicedList.map((row: any) => (
@@ -20,7 +21,7 @@ export default function TableBody({ slicedList }: ITableBody) {
 export function TableBodyRow({ row }: any) {
   return (
     <tr
-      key={row.token.address}
+      key={row.detail.address}
       className="group cursor-pointer border-b last:border-b-0 hover:bg-gray-50 dark:border-gray-500 dark:hover:bg-gray-600"
     >
       <td className="p-4">
@@ -32,8 +33,8 @@ export function TableBodyRow({ row }: any) {
             height={40}
           />
           <div className="ml-3">
-            <h6 className="font-bold uppercase">{row.token.symbol}</h6>
-            <h6 className="text-sm text-gray-400">{row.token.name}</h6>
+            <h6 className="font-bold uppercase">{row.detail.symbol}</h6>
+            <h6 className="text-sm text-gray-400">{row.detail.name}</h6>
           </div>
         </div>
       </td>

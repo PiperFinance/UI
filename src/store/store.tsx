@@ -96,8 +96,11 @@ export const [getAllTokens] = atomsWithQuery<ITokenResponse[]>(() => ({
 export const [getUserBalances] = atomsWithQuery<ITokenResponse[]>(() => ({
   queryKey: ["userBalance"],
   queryFn: async () => {
+    const chainList = newAllCustomChains.map((chain) => `&chainId=${chain.id}`);
     const res = await fetch(
-      `${baseURL}tokens/balance?wallet=0xB49F17514D6F340d7bcdFfC47526C9A3713697e0&chainId=56`
+      `${baseURL}tokens/balance?wallet=0xB49F17514D6F340d7bcdFfC47526C9A3713697e0${chainList.join(
+        ""
+      )}`
     );
     return res.ok ? res.json() : [];
   },
@@ -126,19 +129,30 @@ export const tokenAtom = atom((get) => {
   );
 });
 
-export const updateTokenListAtom = atom(
-  (get): { tokensList: IToken[]; balances: ITokenResponse[] } => {
-    const tokens: ITokenResponse[] = get(getAllTokens);
-    const balances: ITokenResponse[] = get(getUserBalances);
+export const updateTokenListAtom = atom((get): { tokensList: IToken[] } => {
+  const tokens: ITokenResponse[] = get(getAllTokens);
+  const balances: ITokenResponse[] = get(getUserBalances);
 
-    return {
-      tokensList: Object.values(
-        updateTokenList(tokens, balances)
-      ) as unknown as IToken[],
-      balances: balances,
-    };
-  }
-);
+  const convertedBalances: IToken[] = [];
+
+  Object.keys(balances).forEach((key: string) => {
+    convertedBalances.push(balances[Number(key)]);
+    // value.foreach((balance:ITokenResponse) => {
+    //     console.log(balance)
+    // })
+    // convertedBalances.push()
+
+    // [...hello, Object.values(balances[Number(key)]!)] as IToken[];
+  });
+
+  console.log(convertedBalances.flat());
+
+  return {
+    tokensList: Object.values(
+      updateTokenList(tokens, balances)
+    ) as unknown as IToken[],
+  };
+});
 
 const updateTokenList = (
   tokenList: ITokenResponse[],
@@ -146,6 +160,11 @@ const updateTokenList = (
 ): ITokenResponse[] => {
   return Object.assign(tokenList, balances);
 };
+
+const updateBalance = (balances: ITokenResponse[]): ITokenResponse[] => {
+  return Object.assign(balances);
+};
+
 const sortUpdateTokenList = (tokenList: IToken[]): IToken[] =>
   tokenList.sort(
     (tokenA: IToken, tokenB: IToken) =>
