@@ -4,9 +4,7 @@ import { useAtom, useAtomValue } from "jotai";
 
 export default function SwapPage() {
   const [, setTokens] = useAtom(allTokens);
-  const [, setBalances] = useAtom(balancesList);
-  const { tokensList, balances } = useAtomValue(updateTokenListAtom);
+  const { tokensList } = useAtomValue(updateTokenListAtom);
   setTokens(tokensList);
-  setBalances(balances);
   return <Swap />;
 }

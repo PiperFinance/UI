@@ -9,24 +9,30 @@ import { useState } from "react";
 
 export default function TokenTable() {
   const [balances] = useAtom(balancesList);
-  const [page, setPage] = useState<number>(1);
-  const { slice, range } = useTable({ data: balances, page, rowsPerPage: 5 });
+  // const [page, setPage] = useState<number>(1);
+  // const { slice, range } = useTable({
+  //   data: Object.keys(balances),
+  //   page,
+  //   rowsPerPage: 5,
+  // });
+
 
   // if (!hasMounted) {
-    // return <CurrencyInputPanelSkeleton />;
+  // return <CurrencyInputPanelSkeleton />;
   // }
-  
+
   return (
-    <Table
-      page={page}
-      range={range}
-      totalLength={balances.length}
-      rowsPerPage={5}
-      slice={slice}
-      setPage={setPage}
-    >
-      <TableHeader titleList={["Token", "Networks", "Price", "Balance", ""]} />
-      <TableBody slicedList={slice} />
-    </Table>
+    <></>
+    // <Table
+    //   page={page}
+    //   range={range}
+    //   totalLength={balances.length}
+    //   rowsPerPage={5}
+    //   slice={slice}
+    //   setPage={setPage}
+    // >
+    //    <TableHeader titleList={["Token", "Networks", "Price", "Balance", ""]} />
+    //   <TableBody slicedList={slice} />
+    //  </Table>
   );
 }
