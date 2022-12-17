@@ -136,7 +136,7 @@ export const updateTokenListAtom = atom((get): { tokensList: IToken[] } => {
   const convertedBalances: IToken[] = [];
 
   Object.keys(balances).forEach((key: string) => {
-    convertedBalances.push(balances[Number(key)]);
+    // convertedBalances.push(balances[Number(key)]);
     // value.foreach((balance:ITokenResponse) => {
     //     console.log(balance)
     // })
