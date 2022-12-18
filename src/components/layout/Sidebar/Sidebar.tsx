@@ -38,7 +38,7 @@ export default function Sidebar() {
             <li key={nav.id}>
               <Link
                 href={nav.link}
-                className="flex items-center rounded-lg p-2 text-base font-normal text-gray-900 dark:text-white dark:hover:bg-gray-700"
+                className="flex items-center rounded-lg p-2 text-base font-normal text-gray-100 hover:bg-gray-700"
               >
                 {nav.icon}
                 <span className="ml-3">{nav.name}</span>
@@ -50,7 +50,7 @@ export default function Sidebar() {
           <li>
             <Link
               href="#"
-              className="group flex items-center rounded-lg p-2 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+              className="group flex items-center rounded-lg p-2 text-base font-normal transition duration-75 hover:bg-gray-100 text-gray-100 dark:hover:bg-gray-700"
             >
               <DocumentTextIcon className={iconClass} />
               <span className="ml-3">Documentation</span>
