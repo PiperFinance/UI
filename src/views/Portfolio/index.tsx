@@ -16,7 +16,6 @@ export default function Portfolio() {
 
   const tabs: string[] = [
     "Tokens",
-    "Centralized Tokens",
     "NFTs",
     "Liquidities",
     "Transactions",

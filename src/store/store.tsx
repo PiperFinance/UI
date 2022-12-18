@@ -5,6 +5,9 @@ import { ReactNode } from "react";
 import { IChain, newAllCustomChains } from "@constants/networkList";
 export const baseURL = "https://piper.finance/api/";
 
+export interface IChainResponse {
+  [key: string]: ITokenResponse;
+}
 export interface ITokenResponse {
   [key: string]: IToken;
 }
@@ -96,7 +99,7 @@ export const [getAllTokens] = atomsWithQuery<ITokenResponse[]>(() => ({
   },
 }));
 
-export const [getUserBalances] = atomsWithQuery<ITokenResponse[]>(() => ({
+export const [getUserBalances] = atomsWithQuery<IChainResponse[]>(() => ({
   queryKey: ["userBalance"],
   queryFn: async () => {
     const chainList = newAllCustomChains.map((chain) => `&chainId=${chain.id}`);
@@ -134,42 +137,33 @@ export const tokenAtom = atom((get) => {
 
 export const updateTokenListAtom = atom((get): { tokensList: IToken[] } => {
   const tokens: ITokenResponse[] = get(getAllTokens);
-  const balances: ITokenResponse[] = get(getUserBalances);
-
-  const convertedBalances: IToken[] = [];
-
-  Object.keys(balances).forEach((key: string) => {
-    // convertedBalances.push(balances[Number(key)]);
-    // value.foreach((balance:ITokenResponse) => {
-    //     console.log(balance)
-    // })
-    // convertedBalances.push()
-
-    // [...hello, Object.values(balances[Number(key)]!)] as IToken[];
-  });
-
-  console.log(convertedBalances.flat());
-
+  const balances: IChainResponse[] = get(getUserBalances);
   return {
-    tokensList: Object.values(
-      updateTokenList(tokens, balances)
-    ) as unknown as IToken[],
+    tokensList: sortUpdateTokenList(
+      Object.values(updateTokenList(tokens, updateBalance(balances)))
+    ),
   };
 });
 
 const updateTokenList = (
   tokenList: ITokenResponse[],
   balances: ITokenResponse[]
-): ITokenResponse[] => {
-  return Object.assign(tokenList, balances);
+): IToken[] => {
+  return Object.assign(tokenList, balances) as unknown as IToken[];
 };
 
-const updateBalance = (balances: ITokenResponse[]): ITokenResponse[] => {
-  return Object.assign(balances);
+const updateBalance = (balances: IChainResponse[]): ITokenResponse[] => {
+  const flatBalances: ITokenResponse[] = Object();
+  Object.values(balances).forEach((chainBalance: any) => {
+    Object.keys(chainBalance).map((key: string) => {
+      flatBalances[Number(key)] = chainBalance[Number(key)];
+    });
+  });
+  return flatBalances;
 };
 
 const sortUpdateTokenList = (tokenList: IToken[]): IToken[] =>
   tokenList.sort(
     (tokenA: IToken, tokenB: IToken) =>
-      Number(tokenA.balance) - Number(tokenB.balance)
+      Number(tokenB.balance) - Number(tokenA.balance)
   );

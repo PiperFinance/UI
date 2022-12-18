@@ -28,7 +28,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className="h-screen w-fit bg-gray-50 dark:bg-gray-122"
+      className="h-screen w-fit bg-gray-122"
       aria-label="Sidebar"
     >
       <div className="h-full overflow-y-auto  py-4 px-4 ">
