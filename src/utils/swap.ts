@@ -1,21 +1,22 @@
-import LIFI, { Route as lifiRoute } from "@lifi/sdk";
+import LIFI, { Route as lifiRoute, LifiStep, Step } from "@lifi/sdk";
 
-import { Path, Route as socketRoute, Socket } from "@socket.tech/socket-v2-sdk";
 import { ITokenDetail, ITokenDetailDefault } from "@store/store";
 import {
   EvmTransaction,
   MetaResponse,
+  QuotePath,
   QuoteSimulationResult,
   RangoClient,
   SwapFee,
 } from "rango-sdk-basic";
+import { SwapExactIn, Symbiosis, Token, TokenAmount } from "symbiosis-js-sdk";
 import { calculateNumberDecimal } from "./bignumber";
 import {
   checkApprovalSync,
   prepareEvmTransaction,
 } from "./prepareEvmTransaction";
 
-export type TSelectedRoute = lifiRoute | socketRoute | QuoteSimulationResult;
+export type TSelectedRoute = lifiRoute | SwapExactIn | QuoteSimulationResult;
 
 export interface IRouteInfoPathTool {
   title: string;
@@ -25,7 +26,7 @@ export interface IRouteInfoPathTool {
 export interface IRouteInfoPath {
   fromToken: ITokenDetailDefault;
   toToken: ITokenDetailDefault;
-  tool: IRouteInfoPathTool[];
+  tool: IRouteInfoPathTool;
   type: string;
 }
 
@@ -38,7 +39,7 @@ export interface IRouteRequest {
 
 export interface IFoundedRoutes {
   lifi: lifiRoute[];
-  socket: socketRoute | undefined;
+  symbiosis: SwapExactIn | undefined;
   rango: QuoteSimulationResult | null;
 }
 
@@ -48,33 +49,31 @@ export interface IRouteInfo {
   totalGasFee: string;
   estimateTime: number;
   response: TSelectedRoute;
-  // path: IRouteInfoPath[];
+  path?: IRouteInfoPath[];
   type: string;
 }
 
 enum RouteType {
   Rango,
   Lifi,
-  Socket,
+  Symbiosis,
 }
 
 export default class swap {
   private Lifi: LIFI;
-  private Socket: Socket;
   private Rango: RangoClient;
+  private symbiosis: Symbiosis;
   private rangoMetaData: MetaResponse | undefined;
   constructor() {
     this.Lifi = new LIFI();
-    this.Socket = new Socket({
-      apiKey: "ccc09760-55ac-4072-9875-6e51f496f7c5",
-    });
     this.Rango = new RangoClient("a43dfccc-bb38-48f7-9ac9-5b928df2ecc0");
+    this.symbiosis = new Symbiosis("mainnet", "piper.finance");
   }
 
   public getRoutes(data: IRouteRequest): Promise<IRouteInfo[]> {
     return Promise.all([
       this.getLifiRoutes(data),
-      this.getSocketRoutes(data),
+      this.getSymbiosisRoutes(data),
       this.getRangoRoutes(data),
       this.Rango.meta(),
     ]).then((routes) => {
@@ -82,7 +81,7 @@ export default class swap {
       return this.handleConvertRoutes(
         {
           lifi: routes[0],
-          socket: routes[1],
+          symbiosis: routes[1],
           rango: routes[2],
         },
         data
@@ -108,19 +107,61 @@ export default class swap {
     return lifiResult.routes;
   }
 
-  private async getSocketRoutes(
+  private async getSymbiosisRoutes(
     data: IRouteRequest
-  ): Promise<socketRoute | undefined> {
-    const path = new Path({
-      fromToken: data.fromToken,
-      toToken: data.toToken,
-    });
-    const routes = await this.Socket.getBestQuote({
-      path,
-      amount: data.amount,
-      address: data.address,
-    });
-    return routes?.route;
+  ): Promise<SwapExactIn | undefined> {
+    const { address, amount, fromToken, toToken } = data;
+    try {
+      const tokenIn = new Token({
+        chainId: fromToken.chainId,
+        address:
+          fromToken.address.toLowerCase() ===
+          "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE".toLowerCase()
+            ? ""
+            : fromToken.address,
+        name: fromToken.name,
+        isNative:
+          fromToken.address.toLowerCase() ===
+          "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE".toLowerCase()
+            ? true
+            : false,
+        symbol: fromToken.symbol,
+        decimals: fromToken.decimals,
+      });
+
+      const tokenAmountIn = new TokenAmount(tokenIn, amount);
+
+      const tokenOut = new Token({
+        chainId: toToken.chainId,
+        address:
+          toToken.address.toLowerCase() ===
+          "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE".toLowerCase()
+            ? ""
+            : toToken.address,
+        name: toToken.name,
+        isNative:
+          toToken.address.toLowerCase() ===
+          "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE".toLowerCase()
+            ? true
+            : false,
+        symbol: toToken.symbol,
+        decimals: toToken.decimals,
+      });
+
+      const swapping = this.symbiosis.newSwapping();
+      const routes = await swapping.exactIn(
+        tokenAmountIn,
+        tokenOut,
+        address,
+        address,
+        address,
+        300,
+        Date.now() + 20 * 60
+      );
+
+      console.log(routes);
+      return routes;
+    } catch (e) {}
   }
 
   private async getRangoRoutes(
@@ -164,9 +205,9 @@ export default class swap {
         parsedRoutes.push(this.showRoutesInfo(route, RouteType.Lifi, swapData))
       );
 
-    if (routes?.socket)
+    if (routes?.symbiosis)
       parsedRoutes.push(
-        this.showRoutesInfo(routes?.socket!, RouteType.Socket, swapData)
+        this.showRoutesInfo(routes?.symbiosis, RouteType.Symbiosis, swapData)
       );
 
     if (routes?.rango)
@@ -184,21 +225,12 @@ export default class swap {
   ): IRouteInfo {
     switch (type) {
       case RouteType.Rango:
-        return new ConvertRangoRoute(
-          route as QuoteSimulationResult,
-          swapData,
-          this.Rango,
-          this.rangoMetaData!
-        )._ROUTE;
-      case RouteType.Lifi:
-        return new ConvertLifiRoute(route as lifiRoute, swapData, this.Lifi)
+        return new ConvertRangoRoute(route as QuoteSimulationResult, swapData)
           ._ROUTE;
-      case RouteType.Socket:
-        return new ConvertSocketRoute(
-          route as socketRoute,
-          swapData,
-          this.Socket
-        )._ROUTE;
+      case RouteType.Lifi:
+        return new ConvertLifiRoute(route as lifiRoute, swapData)._ROUTE;
+      case RouteType.Symbiosis:
+        return new ConvertSymbiosisRoute(route as SwapExactIn, swapData)._ROUTE;
     }
   }
 
@@ -250,37 +282,12 @@ export default class swap {
     const finalTx = prepareEvmTransaction(evmTransaction, false);
     await signer.sendTransaction(finalTx);
   };
-
-  public executeSocketSwap = async (signer: any, data: IRouteRequest) => {
-    if (!data) return;
-    const path = new Path({
-      fromToken: data.fromToken,
-      toToken: data.toToken,
-    });
-    const { amount, address } = data;
-    const quote = await this.Socket.getBestQuote({ path, amount, address });
-    if (!quote) return;
-    const execute = await this.Socket.start(quote);
-    let next = await execute.next();
-    while (!next.done && next.value) {
-      const tx = next.value;
-      const approvalTxData = await tx.getApproveTransaction();
-      if (approvalTxData) {
-        const approvalTx = await signer.sendTransaction(approvalTxData);
-        await approvalTx.wait();
-      }
-      const sendTxData = await tx.getSendTransaction();
-      const sendTx = await signer.sendTransaction(sendTxData);
-      await sendTx.wait();
-      next = await execute.next(sendTx.hash);
-    }
-  };
 }
 
 class ConvertLifiRoute {
   _ROUTE: IRouteInfo;
 
-  constructor(route: lifiRoute, swapData: IRouteRequest, sdk: LIFI) {
+  constructor(route: lifiRoute, swapData: IRouteRequest) {
     this._ROUTE = {
       amountOut: calculateNumberDecimal(
         route.toAmount,
@@ -290,36 +297,60 @@ class ConvertLifiRoute {
       totalGasFee: String(route.gasCostUSD),
       estimateTime: Number(route.steps[0]?.estimate.executionDuration),
       response: route,
+      path: this.getPath(route),
       type: "lifiRoute",
     };
   }
-}
 
-class ConvertSocketRoute {
-  _ROUTE: IRouteInfo;
-  constructor(route: socketRoute, swapData: IRouteRequest, sdk: Socket) {
-    this._ROUTE = {
-      amountOut: calculateNumberDecimal(
-        route.toAmount,
-        swapData.toToken.decimals
-      ),
-      amountOutValue: (route as any).receivedValueInUsd,
-      totalGasFee: String(route.totalGasFeesInUsd),
-      estimateTime: Number(route.serviceTime),
-      response: route,
-      type: "socketRoute",
-    };
+  private getPath(route: lifiRoute): IRouteInfoPath[] {
+    return (route.steps[0] as LifiStep).includedSteps.map((step: Step) => {
+      return {
+        fromToken: step.action.fromToken,
+        toToken: step.action.toToken,
+        tool: {
+          title: step.toolDetails.name,
+          logo: step.toolDetails.logoURI,
+        },
+        type: step.type,
+      };
+    });
   }
 }
 
+
+class ConvertSymbiosisRoute {
+  _ROUTE: IRouteInfo;
+
+  constructor(route: SwapExactIn, swapData: IRouteRequest) {
+    this._ROUTE = {
+      amountOut: "",
+      amountOutValue: "",
+      totalGasFee: "",
+      estimateTime: 0,
+      response: route,
+      type: "SwapExactIn",
+    };
+  }
+
+  // private getPath(route: SwapExactIn): IRouteInfoPath[] {
+  //   return (route.steps[0] as LifiStep).includedSteps.map((step: Step) => {
+  //     return {
+  //       fromToken: step.action.fromToken,
+  //       toToken: step.action.toToken,
+  //       tool: {
+  //         title: step.toolDetails.name,
+  //         logo: step.toolDetails.logoURI,
+  //       },
+  //       type: "lifiStep",
+  //     };
+  //   });
+  // }
+}
+
+
 class ConvertRangoRoute {
   _ROUTE: IRouteInfo;
-  constructor(
-    route: QuoteSimulationResult,
-    swapData: IRouteRequest,
-    sdk: RangoClient,
-    rangoMetaData: MetaResponse
-  ) {
+  constructor(route: QuoteSimulationResult, swapData: IRouteRequest) {
     this._ROUTE = {
       amountOut: calculateNumberDecimal(
         route.outputAmount,
@@ -328,9 +359,38 @@ class ConvertRangoRoute {
       amountOutValue: route.outputAmount,
       totalGasFee: String(this.calcFeeRango(route.fee)),
       estimateTime: route.estimatedTimeInSeconds,
-      response: route as QuoteSimulationResult,
+      response: route,
+      path: this.getPath(route),
       type: "QuoteSimulationResult",
     };
+  }
+
+  private getPath(route: QuoteSimulationResult): IRouteInfoPath[] | undefined {
+    return route.path?.map((step: QuotePath) => {
+      return {
+        fromToken: {
+          address: step.from.address!,
+          decimals: step.from.decimals,
+          name: step.from.name,
+          symbol: step.from.symbol,
+          logoURI: step.from.image,
+          chainId: -1,
+        },
+        toToken: {
+          address: step.to.address!,
+          decimals: step.to.decimals,
+          name: step.to.name,
+          symbol: step.to.symbol,
+          logoURI: step.to.image,
+          chainId: -1,
+        },
+        tool: {
+          title: step.swapper.title,
+          logo: step.swapper.logo,
+        },
+        type: "rangoStep",
+      };
+    });
   }
 
   private calcFeeRango = (fees: SwapFee[]): number => {

@@ -99,7 +99,6 @@ export const [getAllTokens] = atomsWithQuery<ITokenResponse[]>(() => ({
   },
 }));
 
-
 export const searchAtom = atom<string>("");
 
 export const chainFilterAtom = atom((get) => {
@@ -142,11 +141,15 @@ const updateTokenList = (
 
 export const updateBalance = (balances: IChainResponse[]): ITokenResponse[] => {
   const flatBalances: ITokenResponse[] = [];
-  Object.values(balances).forEach((chainBalance: any) => {
-    Object.keys(chainBalance).map((key: string) => {
-      flatBalances[Number(key)] = chainBalance[Number(key)];
+  try {
+    Object.values(balances).forEach((chainBalance: any) => {
+      Object.keys(chainBalance).map((key: string) => {
+        flatBalances[Number(key)] = chainBalance[Number(key)];
+      });
     });
-  });
+  } catch (e) {
+    console.log(e);
+  }
   return flatBalances;
 };
 
