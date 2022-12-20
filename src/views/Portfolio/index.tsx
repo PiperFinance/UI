@@ -16,8 +16,8 @@ export default function Portfolio() {
 
   const tabs: string[] = [
     "Tokens",
-    "NFTs",
     "Liquidities",
+    "NFTs",
     "Transactions",
   ];
 
@@ -99,10 +99,6 @@ export default function Portfolio() {
             </Tab.List>
             <Tab.Panels>
               <Tab.Panel>
-                <TokenTable />
-              </Tab.Panel>
-              <Tab.Panel>
-                {/* <Table data={balances} rowsPerPage={5} /> */}
                 <TokenTable />
               </Tab.Panel>
               <Tab.Panel>

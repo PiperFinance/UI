@@ -10,7 +10,7 @@ export default function ToastContainer() {
       containerStyle={{}}
       toastOptions={{
         className: "",
-        duration: 500000,
+        duration: 5000,
       }}
     />
   );

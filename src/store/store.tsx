@@ -87,7 +87,7 @@ export const destinationToken = atomWithStorage<IToken | undefined>(
 export const selectedChains = atom<IChain[]>(newAllCustomChains);
 
 export const allTokens = atom<IToken[]>([]);
-export const balancesList = atom<ITokenResponse[]>([]);
+export const balancesList = atom<IChainResponse[]>([]);
 
 export const [getAllTokens] = atomsWithQuery<ITokenResponse[]>(() => ({
   queryKey: ["allTokens"],
@@ -99,18 +99,6 @@ export const [getAllTokens] = atomsWithQuery<ITokenResponse[]>(() => ({
   },
 }));
 
-export const [getUserBalances] = atomsWithQuery<IChainResponse[]>(() => ({
-  queryKey: ["userBalance"],
-  queryFn: async () => {
-    const chainList = newAllCustomChains.map((chain) => `&chainId=${chain.id}`);
-    const res = await fetch(
-      `${baseURL}tokens/balance?wallet=0xB49F17514D6F340d7bcdFfC47526C9A3713697e0${chainList.join(
-        ""
-      )}`
-    );
-    return res.ok ? res.json() : [];
-  },
-}));
 
 export const searchAtom = atom<string>("");
 
@@ -137,7 +125,7 @@ export const tokenAtom = atom((get) => {
 
 export const updateTokenListAtom = atom((get): { tokensList: IToken[] } => {
   const tokens: ITokenResponse[] = get(getAllTokens);
-  const balances: IChainResponse[] = get(getUserBalances);
+  const balances: IChainResponse[] = get(balancesList);
   return {
     tokensList: sortUpdateTokenList(
       Object.values(updateTokenList(tokens, updateBalance(balances)))
@@ -152,8 +140,8 @@ const updateTokenList = (
   return Object.assign(tokenList, balances) as unknown as IToken[];
 };
 
-const updateBalance = (balances: IChainResponse[]): ITokenResponse[] => {
-  const flatBalances: ITokenResponse[] = Object();
+export const updateBalance = (balances: IChainResponse[]): ITokenResponse[] => {
+  const flatBalances: ITokenResponse[] = [];
   Object.values(balances).forEach((chainBalance: any) => {
     Object.keys(chainBalance).map((key: string) => {
       flatBalances[Number(key)] = chainBalance[Number(key)];
