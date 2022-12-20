@@ -114,7 +114,6 @@ export default function Swap() {
       address: address,
     });
   };
-
   const execute = (selectedRoute: IRouteInfo | undefined) => {
     if (
       !selectedRoute ||
@@ -251,7 +250,7 @@ export default function Swap() {
               onClick={() =>
                 chain?.id !== fromToken?.detail.chainId
                   ? handleSwitchNetwork()
-                  : execute(selectedRoute)
+                  : execute(selectedRoute!)
               }
               width="half"
             >

@@ -27,6 +27,7 @@ export default function TableFooter({
     }
   }, [slice, page, setPage]);
 
+
   return (
     <Container>
       <Flex

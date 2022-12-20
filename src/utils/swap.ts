@@ -15,6 +15,8 @@ import {
   prepareEvmTransaction,
 } from "./prepareEvmTransaction";
 
+export type TSelectedRoute = lifiRoute | socketRoute | QuoteSimulationResult;
+
 export interface IRouteInfoPathTool {
   title: string;
   logo?: string;
@@ -55,8 +57,6 @@ enum RouteType {
   Lifi,
   Socket,
 }
-
-export type TSelectedRoute = lifiRoute | socketRoute | QuoteSimulationResult;
 
 export default class swap {
   private Lifi: LIFI;
@@ -184,61 +184,23 @@ export default class swap {
   ): IRouteInfo {
     switch (type) {
       case RouteType.Rango:
-        return {
-          amountOut: calculateNumberDecimal(
-            (route as QuoteSimulationResult).outputAmount,
-            swapData.toToken.decimals
-          ),
-          amountOutValue: (route as QuoteSimulationResult).outputAmount,
-          totalGasFee: String(
-            this.calcFeeRango((route as QuoteSimulationResult).fee)
-          ),
-          estimateTime: (route as QuoteSimulationResult).estimatedTimeInSeconds,
-          response: route as QuoteSimulationResult,
-          type: "QuoteSimulationResult",
-        };
-
+        return new ConvertRangoRoute(
+          route as QuoteSimulationResult,
+          swapData,
+          this.Rango,
+          this.rangoMetaData!
+        )._ROUTE;
       case RouteType.Lifi:
-        return {
-          amountOut: calculateNumberDecimal(
-            (route as lifiRoute).toAmount,
-            swapData.toToken.decimals
-          ),
-          amountOutValue: (route as lifiRoute).toAmountUSD,
-          totalGasFee: String((route as lifiRoute).gasCostUSD),
-          estimateTime: Number(
-            (route as lifiRoute).steps[0]?.estimate.executionDuration
-          ),
-          response: route as lifiRoute,
-          type: "lifiRoute",
-        };
+        return new ConvertLifiRoute(route as lifiRoute, swapData, this.Lifi)
+          ._ROUTE;
       case RouteType.Socket:
-        return {
-          amountOut: calculateNumberDecimal(
-            (route as socketRoute).toAmount,
-            swapData.toToken.decimals
-          ),
-          amountOutValue: (route as any).receivedValueInUsd,
-          totalGasFee: String((route as socketRoute).totalGasFeesInUsd),
-          estimateTime: (route as socketRoute).serviceTime,
-          response: route as socketRoute,
-          type: "socketRoute",
-        };
+        return new ConvertSocketRoute(
+          route as socketRoute,
+          swapData,
+          this.Socket
+        )._ROUTE;
     }
   }
-
-  private calcFeeRango = (fees: SwapFee[]): number => {
-    let totalFee: number = 0;
-    fees.map((fee: SwapFee) => {
-      totalFee =
-        totalFee +
-        Number(calculateNumberDecimal(fee.amount, fee.token.decimals)) *
-          //@ts-ignore
-          fee.token.usdPrice;
-    });
-
-    return totalFee;
-  };
 
   public executeLifiSwap = async (signer: any, route: lifiRoute) => {
     if (!route || !signer) return;
@@ -313,12 +275,74 @@ export default class swap {
       next = await execute.next(sendTx.hash);
     }
   };
+}
 
+class ConvertLifiRoute {
+  _ROUTE: IRouteInfo;
 
+  constructor(route: lifiRoute, swapData: IRouteRequest, sdk: LIFI) {
+    this._ROUTE = {
+      amountOut: calculateNumberDecimal(
+        route.toAmount,
+        swapData.toToken.decimals
+      ),
+      amountOutValue: route.toAmountUSD,
+      totalGasFee: String(route.gasCostUSD),
+      estimateTime: Number(route.steps[0]?.estimate.executionDuration),
+      response: route,
+      type: "lifiRoute",
+    };
+  }
+}
 
+class ConvertSocketRoute {
+  _ROUTE: IRouteInfo;
+  constructor(route: socketRoute, swapData: IRouteRequest, sdk: Socket) {
+    this._ROUTE = {
+      amountOut: calculateNumberDecimal(
+        route.toAmount,
+        swapData.toToken.decimals
+      ),
+      amountOutValue: (route as any).receivedValueInUsd,
+      totalGasFee: String(route.totalGasFeesInUsd),
+      estimateTime: Number(route.serviceTime),
+      response: route,
+      type: "socketRoute",
+    };
+  }
+}
 
-  private extractPath = (path: lifiRoute[]) => {
-      
+class ConvertRangoRoute {
+  _ROUTE: IRouteInfo;
+  constructor(
+    route: QuoteSimulationResult,
+    swapData: IRouteRequest,
+    sdk: RangoClient,
+    rangoMetaData: MetaResponse
+  ) {
+    this._ROUTE = {
+      amountOut: calculateNumberDecimal(
+        route.outputAmount,
+        swapData.toToken.decimals
+      ),
+      amountOutValue: route.outputAmount,
+      totalGasFee: String(this.calcFeeRango(route.fee)),
+      estimateTime: route.estimatedTimeInSeconds,
+      response: route as QuoteSimulationResult,
+      type: "QuoteSimulationResult",
+    };
+  }
+
+  private calcFeeRango = (fees: SwapFee[]): number => {
+    let totalFee: number = 0;
+    fees.map((fee: SwapFee) => {
+      totalFee =
+        totalFee +
+        Number(calculateNumberDecimal(fee.amount, fee.token.decimals)) *
+          //@ts-ignore
+          fee.token.usdPrice;
+    });
+
+    return totalFee;
   };
-
 }

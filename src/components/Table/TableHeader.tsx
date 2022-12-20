@@ -14,11 +14,6 @@ export default function TableHeader({ titleList }: ITableHeader) {
         {titleList.map((title: string) => (
           <th key={title} className="p-4">{title}</th>
         ))}
-        {/* <th className="p-4">Token</th>
-        <th className="p-4">Networks</th>
-        <th className="p-4">Price</th>
-        <th className="p-4">Balance</th>
-        <th></th> */}
       </tr>
     </thead>
   );
