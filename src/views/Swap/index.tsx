@@ -156,22 +156,6 @@ export default function Swap() {
             setIsLoading(false);
           });
         break;
-
-      case "socketRoute":
-        handleSwap
-          .executeSocketSwap(signer, {
-            fromToken: fromToken.detail!,
-            toToken: toToken.detail!,
-            amount: convertedAmountIn,
-            address: address,
-          })
-          .then((res) => {
-            setIsLoading(false);
-          })
-          .catch((e) => {
-            setIsLoading(false);
-          });
-        break;
     }
   };
 
@@ -224,7 +208,7 @@ export default function Swap() {
                   isPlaying={
                     !amount || !fromToken || !toToken || !address ? false : true
                   }
-                  duration={60}
+                  duration={1000000}
                   colors="#aaa"
                   size={15}
                   trailColor="rgba(0,0,0,0)"

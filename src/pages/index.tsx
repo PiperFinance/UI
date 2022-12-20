@@ -10,17 +10,17 @@ export default function Home() {
   return <Portfolio />;
 }
 
-export async function getServerSideProps() {
-  const queryClient = new QueryClient();
+// export async function getServerSideProps() {
+//   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
-    queryKey: ["userBalances"],
-    queryFn: () => fetchUserBalances(),
-  });
+//   await queryClient.prefetchQuery({
+//     queryKey: ["userBalances"],
+//     queryFn: () => fetchUserBalances(),
+//   });
 
-  return {
-    props: {
-      balances: dehydrate(queryClient),
-    },
-  };
-}
+//   return {
+//     props: {
+//       balances: dehydrate(queryClient),
+//     },
+//   };
+// }
