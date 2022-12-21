@@ -47,7 +47,7 @@ export interface IRouteRequest {
 }
 
 export interface IFoundedRoutes {
-  lifi: lifiRoute[];
+  lifi: lifiRoute[] | undefined;
   symbiosis: ISwapExactInSymbiosis | undefined;
   rango: QuoteSimulationResult | null;
 }
@@ -97,7 +97,6 @@ export default class swap {
       this.getRangoRoutes(data),
       this.Rango.meta(),
     ]).then((routes) => {
-      console.log(routes);
       this.rangoMetaData = routes[3];
       return this.handleConvertRoutes(
         {
@@ -110,22 +109,27 @@ export default class swap {
     });
   }
 
-  private async getLifiRoutes(data: IRouteRequest): Promise<lifiRoute[]> {
+  private async getLifiRoutes(
+    data: IRouteRequest
+  ): Promise<lifiRoute[] | undefined> {
     const { amount, fromToken, toToken } = data;
+    try {
+      const lifiResult = await this.Lifi.getRoutes({
+        fromChainId: fromToken.chainId,
+        fromTokenAddress: fromToken.address,
+        toChainId: toToken.chainId,
+        toTokenAddress: toToken.address,
+        fromAmount: amount,
+        options: {
+          slippage: 3 / 100,
+          order: "RECOMMENDED",
+        },
+      });
 
-    const lifiResult = await this.Lifi.getRoutes({
-      fromChainId: fromToken.chainId,
-      fromTokenAddress: fromToken.address,
-      toChainId: toToken.chainId,
-      toTokenAddress: toToken.address,
-      fromAmount: amount,
-      options: {
-        slippage: 3 / 100,
-        order: "RECOMMENDED",
-      },
-    });
-
-    return lifiResult.routes;
+      return lifiResult.routes;
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   private async getSymbiosisRoutes(
@@ -181,7 +185,6 @@ export default class swap {
         Date.now() + 20 * 60
       );
 
-      console.log(routes);
       return routes;
     } catch (err) {}
   }
@@ -359,15 +362,17 @@ class ConvertSymbiosisRoute {
   }
 
   private getPath(swapData: IRouteRequest): IRouteInfoPath[] {
-      return [{
+    return [
+      {
         fromToken: swapData.fromToken as unknown as ITokenDetailDefault,
         toToken: swapData.toToken as unknown as ITokenDetailDefault,
         tool: {
-          title:"Symbiosis",
-          logo: "https://app.symbiosis.finance/9cde72ed4852592a6aec.png"
+          title: "Symbiosis",
+          logo: "https://app.symbiosis.finance/9cde72ed4852592a6aec.png",
         },
         type: "swap",
-      }];
+      },
+    ];
   }
 }
 

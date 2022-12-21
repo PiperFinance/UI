@@ -31,7 +31,7 @@ export interface ITokenDetailDefault {
 export interface ITokenDetail extends ITokenDetailDefault {
   coingeckoId?: string;
   tags?: string[];
-  lifiId: string | null;
+  lifiId?: string | null;
   listedIn: string[];
   verify: boolean;
   related?: IToken[];
