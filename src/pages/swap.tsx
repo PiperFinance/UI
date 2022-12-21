@@ -16,17 +16,17 @@ export default function SwapPage() {
   return <Swap />;
 }
 
-// export async function getServerSideProps() {
-//   const queryClient = new QueryClient();
+export async function getStaticProps() {
+  const queryClient = new QueryClient();
 
-//   await queryClient.prefetchQuery({
-//     queryKey: ["userBalances"],
-//     queryFn: () => fetchUserBalances(),
-//   });
+  await queryClient.prefetchQuery({
+    queryKey: ["userBalances"],
+    queryFn: () => fetchUserBalances(),
+  });
 
-//   return {
-//     props: {
-//       balances: dehydrate(queryClient),
-//     },
-//   };
-// }
+  return {
+    props: {
+      balances: dehydrate(queryClient),
+    },
+  };
+}

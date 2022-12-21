@@ -9,8 +9,6 @@ const flexStyle = cva("flex", {
       basis32: "basis-32",
       fit: "w-auto",
       half: "w-1/2",
-      30: "w-[30%]",
-      66: "w-2/3",
       full: "w-full",
     },
     direction: {
