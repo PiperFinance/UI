@@ -13,7 +13,7 @@ const Token = z.object({
   logoURI: z.string().optional(),
   coingeckoId: z.string().optional(),
   tags: z.string().array().optional(),
-  lifiId: z.nullable(z.string()),
+  lifiId: z.nullable(z.string()).optional(),
   listedIn: z.string().array(),
   verify: z.boolean(),
   related: z.any().array().optional(),
