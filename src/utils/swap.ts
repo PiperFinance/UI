@@ -1,6 +1,7 @@
 import LIFI, { Route as lifiRoute, LifiStep, Step } from "@lifi/sdk";
 
 import { ITokenDetail, ITokenDetailDefault } from "@store/store";
+import { Signer } from "ethers";
 import {
   EvmTransaction,
   MetaResponse,
@@ -9,14 +10,22 @@ import {
   RangoClient,
   SwapFee,
 } from "rango-sdk-basic";
-import { SwapExactIn, Symbiosis, Token, TokenAmount } from "symbiosis-js-sdk";
+import {
+  Execute,
+  Percent,
+  Symbiosis,
+  Token,
+  TokenAmount,
+} from "symbiosis-js-sdk";
 import { calculateNumberDecimal } from "./bignumber";
 import {
   checkApprovalSync,
   prepareEvmTransaction,
 } from "./prepareEvmTransaction";
-
-export type TSelectedRoute = lifiRoute | SwapExactIn | QuoteSimulationResult;
+export type TSelectedRoute =
+  | lifiRoute
+  | ISwapExactInSymbiosis
+  | QuoteSimulationResult;
 
 export interface IRouteInfoPathTool {
   title: string;
@@ -26,7 +35,7 @@ export interface IRouteInfoPathTool {
 export interface IRouteInfoPath {
   fromToken: ITokenDetailDefault;
   toToken: ITokenDetailDefault;
-  tool: IRouteInfoPathTool;
+  tool?: IRouteInfoPathTool;
   type: string;
 }
 
@@ -39,7 +48,7 @@ export interface IRouteRequest {
 
 export interface IFoundedRoutes {
   lifi: lifiRoute[];
-  symbiosis: SwapExactIn | undefined;
+  symbiosis: ISwapExactInSymbiosis | undefined;
   rango: QuoteSimulationResult | null;
 }
 
@@ -51,6 +60,17 @@ export interface IRouteInfo {
   response: TSelectedRoute;
   path?: IRouteInfoPath[];
   type: string;
+}
+
+export interface ISwapExactInSymbiosis {
+  execute: (signer: Signer) => Execute;
+  fee: TokenAmount;
+  tokenAmountOut: TokenAmount;
+  tokenAmountOutWithZeroFee: TokenAmount;
+  route: Token[];
+  priceImpact: Percent;
+  amountInUsd: TokenAmount;
+  approveTo: string;
 }
 
 enum RouteType {
@@ -77,6 +97,7 @@ export default class swap {
       this.getRangoRoutes(data),
       this.Rango.meta(),
     ]).then((routes) => {
+      console.log(routes);
       this.rangoMetaData = routes[3];
       return this.handleConvertRoutes(
         {
@@ -109,46 +130,47 @@ export default class swap {
 
   private async getSymbiosisRoutes(
     data: IRouteRequest
-  ): Promise<SwapExactIn | undefined> {
+  ): Promise<ISwapExactInSymbiosis | undefined> {
     const { address, amount, fromToken, toToken } = data;
+    const tokenIn = new Token({
+      chainId: fromToken.chainId,
+      address:
+        fromToken.address.toLowerCase() ===
+        "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE".toLowerCase()
+          ? ""
+          : fromToken.address,
+      name: fromToken.name,
+      isNative:
+        fromToken.address.toLowerCase() ===
+        "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE".toLowerCase()
+          ? true
+          : false,
+      symbol: fromToken.symbol,
+      decimals: fromToken.decimals,
+    });
+
+    const tokenAmountIn = new TokenAmount(tokenIn, amount);
+
+    const tokenOut = new Token({
+      chainId: toToken.chainId,
+      address:
+        toToken.address.toLowerCase() ===
+        "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE".toLowerCase()
+          ? ""
+          : toToken.address,
+      name: toToken.name,
+      isNative:
+        toToken.address.toLowerCase() ===
+        "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE".toLowerCase()
+          ? true
+          : false,
+      symbol: toToken.symbol,
+      decimals: toToken.decimals,
+    });
+
+    const swapping = this.symbiosis.newSwapping();
+
     try {
-      const tokenIn = new Token({
-        chainId: fromToken.chainId,
-        address:
-          fromToken.address.toLowerCase() ===
-          "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE".toLowerCase()
-            ? ""
-            : fromToken.address,
-        name: fromToken.name,
-        isNative:
-          fromToken.address.toLowerCase() ===
-          "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE".toLowerCase()
-            ? true
-            : false,
-        symbol: fromToken.symbol,
-        decimals: fromToken.decimals,
-      });
-
-      const tokenAmountIn = new TokenAmount(tokenIn, amount);
-
-      const tokenOut = new Token({
-        chainId: toToken.chainId,
-        address:
-          toToken.address.toLowerCase() ===
-          "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE".toLowerCase()
-            ? ""
-            : toToken.address,
-        name: toToken.name,
-        isNative:
-          toToken.address.toLowerCase() ===
-          "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE".toLowerCase()
-            ? true
-            : false,
-        symbol: toToken.symbol,
-        decimals: toToken.decimals,
-      });
-
-      const swapping = this.symbiosis.newSwapping();
       const routes = await swapping.exactIn(
         tokenAmountIn,
         tokenOut,
@@ -161,7 +183,7 @@ export default class swap {
 
       console.log(routes);
       return routes;
-    } catch (e) {}
+    } catch (err) {}
   }
 
   private async getRangoRoutes(
@@ -230,7 +252,10 @@ export default class swap {
       case RouteType.Lifi:
         return new ConvertLifiRoute(route as lifiRoute, swapData)._ROUTE;
       case RouteType.Symbiosis:
-        return new ConvertSymbiosisRoute(route as SwapExactIn, swapData)._ROUTE;
+        return new ConvertSymbiosisRoute(
+          route as ISwapExactInSymbiosis,
+          swapData
+        )._ROUTE;
     }
   }
 
@@ -311,42 +336,40 @@ class ConvertLifiRoute {
           title: step.toolDetails.name,
           logo: step.toolDetails.logoURI,
         },
-        type: step.type,
+        type:
+          step.type === "cross" ? "bridge" : step.type === "swap" ? "swap" : "",
       };
     });
   }
 }
 
-
 class ConvertSymbiosisRoute {
   _ROUTE: IRouteInfo;
 
-  constructor(route: SwapExactIn, swapData: IRouteRequest) {
+  constructor(route: ISwapExactInSymbiosis, swapData: IRouteRequest) {
     this._ROUTE = {
-      amountOut: "",
-      amountOutValue: "",
-      totalGasFee: "",
+      amountOut: route.tokenAmountOut.toFixed(),
+      amountOutValue: route.amountInUsd.toFixed(2),
+      totalGasFee: route.fee.toFixed(),
       estimateTime: 0,
       response: route,
-      type: "SwapExactIn",
+      path: this.getPath(swapData),
+      type: "ISwapExactInSymbiosis",
     };
   }
 
-  // private getPath(route: SwapExactIn): IRouteInfoPath[] {
-  //   return (route.steps[0] as LifiStep).includedSteps.map((step: Step) => {
-  //     return {
-  //       fromToken: step.action.fromToken,
-  //       toToken: step.action.toToken,
-  //       tool: {
-  //         title: step.toolDetails.name,
-  //         logo: step.toolDetails.logoURI,
-  //       },
-  //       type: "lifiStep",
-  //     };
-  //   });
-  // }
+  private getPath(swapData: IRouteRequest): IRouteInfoPath[] {
+      return [{
+        fromToken: swapData.fromToken as unknown as ITokenDetailDefault,
+        toToken: swapData.toToken as unknown as ITokenDetailDefault,
+        tool: {
+          title:"Symbiosis",
+          logo: "https://app.symbiosis.finance/9cde72ed4852592a6aec.png"
+        },
+        type: "swap",
+      }];
+  }
 }
-
 
 class ConvertRangoRoute {
   _ROUTE: IRouteInfo;

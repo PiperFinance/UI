@@ -7,6 +7,7 @@ import Flex from "@ui/Flex/Flex";
 import { classNames } from "@utils/classNames";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import PairTokenTable from "./components/PairTokenTable";
 import TokenTable from "./components/TokenTable";
 
 export default function Portfolio() {
@@ -102,8 +103,7 @@ export default function Portfolio() {
                 <TokenTable />
               </Tab.Panel>
               <Tab.Panel>
-                {/* <Table data={nfts} rowsPerPage={5} /> */}
-                <TokenTable />
+                <PairTokenTable />
               </Tab.Panel>
               <Tab.Panel>
                 {/* <Table data={balances} rowsPerPage={5} /> */}

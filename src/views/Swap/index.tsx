@@ -208,7 +208,7 @@ export default function Swap() {
                   isPlaying={
                     !amount || !fromToken || !toToken || !address ? false : true
                   }
-                  duration={1000000}
+                  duration={60000}
                   colors="#aaa"
                   size={15}
                   trailColor="rgba(0,0,0,0)"

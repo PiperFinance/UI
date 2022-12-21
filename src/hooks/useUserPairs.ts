@@ -1,8 +1,8 @@
 import { newAllCustomChains } from "@constants/networkList";
 import { useQuery } from "@tanstack/react-query";
-export const baseURL = "https://ps.piper.finance/tokens/balance";
+export const baseURL = "https://ps.piper.finance/pairs/balance";
 
-const fetchUserBalances = async () => {
+const fetchUserPairBalances = async () => {
   const chainList = newAllCustomChains.map((chain) => `&chainId=${chain.id}`);
   const res = await fetch(
     `${baseURL}?wallet=0xB49F17514D6F340d7bcdFfC47526C9A3713697e0${chainList.join(
@@ -12,11 +12,11 @@ const fetchUserBalances = async () => {
   return res.ok ? res.json() : [];
 };
 
-const useUserBalances = () => {
+const useUserPairBalances = () => {
   return useQuery({
-    queryKey: ["userBalances"],
-    queryFn: () => fetchUserBalances(),
+    queryKey: ["userPairBalances"],
+    queryFn: () => fetchUserPairBalances(),
   });
 };
 
-export { useUserBalances, fetchUserBalances };
+export { useUserPairBalances, fetchUserPairBalances };

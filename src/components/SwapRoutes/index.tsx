@@ -61,12 +61,10 @@ export default function SwapRoute({
               {formatNumber(totalGasFee, 3)}
             </Badge>
           )}
-          {estimateTime && (
-            <Badge>
-              <ClockIcon className="h-4 w-4" />
-              {Math.round(estimateTime / 60)}
-            </Badge>
-          )}
+          <Badge>
+            <ClockIcon className="h-4 w-4" />
+            {estimateTime ? Math.round(estimateTime / 60) : "?"}
+          </Badge>
         </Flex>
         <ChevronRightIcon className="h-5 w-5" />
       </Flex>

@@ -116,8 +116,8 @@ export const tokenAtom = atom((get) => {
   const chianFilteredTokens: IToken[] = get(chainFilterAtom);
   return chianFilteredTokens.filter(
     (token: IToken) =>
-      token.detail?.name.toLowerCase() === search ||
-      token.detail?.symbol.toLowerCase() === search ||
+      token.detail?.name.toLowerCase().includes(search) ||
+      token.detail?.symbol.toLowerCase().includes(search) ||
       token.detail?.address.toLowerCase().includes(search)
   );
 });

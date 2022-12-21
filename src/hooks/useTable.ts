@@ -13,16 +13,12 @@ type TCalcRange = {
 };
 
 const calculateRange = ({ data, rowsPerPage }: TCalcRange): number[] => {
-  console.log({ data, rowsPerPage });
   const range = [];
   const num = Math.ceil(data.length / rowsPerPage);
-  console.log({ num });
-  let i = 1;
   for (let i = 1; i <= num; i++) {
     range.push(i);
   }
 
-  console.log({ range });
   return range;
 };
 

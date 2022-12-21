@@ -20,6 +20,7 @@ module.exports = {
           700: "#deb76e",
           800: "#d9ac59",
           900: "#d5a244",
+          122: "hsla(39,63%,65%,.2)",
         },
         primary: {
           50: "#e7eefe",
