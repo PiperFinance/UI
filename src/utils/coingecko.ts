@@ -3,17 +3,15 @@ import { CoinGeckoIds } from '@constants/coingeckoIds';
 
 const CoinGeckoClient = new CoinGecko();
 
-export const getTokenPrice = async (_coingeckoID: string) => {
+export const getTokenPrice = async (_tokenSymbol: string) => {
   try {
-    const tokenId =
-      CoinGeckoIds[_coingeckoID.toLowerCase() as keyof typeof CoinGeckoIds];
-
+    const tokenId = CoinGeckoIds.find((tokenDetail) => _tokenSymbol.toLowerCase() === tokenDetail.symbol.toLowerCase());
     const tokenPrice = await CoinGeckoClient.simple.price({
-      ids: [tokenId],
+      ids: [tokenId?.id!],
       vs_currencies: ['usd'],
     });
 
-    return tokenPrice.data[_coingeckoID].usd || 1;
+    return tokenPrice.data[tokenId?.id!].usd || 0;
   } catch (error) {
     console.error({ errorOnGetTokenPrice: error });
     return null;

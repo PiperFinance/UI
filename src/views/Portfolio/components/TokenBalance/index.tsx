@@ -3,16 +3,18 @@ import TableBody from "@components/Table/TableBody";
 import TableHeader from "@components/Table/TableHeader";
 import useTable from "@hooks/useTable";
 import { useUserBalances } from "@hooks/useUserBalances";
-import { updateBalance } from "@store/store";
+import { IChainResponse, ITokenResponse, updateBalance } from "@store/store";
 import Flex from "@ui/Flex/Flex";
 import { TableRowSkeleton } from "@ui/Skeleton";
 import { useState } from "react";
+import { TokenBalanceRow } from "./TokenBalanceRow";
+import { ITokenBalanceRow } from "./types";
 
-export default function TokenTable() {
+export default function TokenBalance() {
   const [page, setPage] = useState<number>(1);
   const { data, isLoading, isFetched } = useUserBalances();
   const { slice, range } = useTable({
-    data: !isFetched ? [] : Object.values(updateBalance(data)),
+    data: !isFetched ? [] : Object.entries(updateBalance<IChainResponse, ITokenResponse>(data)),
     page,
     rowsPerPage: 5,
     isFetched,
@@ -32,13 +34,17 @@ export default function TokenTable() {
     <Table
       page={page}
       range={range}
-      totalLength={!isLoading ? Object.values(updateBalance(data)).length : 0}
+      totalLength={!isLoading ? Object.values(updateBalance<IChainResponse, ITokenResponse>(data)).length : 0}
       rowsPerPage={5}
       slice={slice}
       setPage={setPage}
     >
-      <TableHeader titleList={["Token", "Networks", "Price", "Balance", ""]} />
-      <TableBody slicedList={slice} />
+      <TableHeader titleList={["Token", "Network", "Price", "Balance", ""]} />
+      <TableBody>
+        {slice.map((token: ITokenBalanceRow) => (
+          <TokenBalanceRow {...token} />
+        ))}
+      </TableBody>
     </Table>
   );
 }

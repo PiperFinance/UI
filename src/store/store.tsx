@@ -127,7 +127,12 @@ export const updateTokenListAtom = atom((get): { tokensList: IToken[] } => {
   const balances: IChainResponse[] = get(balancesList);
   return {
     tokensList: sortUpdateTokenList(
-      Object.values(updateTokenList(tokens, updateBalance(balances)))
+      Object.values(
+        updateTokenList(
+          tokens,
+          updateBalance<IChainResponse, ITokenResponse>(balances)
+        )
+      )
     ),
   };
 });
@@ -139,8 +144,8 @@ const updateTokenList = (
   return Object.assign(tokenList, balances) as unknown as IToken[];
 };
 
-export const updateBalance = (balances: IChainResponse[]): ITokenResponse[] => {
-  const flatBalances: ITokenResponse[] = [];
+export const updateBalance = <T, R>(balances: T[]): R[] => {
+  const flatBalances: R[] = [];
   try {
     Object.values(balances).forEach((chainBalance: any) => {
       Object.keys(chainBalance).map((key: string) => {

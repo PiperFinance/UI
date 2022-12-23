@@ -7,12 +7,16 @@ import { updateBalance } from "@store/store";
 import Flex from "@ui/Flex/Flex";
 import { TableRowSkeleton } from "@ui/Skeleton";
 import { useState } from "react";
+import { PairBalanceRow } from "./PairBalanceRow";
+import { IPair, IPairBalanceRow, IPairResponse } from "./types";
 
-export default function PairTokenTable() {
+export default function PairBalance() {
   const [page, setPage] = useState<number>(1);
   const { data, isLoading, isFetched } = useUserPairBalances();
   const { slice, range } = useTable({
-    data: !isFetched ? [] : Object.values(updateBalance(data)),
+    data: !isFetched
+      ? []
+      : Object.entries(updateBalance<IPairResponse, IPair>(data)),
     page,
     rowsPerPage: 5,
     isFetched,
@@ -32,13 +36,21 @@ export default function PairTokenTable() {
     <Table
       page={page}
       range={range}
-      totalLength={!isLoading ? Object.values(updateBalance(data)).length : 0}
+      totalLength={
+        !isLoading
+          ? Object.values(updateBalance<IPairResponse, IPair>(data)).length
+          : 0
+      }
       rowsPerPage={5}
       slice={slice}
       setPage={setPage}
     >
-      <TableHeader titleList={["Token", "Networks", "Price", "Balance", ""]} />
-      <TableBody slicedList={slice} />
+      <TableHeader titleList={["Token", "Networks", "Balance"]} />
+      <TableBody>
+        {slice.map((pair: IPairBalanceRow) => (
+          <PairBalanceRow {...pair} />
+        ))}
+      </TableBody>
     </Table>
   );
 }
