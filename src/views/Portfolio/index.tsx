@@ -1,5 +1,4 @@
 import RootLayout from "@components/layout/layout";
-import List from "@components/List/List";
 import { Tab } from "@headlessui/react";
 import useHasMounted from "@hooks/useHasMounted";
 import Container from "@ui/Container/Container";
@@ -7,20 +6,16 @@ import Flex from "@ui/Flex/Flex";
 import { classNames } from "@utils/classNames";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import PairTokenTable from "./components/PairTokenTable";
-import TokenTable from "./components/TokenTable";
+import PairTokenTable from "./components/PairBalance";
+import TokenBalance from "./components/TokenBalance";
+import TransactionHistory from "./components/TransactionHistory";
 
 export default function Portfolio() {
   const [tab, setTab] = useState<number>();
   const router = useRouter();
   const hasMounted = useHasMounted();
 
-  const tabs: string[] = [
-    "Tokens",
-    "Liquidities",
-    "NFTs",
-    "Transactions",
-  ];
+  const tabs: string[] = ["Tokens", "Liquidities", "NFTs", "Transactions"];
 
   useEffect(() => {
     tabs.find(
@@ -100,17 +95,17 @@ export default function Portfolio() {
             </Tab.List>
             <Tab.Panels>
               <Tab.Panel>
-                <TokenTable />
+                <TokenBalance />
               </Tab.Panel>
               <Tab.Panel>
                 <PairTokenTable />
               </Tab.Panel>
               <Tab.Panel>
                 {/* <Table data={balances} rowsPerPage={5} /> */}
-                <TokenTable />
+                <TokenBalance />
               </Tab.Panel>
               <Tab.Panel>
-                <List />
+                <TransactionHistory />
               </Tab.Panel>
             </Tab.Panels>
           </Tab.Group>

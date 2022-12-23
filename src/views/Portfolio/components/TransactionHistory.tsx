@@ -3,7 +3,7 @@ import Label from "@ui/Label/Label";
 import { stringToColor } from "@utils/stringToColor";
 import Image from "next/image";
 
-export default function List() {
+export default function TransactionHistory() {
   const labels = ["swap", "approve", "bridge", "deposit"];
 
   return (
