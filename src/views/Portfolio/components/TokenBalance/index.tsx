@@ -14,7 +14,7 @@ import { ITokenBalanceRow } from "./types";
 export default function TokenBalance() {
   const [page, setPage] = useState<number>(1);
   const { address } = useAccount();
-  const { data, isLoading, isFetched } = useUserBalances(String(address));
+  const { data, isLoading, isFetched } = useUserBalances(address ? String(address) : undefined);
   const { slice, range } = useTable({
     data: !isFetched
       ? []
