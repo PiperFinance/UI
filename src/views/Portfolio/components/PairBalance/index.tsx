@@ -14,7 +14,7 @@ import { IPair, IPairBalanceRow, IPairResponse } from "./types";
 export default function PairBalance() {
   const [page, setPage] = useState<number>(1);
   const { address } = useAccount();
-  const { data, isLoading, isFetched } = useUserPairBalances(String(address));
+  const { data, isLoading, isFetched } = useUserPairBalances(address ? String(address) : undefined);
   const { slice, range } = useTable({
     data: !isFetched
       ? []

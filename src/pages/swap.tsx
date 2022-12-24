@@ -11,7 +11,7 @@ export default function SwapPage() {
   const [, setTokens] = useAtom(allTokens);
   const [, setBalances] = useAtom(balancesList);
   const { address } = useAccount();
-  const { data } = useUserBalances(String(address));
+  const { data } = useUserBalances(address ? String(address) : undefined);
   const { tokensList } = useAtomValue(updateTokenListAtom);
   setBalances(data);
   setTokens(tokensList);

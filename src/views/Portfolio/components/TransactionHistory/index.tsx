@@ -1,9 +1,24 @@
+import { useSaveTransactions } from "@hooks/useUserTransactionHistory";
 import Flex from "@ui/Flex/Flex";
 import Label from "@ui/Label/Label";
 import { stringToColor } from "@utils/stringToColor";
 import Image from "next/image";
+import { useEffect } from "react";
+import { useAccount } from "wagmi";
 
 export default function TransactionHistory() {
+  const { address } = useAccount();
+
+  const { data, isLoading, mutate } = useSaveTransactions(
+    address ? String(address) : undefined
+  );
+
+  useEffect(() => {
+    mutate();
+  }, [address]);
+
+  console.log(data);
+
   const labels = ["swap", "approve", "bridge", "deposit"];
 
   return (
