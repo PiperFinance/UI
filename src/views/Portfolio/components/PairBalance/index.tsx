@@ -7,12 +7,14 @@ import { updateBalance } from "@store/store";
 import Flex from "@ui/Flex/Flex";
 import { TableRowSkeleton } from "@ui/Skeleton";
 import { useState } from "react";
+import { useAccount } from "wagmi";
 import { PairBalanceRow } from "./PairBalanceRow";
 import { IPair, IPairBalanceRow, IPairResponse } from "./types";
 
 export default function PairBalance() {
   const [page, setPage] = useState<number>(1);
-  const { data, isLoading, isFetched } = useUserPairBalances();
+  const { address } = useAccount();
+  const { data, isLoading, isFetched } = useUserPairBalances(String(address));
   const { slice, range } = useTable({
     data: !isFetched
       ? []
