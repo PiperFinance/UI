@@ -7,14 +7,18 @@ import { IChainResponse, ITokenResponse, updateBalance } from "@store/store";
 import Flex from "@ui/Flex/Flex";
 import { TableRowSkeleton } from "@ui/Skeleton";
 import { useState } from "react";
+import { useAccount } from "wagmi";
 import { TokenBalanceRow } from "./TokenBalanceRow";
 import { ITokenBalanceRow } from "./types";
 
 export default function TokenBalance() {
   const [page, setPage] = useState<number>(1);
-  const { data, isLoading, isFetched } = useUserBalances();
+  const { address } = useAccount();
+  const { data, isLoading, isFetched } = useUserBalances(String(address));
   const { slice, range } = useTable({
-    data: !isFetched ? [] : Object.entries(updateBalance<IChainResponse, ITokenResponse>(data)),
+    data: !isFetched
+      ? []
+      : Object.entries(updateBalance<IChainResponse, ITokenResponse>(data)),
     page,
     rowsPerPage: 5,
     isFetched,
@@ -34,7 +38,12 @@ export default function TokenBalance() {
     <Table
       page={page}
       range={range}
-      totalLength={!isLoading ? Object.values(updateBalance<IChainResponse, ITokenResponse>(data)).length : 0}
+      totalLength={
+        !isLoading
+          ? Object.values(updateBalance<IChainResponse, ITokenResponse>(data))
+              .length
+          : 0
+      }
       rowsPerPage={5}
       slice={slice}
       setPage={setPage}
