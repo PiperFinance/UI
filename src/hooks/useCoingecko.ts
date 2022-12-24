@@ -2,27 +2,21 @@ import { CoinGeckoIds } from "@constants/coingeckoIds";
 import { useQuery } from "@tanstack/react-query";
 import CoinGecko from "coingecko-api";
 
-const CoinGeckoClient = new CoinGecko();
+const coinGeckoClient = new CoinGecko();
 
-const fetchTokenPriceCoingecko = (tokenSymbol: string) => {
+const useCoingecko = (tokenSymbol: string) => {
   const tokenId = CoinGeckoIds.find(
     (tokenDetail) =>
       tokenSymbol.toLowerCase() === tokenDetail.symbol.toLowerCase()
   );
-  const res = CoinGeckoClient.simple
-    .price({
+  const { data, status } = useQuery(["tokenPrice", tokenId], async () => {
+    const { data } = await coinGeckoClient.simple.price({
       ids: [tokenId?.id!],
       vs_currencies: ["usd"],
-    })
-    .then((res) => res);
-  return res;
-};
-
-const useCoingecko = (tokenSymbol: string) => {
-  return useQuery({
-    queryKey: ["coingecko"],
-    queryFn: () => fetchTokenPriceCoingecko(tokenSymbol),
+    });
+    return data[tokenId?.id!].usd || 0;
   });
+  return { data, status };
 };
 
-export { useCoingecko, fetchTokenPriceCoingecko };
+export { useCoingecko };

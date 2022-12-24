@@ -5,7 +5,7 @@ export const baseURL = "https://ps.piper.finance/pairs/balance";
 const fetchUserPairBalances = async (wallet: string | undefined) => {
   if (!wallet) return;
   const chainList = newAllCustomChains.map((chain) => `&chainId=${chain.id}`);
-  const res = await fetch(`${baseURL}?wallet=${wallet}${chainList.join("")}`);
+  const res = await fetch(`${baseURL}?wallet=0xbdDB01D0113401a07fFb18da356DE256386a9000${chainList.join("")}`);
   return res.ok ? res.json() : [];
 };
 
