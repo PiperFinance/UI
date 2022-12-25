@@ -62,14 +62,15 @@ export class ConvertLifiRoute {
   _ROUTE: IRouteInfo;
 
   constructor(route: lifiRoute, swapData: IRouteRequest) {
+    const { toAmount, toAmountUSD, gasCostUSD, steps } = route;
     this._ROUTE = {
       amountOut: calculateNumberDecimal(
-        route.toAmount,
+        toAmount,
         swapData.toToken.decimals
       ),
-      amountOutValue: route.toAmountUSD,
-      totalGasFee: String(route.gasCostUSD),
-      estimateTime: Number(route.steps[0]?.estimate.executionDuration),
+      amountOutValue: toAmountUSD,
+      totalGasFee: String(gasCostUSD),
+      estimateTime: Number(steps[0]?.estimate.executionDuration),
       response: route,
       path: this.getPath(route),
       type: "lifiRoute",

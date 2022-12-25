@@ -40,6 +40,7 @@ export default function Portfolio() {
   );
 
   useEffect(() => {
+    if (!address) return;
     newAllCustomChains.forEach((chain) => {
       mutate({ chainId: chain.id });
     });

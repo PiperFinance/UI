@@ -3,6 +3,7 @@ import { atomWithStorage } from "jotai/utils";
 import { atomsWithQuery } from "jotai-tanstack-query";
 import { ReactNode } from "react";
 import { IChain, newAllCustomChains } from "@constants/networkList";
+import { sortData } from "@utils/customSort";
 export const baseURL = "https://piper.finance/api/";
 
 export interface IChainResponse {
@@ -37,44 +38,7 @@ export interface ITokenDetail extends ITokenDetailDefault {
   related?: IToken[];
 }
 
-export interface ILiquidity {
-  address: string;
-  symbol: string;
-  decimals: number;
-  name: string;
-  chainId: number;
-  coingeckoId?: string;
-  verify: boolean;
-  reserves: number[];
-  tokens: IToken[];
-}
-
-export interface ITransaction {
-  Date: string;
-  txType: string;
-  chainId: number;
-  txUrl: string;
-  fee: string;
-  address: string;
-  value: string;
-  txHash: string;
-  receiver?: string;
-  originToken?: IToken;
-  destinationToken?: IToken;
-}
-
-export interface INft {
-  name: string;
-  chainId: number;
-  image?: string;
-  tokenId: string;
-  standard: string;
-  address: string;
-  contractAddress: string;
-}
-
 export const toast = atom<JSX.Element>(<></>);
-
 export const originToken = atomWithStorage<IToken | undefined>(
   "originToken",
   undefined
@@ -83,9 +47,7 @@ export const destinationToken = atomWithStorage<IToken | undefined>(
   "destinationToken",
   undefined
 );
-
 export const selectedChains = atom<IChain[]>(newAllCustomChains);
-
 export const allTokens = atom<IToken[]>([]);
 export const balancesList = atom<IChainResponse[]>([]);
 
@@ -126,13 +88,15 @@ export const updateTokenListAtom = atom((get): { tokensList: IToken[] } => {
   const tokens: ITokenResponse[] = get(getAllTokens);
   const balances: IChainResponse[] = get(balancesList);
   return {
-    tokensList: sortUpdateTokenList(
+    tokensList: sortData(
       Object.values(
         updateTokenList(
           tokens,
           updateBalance<IChainResponse, ITokenResponse>(balances)
         )
-      )
+      ),
+      "balance",
+      "value"
     ),
   };
 });
@@ -145,11 +109,12 @@ const updateTokenList = (
 };
 
 export const updateBalance = <T, R>(balances: T[]): R[] => {
+  if (!balances) return [];
   const flatBalances: R[] | R = [];
   try {
     Object.values(balances).forEach((chainBalance: any) => {
-      Object.keys(chainBalance).map((key: string) => {
-        flatBalances[Number(key)] = chainBalance[Number(key)];
+      Object.entries(chainBalance).forEach(([key, value]: any) => {
+        flatBalances[Number(key)] = value;
       });
     });
   } catch (e) {
@@ -157,9 +122,3 @@ export const updateBalance = <T, R>(balances: T[]): R[] => {
   }
   return flatBalances;
 };
-
-const sortUpdateTokenList = (tokenList: IToken[]): IToken[] =>
-  tokenList.sort(
-    (tokenA: IToken, tokenB: IToken) =>
-      Number(tokenB.balance) - Number(tokenA.balance)
-  );
