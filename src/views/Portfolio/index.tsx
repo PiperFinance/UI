@@ -3,24 +3,30 @@ import { newAllCustomChains } from "@constants/networkList";
 import { Tab } from "@headlessui/react";
 import useAddParams from "@hooks/useAddParams";
 import useHasMounted from "@hooks/useHasMounted";
-import { useSaveTransactions } from "@hooks/useTransactionHistory";
+import { useSaveTransactions } from "@views/Portfolio/hooks/useTransactionHistory";
 import Container from "@ui/Container/Container";
 import Flex from "@ui/Flex/Flex";
 import { classNames } from "@utils/classNames";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import NFTList from "./components/NFTList";
 import PairTokenTable from "./components/PairBalance";
-import TokenBalance from "./components/TokenBalance";
+// import TokenBalance from "./components/TokenBalance";
 import TransactionHistory from "./components/TransactionHistory";
+import { useUserBalances } from "./hooks/useUserBalances";
+
+const TokenBalance = dynamic(() => import("./components/TokenBalance"), {
+  loading: () => <div>lol</div>,
+});
 
 export default function Portfolio() {
   const [tab, setTab] = useState<number>();
   const router = useRouter();
   const hasMounted = useHasMounted();
   const addParams = useAddParams();
-
+  const { address } = useAccount();
   const tabs: string[] = ["Tokens", "Liquidities", "NFTs", "Transactions"];
 
   useEffect(() => {
@@ -29,12 +35,9 @@ export default function Portfolio() {
     );
   }, [hasMounted, router]);
 
-  const { address } = useAccount();
-
   const { mutate, isSuccess } = useSaveTransactions(
     address ? String(address).toLowerCase() : undefined
   );
-
 
   useEffect(() => {
     newAllCustomChains.forEach((chain) => {

@@ -5,11 +5,15 @@
   },
   "plugins": ["@typescript-eslint"],
   "extends": [
+    "airbnb-base",
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended",
     "plugin:tailwindcss/recommended",
     "plugin:prettier/recommended",
-    "plugin:@tanstack/eslint-plugin-query/recommended"
+    "plugin:@tanstack/eslint-plugin-query/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript"
   ],
   "rules": {
     "@typescript-eslint/consistent-type-imports": "warn",
@@ -55,7 +59,17 @@
         "unused-imports/no-unused-vars": [
           "error",
           { "argsIgnorePattern": "^_" }
-        ]
+        ],
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn",
+        "react/react-in-jsx-scope": "off",
+        "import/no-unresolved": "off",
+        "import/extensions": "off",
+        "import/order": "error",
+        "import/first": "error",
+        "import/newline-after-import": "error",
+        "import/no-duplicates": "error",
+        "tailwind/no-unused-styles": "error"
       }
     }
   ]

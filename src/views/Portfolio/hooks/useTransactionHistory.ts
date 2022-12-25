@@ -20,7 +20,6 @@ const useSaveTransactions = (wallet: string | undefined) => {
       handleSaveTransaction(wallet, chainId),
     retry: 0,
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ["userTX"] });
     },
   });
 };

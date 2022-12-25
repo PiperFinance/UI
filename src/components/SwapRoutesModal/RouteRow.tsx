@@ -9,7 +9,7 @@ import { Badge } from "@ui/Badge/Badge";
 import { CurrencyIcon } from "@ui/CurrencyIcon";
 import Flex from "@ui/Flex/Flex";
 import { formatNumber } from "@utils/bignumber";
-import { IRouteInfo } from "@utils/swap";
+import { IRouteInfo } from "@utils/swap/types";
 import { useAtom } from "jotai";
 
 interface IRoutesRow {

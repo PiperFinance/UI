@@ -2,7 +2,7 @@ import { IToken } from "@store/store";
 import { Badge } from "@ui/Badge/Badge";
 import Flex from "@ui/Flex/Flex";
 import { calculateNumberDecimal, formatNumber } from "@utils/bignumber";
-import { IRouteInfo } from "@utils/swap";
+import { IRouteInfo } from "@utils/swap/swap";
 import ModalHeader from "../ModalHeader";
 import RouteRow from "./RouteRow";
 

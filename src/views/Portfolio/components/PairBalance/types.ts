@@ -30,7 +30,10 @@ export interface IPairDetail {
   tokensOrder: string[];
 }
 
-export interface IPairBalanceRow {
-  0: string;
-  1: IPairValue;
+export interface IPairBalanceTable {
+  pairBalances: TPairBalanceRow[];
+  isLoading: boolean;
+  isFetched: boolean;
 }
+
+export type TPairBalanceRow = [string, IPairValue];

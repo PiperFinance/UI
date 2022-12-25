@@ -3,7 +3,7 @@ import Flex from "@ui/Flex/Flex";
 import React, { ReactNode, useState } from "react";
 import { Modal } from "../Modal/Modal";
 import SwapRouteModal from "../SwapRoutesModal";
-import { IRouteInfo } from "@utils/swap";
+import { IRouteInfo } from "@utils/swap/swap";
 import { IToken } from "@store/store";
 import { formatNumber } from "@utils/bignumber";
 import { Badge } from "@ui/Badge/Badge";

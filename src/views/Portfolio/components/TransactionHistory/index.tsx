@@ -2,7 +2,7 @@ import ChainIcon from "@ui/ChainIcon";
 import {
   useSaveTransactions,
   useTransactionList,
-} from "@hooks/useTransactionHistory";
+} from "@views/Portfolio/hooks/useTransactionHistory";
 import Flex from "@ui/Flex/Flex";
 import Label from "@ui/Label/Label";
 import { stringToColor } from "@utils/stringToColor";
@@ -27,8 +27,6 @@ export default function TransactionHistory(props: ITransactionHistory) {
     1,
     saveSucceeded
   );
-
-  console.log(data);
 
   return (
     <Flex direction="column" customStyle="p-2 h-full overflow-y-auto">

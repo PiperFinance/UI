@@ -1,28 +1,12 @@
-import { newAllCustomChains } from "@constants/networkList";
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import Flex from "@ui/Flex/Flex";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import { getTokenPrice } from "@utils/coingecko";
-import {
-  formatNumber,
-  calculateMultiplyNumbers,
-  calculateNumberDecimal,
-} from "@utils/bignumber";
-import { IPairBalanceRow } from "./types";
+import React from "react";
+import { formatNumber, calculateNumberDecimal } from "@utils/bignumber";
+import { TPairBalanceRow } from "./types";
 import ChainIcon from "@ui/ChainIcon";
 
-export function PairBalanceRow(pair: IPairBalanceRow) {
+export function PairBalanceRow(pair: TPairBalanceRow) {
   const { detail, balance, value } = pair[1];
-  const [tokenPrice, setTokenPrice] = useState<number>(0);
-
-  useEffect(() => {
-    getTokenPrice(detail.symbol).then((result) => {
-      if (result) setTokenPrice(result);
-    });
-  }, [pair]);
-
-  const tokenValue = calculateMultiplyNumbers(balance!, tokenPrice);
 
   const firstToken = Object.values(detail.tokens)[0];
   const secondToken = Object.values(detail.tokens)[1];

@@ -1,15 +1,15 @@
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import Flex from "@ui/Flex/Flex";
-import React from "react";
+import React, { memo } from "react";
 import { formatNumber, calculateMultiplyNumbers } from "@utils/bignumber";
-import { ITokenBalanceRow } from "./types";
+import { TTokenBalanceRow } from "./types";
 import ChainIcon from "@ui/ChainIcon";
 import { useCoingecko } from "@hooks/useCoingecko";
 
-export function TokenBalanceRow(token: ITokenBalanceRow) {
+export function TokenBalanceRow(token: TTokenBalanceRow) {
   const { detail, balance } = token[1];
 
-  const { data: tokenPrice, status } = useCoingecko(detail.symbol);
+  const { data: tokenPrice, status } = useCoingecko(detail?.symbol);
 
   const tokenValue =
     status !== "loading"
@@ -58,3 +58,5 @@ export function TokenBalanceRow(token: ITokenBalanceRow) {
     </tr>
   );
 }
+
+export default memo(TokenBalanceRow);
