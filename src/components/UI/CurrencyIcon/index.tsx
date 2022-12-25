@@ -1,8 +1,8 @@
 import { newAllCustomChains } from "@constants/networkList";
-import ChainIcon from "@ui/ChainIcon";
-import { cva, VariantProps } from "class-variance-authority";
-import Image, { ImageProps } from "next/image";
-import { DetailedHTMLProps, ImgHTMLAttributes } from "react";
+import type { VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
+import Image from "next/image";
+import type { DetailedHTMLProps, ImgHTMLAttributes } from "react";
 
 const iconStyles = cva("relative bg-gray-100 rounded-full border-2", {
   variants: {
@@ -35,7 +35,18 @@ export interface Props
 export function CurrencyIcon({ chainId, size, borderRadius, ...props }: Props) {
   return (
     <div className={iconStyles({ size, borderRadius })}>
-      {chainId && <ChainIcon chainId={chainId} />}
+      {chainId &&
+        newAllCustomChains.map(
+          (chain) =>
+            chain.id === chainId && (
+              <div
+                key={chain.id}
+                className="absolute left-4 -top-2 h-5 w-5 rounded-md border border-gray-600 bg-gray-1000"
+              >
+                <Image src={chain.icon ?? ""} alt={chain.name} fill />
+              </div>
+            )
+        )}
       <img {...props} />
     </div>
   );

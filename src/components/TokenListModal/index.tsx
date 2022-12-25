@@ -1,15 +1,18 @@
 import Flex from "@ui/Flex/Flex";
-import React from "react";
-import { FixedSizeList, ListChildComponentProps } from "react-window";
-import { IToken, selectedChains } from "@store/store";
-import { SetStateAction, useAtom } from "jotai";
-import { useCallback } from "react";
+import React, { useCallback } from "react";
+import type { ListChildComponentProps } from "react-window";
+import { FixedSizeList } from "react-window";
+import type { IToken } from "@store/store";
+import { selectedChains } from "@store/store";
+import type { SetStateAction } from "jotai";
+import { useAtom } from "jotai";
 import { formatNumber } from "@utils/bignumber";
 import Input from "@ui/Input/Input";
 import Image from "next/image";
 import { useAccount, useBalance } from "wagmi";
+import type { IChain } from "@constants/networkList";
+import { newAllCustomChains } from "@constants/networkList";
 import ModalHeader from "../ModalHeader";
-import { IChain, newAllCustomChains } from "@constants/networkList";
 
 interface ITokenListModal {
   onDismiss: () => void;
@@ -48,7 +51,7 @@ export default function TokenListModal({
       error,
       isLoading,
     } = useBalance({
-      address: address,
+      address,
       token:
         currency.detail.address.toLowerCase() ===
         "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE".toLowerCase()

@@ -1,13 +1,13 @@
-import { Button } from "@ui/Button/Button";
 import Flex from "@ui/Flex/Flex";
-import React, { ReactNode, useState } from "react";
-import { Modal } from "../Modal/Modal";
-import SwapRouteModal from "../SwapRoutesModal";
-import { IRouteInfo } from "@utils/swap/swap";
-import { IToken } from "@store/store";
+import type { ReactNode } from "react";
+import React, { useState } from "react";
+import type { IRouteInfo } from "@utils/swap/types";
+import type { IToken } from "@store/store";
 import { formatNumber } from "@utils/bignumber";
 import { Badge } from "@ui/Badge/Badge";
 import { ChevronRightIcon, ClockIcon } from "@heroicons/react/24/solid";
+import SwapRouteModal from "../SwapRoutesModal";
+import { Modal } from "../Modal/Modal";
 
 interface ISwapRoutes {
   selectedRoute: IRouteInfo;
@@ -34,7 +34,7 @@ export default function SwapRoute({
         alignItems="center"
         width="full"
         customStyle="my-4 bg-gray-122 rounded-xl p-4 h-14 text-gray-300 border border-gray-700 cursor-pointer space-x-3"
-        onClick={() => setOpen(routes.length > 0 ? true : false)}
+        onClick={() => setOpen(routes.length > 0)}
       >
         <Flex alignItems="center" customStyle="space-x-3">
           <h1 className="font-bold">Receive: {formatNumber(amountOut, 3)}</h1>

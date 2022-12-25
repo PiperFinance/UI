@@ -1,13 +1,11 @@
-import { FC, HTMLAttributes, useEffect } from "react";
+import type { HTMLAttributes } from "react";
 
-export interface overlayProps extends HTMLAttributes<HTMLElement> {}
+export type TOverlayProps = HTMLAttributes<HTMLElement>;
 
-export const Overlay: FC<React.PropsWithChildren<overlayProps>> = (props) => {
+export default function Overlay(props: TOverlayProps) {
   return (
     <>
       <div className="fixed top-0 left-0 z-[-1] h-full w-full" {...props} />
     </>
   );
-};
-
-export default Overlay;
+}

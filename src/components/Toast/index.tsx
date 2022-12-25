@@ -1,6 +1,5 @@
 import React from "react";
 import Alert from "@ui/Alert/Alert";
-import { toast } from "react-hot-toast";
 import { ShieldExclamationIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { CheckIcon } from "@heroicons/react/20/solid";
 import Flex from "@ui/Flex/Flex";
@@ -24,7 +23,7 @@ const ToastSuccess = ({ title, description, dismiss }: IDefaultToast) => {
   return (
     <Alert intent="success">
       <Flex justifyContent="between" alignItems="center">
-        <div className="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200">
+        <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200">
           <CheckIcon className="h-5 w-5" />
         </div>
         <div className="ml-3 text-sm font-normal">
@@ -44,7 +43,7 @@ const ToastError = ({ title, description, dismiss }: IDefaultToast) => {
   return (
     <Alert intent="error">
       <Flex justifyContent="between" alignItems="center">
-        <div className="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200">
+        <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200">
           <XMarkIcon className="h-5 w-5" />
         </div>
         <div className="ml-3 text-sm font-normal">
@@ -65,7 +64,7 @@ const ToastWarning = ({ title, description, dismiss }: IDefaultToast) => {
   return (
     <Alert intent="warning">
       <Flex justifyContent="between" alignItems="center">
-        <div className="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-red-100 text-orange-500 dark:bg-orange-600 dark:text-orange-200">
+        <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-100 text-orange-500 dark:bg-orange-600 dark:text-orange-200">
           <ShieldExclamationIcon className="h-5 w-5" />
         </div>
         <div className="ml-3 text-sm font-normal">
@@ -86,7 +85,7 @@ const ToastInfo = ({ title, description, dismiss }: IDefaultToast) => {
   return (
     <Alert intent="info">
       <Flex justifyContent="between" alignItems="center">
-        <div className="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-red-100 text-primary-500 dark:bg-primary-800 dark:text-primary-200">
+        <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-100 text-primary-500 dark:bg-primary-800 dark:text-primary-200">
           <ShieldExclamationIcon className="h-5 w-5" />
         </div>
         <div className="ml-3 text-sm font-normal">

@@ -8,10 +8,9 @@ import { useState } from "react";
 import Logo from "../../Logo/Logo";
 
 export default function Sidebar() {
-  const iconClass: string =
-    "w-5 h-5 text-gray-500 duration-75 dark:text-gray-400";
+  const iconClass = "w-5 h-5 text-gray-500 duration-75 dark:text-gray-400";
 
-  let [navs] = useState([
+  const [navs] = useState([
     {
       id: 0,
       name: "Portfolio",
@@ -27,11 +26,8 @@ export default function Sidebar() {
   ]);
 
   return (
-    <aside
-      className="h-screen w-fit bg-gray-122"
-      aria-label="Sidebar"
-    >
-      <div className="h-full overflow-y-auto  py-4 px-4 ">
+    <aside className="h-screen w-fit bg-gray-122" aria-label="Sidebar">
+      <div className="h-full overflow-y-auto  p-4">
         <Logo />
         <ul className="space-y-6">
           {navs.map((nav) => (
@@ -50,7 +46,7 @@ export default function Sidebar() {
           <li>
             <Link
               href="#"
-              className="group flex items-center rounded-lg p-2 text-base font-normal transition duration-75 hover:bg-gray-100 text-gray-100 dark:hover:bg-gray-700"
+              className="group flex items-center rounded-lg p-2 text-base font-normal text-gray-100 transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               <DocumentTextIcon className={iconClass} />
               <span className="ml-3">Documentation</span>
