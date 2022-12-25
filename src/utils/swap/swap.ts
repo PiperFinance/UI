@@ -1,4 +1,5 @@
 import LIFI, { Route as lifiRoute } from "@lifi/sdk";
+import { sortData } from "@utils/customSort";
 
 import {
   EvmTransaction,
@@ -142,11 +143,12 @@ export default class swap {
     data: IRouteRequest
   ): Promise<QuoteSimulationResult | null> {
     if (!this.rangoMetaData) return null;
-    const { amount, fromToken, toToken } = data;
+    const { fromToken, toToken } = data;
 
     const sourceToken = this.rangoMetaData.tokens.find(
       (t) => t.address?.toLowerCase() === fromToken.address.toLowerCase()
     );
+    console.log(sourceToken);
     const destinationToken = this.rangoMetaData.tokens.find(
       (t) => t.address?.toLowerCase() === toToken.address.toLowerCase()
     );
@@ -163,7 +165,7 @@ export default class swap {
         symbol: destinationToken.symbol,
         address: destinationToken.address,
       },
-      amount: amount,
+      amount: data.amount,
     });
 
     return routes.route;
@@ -173,23 +175,30 @@ export default class swap {
     routes: IFoundedRoutes,
     swapData: IRouteRequest
   ): IRouteInfo[] {
+    const routeData = [
+      { type: RouteType.Lifi, data: routes?.lifi },
+      { type: RouteType.Symbiosis, data: routes?.symbiosis },
+      { type: RouteType.Rango, data: routes?.rango },
+    ];
+
     const parsedRoutes: IRouteInfo[] = [];
-    if (routes?.lifi && routes?.lifi.length > 0)
-      routes?.lifi?.forEach((route) =>
-        parsedRoutes.push(this.showRoutesInfo(route, RouteType.Lifi, swapData))
-      );
+    for (const { type, data } of routeData) {
+      if (Array.isArray(data)) {
+        data.forEach((route) =>
+          parsedRoutes.push(this.showRoutesInfo(route, type, swapData))
+        );
+      } else if (data) {
+        parsedRoutes.push(this.showRoutesInfo(data!, type, swapData));
+      }
+    }
 
-    if (routes?.symbiosis)
-      parsedRoutes.push(
-        this.showRoutesInfo(routes?.symbiosis, RouteType.Symbiosis, swapData)
-      );
-
-    if (routes?.rango)
-      parsedRoutes.push(
-        this.showRoutesInfo(routes?.rango!, RouteType.Rango, swapData)
-      );
-
-    return parsedRoutes;
+    return sortData(
+      parsedRoutes,
+      "amountOut",
+      "amountOutValue",
+      "totalGasFee",
+      "estimateTime"
+    );
   }
 
   private showRoutesInfo(
