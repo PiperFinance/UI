@@ -1,5 +1,6 @@
-import Image, { ImageProps } from "next/image";
-import { cva, VariantProps } from "class-variance-authority";
+import type { ImageProps } from "next/image";
+import type { VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 
 const alertStyles = cva("inline-block h-6 w-6 rounded-full", {
   variants: {
@@ -23,7 +24,7 @@ export function Alert() {
       className="flex w-full max-w-xs items-center rounded-lg bg-white p-4 text-gray-500 shadow dark:bg-gray-800 dark:text-gray-400"
       role="alert"
     >
-      <div className="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-orange-100 text-orange-500 dark:bg-orange-700 dark:text-orange-200">
+      <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-orange-100 text-orange-500 dark:bg-orange-700 dark:text-orange-200">
         <svg
           aria-hidden="true"
           className="h-5 w-5"
@@ -44,7 +45,7 @@ export function Alert() {
       </div>
       <button
         type="button"
-        className="-mx-1.5 -my-1.5 ml-auto inline-flex h-8 w-8 rounded-lg bg-white p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-900 focus:ring-2 focus:ring-gray-300 dark:bg-gray-800 dark:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-white"
+        className="-m-1.5 ml-auto inline-flex h-8 w-8 rounded-lg bg-white p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-900 focus:ring-2 focus:ring-gray-300 dark:bg-gray-800 dark:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-white"
         data-dismiss-target="#toast-warning"
         aria-label="Close"
       >

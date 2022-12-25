@@ -1,16 +1,14 @@
-import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Disclosure } from "@headlessui/react";
 import {
   ArrowsRightLeftIcon,
   ChevronDoubleRightIcon,
 } from "@heroicons/react/20/solid";
 import { ChevronRightIcon, ClockIcon } from "@heroicons/react/24/solid";
-import { destinationToken } from "@store/store";
 import { Badge } from "@ui/Badge/Badge";
 import { CurrencyIcon } from "@ui/CurrencyIcon";
 import Flex from "@ui/Flex/Flex";
 import { formatNumber } from "@utils/bignumber";
-import { IRouteInfo } from "@utils/swap";
-import { useAtom } from "jotai";
+import type { IRouteInfo } from "@utils/swap/types";
 
 interface IRoutesRow {
   route: IRouteInfo;
@@ -37,7 +35,7 @@ export default function RouteRow({
               ? "border-wheat-900 bg-wheat-122"
               : "border-gray-700 hover:border-wheat-900"
           } p-4 rounded-2xl cursor-pointer transition max-h-96`}
-          onClick={(e) => {
+          onClick={() => {
             changeRoute(route);
             onDismiss();
           }}
@@ -81,7 +79,7 @@ export default function RouteRow({
             <Disclosure.Button onClick={(e: any) => e.stopPropagation()}>
               <ChevronRightIcon
                 className={`ml-3 h-6 w-6 rounded-md p-1 hover:bg-gray-900 ${
-                  open ? "rotate-90 transform" : ""
+                  open ? "rotate-90" : ""
                 }`}
               />
             </Disclosure.Button>
@@ -90,6 +88,7 @@ export default function RouteRow({
             <Flex direction="column">
               {path?.map((step) => (
                 <Flex
+                  key={step.type + step.fromToken.symbol}
                   customStyle="mt-3 space-x-2 bg-gray-900 rounded-full p-1"
                   justifyContent="between"
                   width="half"

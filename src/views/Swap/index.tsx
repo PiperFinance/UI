@@ -3,7 +3,7 @@ import { Button } from "@ui/Button/Button";
 import Container from "@ui/Container/Container";
 import Flex from "@ui/Flex/Flex";
 import { calculateNumberDecimalContract } from "@utils/bignumber";
-import swap, { IRouteInfo } from "@utils/swap";
+import swap from "@utils/swap/swap";
 import { useAtom, useAtomValue } from "jotai";
 import { Route as lifiRoute } from "@lifi/sdk";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
@@ -24,6 +24,7 @@ import { toast } from "react-hot-toast";
 import { ToastError, ToastWarning } from "@components/Toast";
 import { trpc } from "@utils/trpc";
 import { Skeleton } from "@ui/Skeleton";
+import { IRouteInfo } from "@utils/swap/types";
 
 interface ISwap {
   amountIn: string;

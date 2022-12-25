@@ -1,7 +1,6 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import Container from "@ui/Container/Container";
 import Flex from "@ui/Flex/Flex";
-import Image from "next/image";
 import React, { useEffect } from "react";
 
 interface ITableFooter {
@@ -26,7 +25,6 @@ export default function TableFooter({
       setPage(page - 1);
     }
   }, [slice, page, setPage]);
-
 
   return (
     <Container>
@@ -53,7 +51,7 @@ export default function TableFooter({
           <li>
             <button
               onClick={() => setPage(page - 1)}
-              disabled={page === 1 ? true : false}
+              disabled={page === 1}
               className="ml-0 block rounded-l-lg border border-gray-300 bg-white py-2 px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
             >
               <ChevronLeftIcon className="h-5 w-5" />
@@ -77,7 +75,7 @@ export default function TableFooter({
           <li>
             <button
               onClick={() => setPage(page + 1)}
-              disabled={page === range.length ? true : false}
+              disabled={page === range.length}
               className="block rounded-r-lg border border-gray-300 bg-white py-2 px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
             >
               <ChevronRightIcon className="h-5 w-5" />

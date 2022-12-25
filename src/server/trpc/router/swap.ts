@@ -1,4 +1,5 @@
-import swap, { IRouteInfo } from "@utils/swap";
+import swap from "@utils/swap/swap";
+import { IRouteInfo } from "@utils/swap/types";
 import { z } from "zod";
 
 import { router, publicProcedure } from "../trpc";

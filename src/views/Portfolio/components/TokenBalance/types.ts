@@ -1,6 +1,9 @@
 import { IToken } from "@store/store";
 
-export interface ITokenBalanceRow {
-  0: string;
-  1: IToken;
+export interface ITokenBalanceTable {
+  balances: TTokenBalanceRow[];
+  isLoading: boolean;
+  isFetched: boolean;
 }
+
+export type TTokenBalanceRow = [string, IToken];

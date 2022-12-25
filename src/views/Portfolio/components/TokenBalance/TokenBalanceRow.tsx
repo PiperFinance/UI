@@ -1,23 +1,20 @@
-import { newAllCustomChains } from "@constants/networkList";
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import Flex from "@ui/Flex/Flex";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import { getTokenPrice } from "@utils/coingecko";
+import React, { memo } from "react";
 import { formatNumber, calculateMultiplyNumbers } from "@utils/bignumber";
-import { ITokenBalanceRow } from "./types";
+import { TTokenBalanceRow } from "./types";
+import ChainIcon from "@ui/ChainIcon";
+import { useCoingecko } from "@hooks/useCoingecko";
 
-export function TokenBalanceRow(token : ITokenBalanceRow) {
-  const { detail, balance, value } = token[1];
-  const [tokenPrice, setTokenPrice] = useState<number>(0);
+export function TokenBalanceRow(token: TTokenBalanceRow) {
+  const { detail, balance } = token[1];
 
-  useEffect(() => {
-    getTokenPrice(detail.symbol).then((result) => {
-      if (result) setTokenPrice(result);
-    });
-  }, [token]);
+  const { data: tokenPrice, status } = useCoingecko(detail?.symbol);
 
-  const tokenValue = calculateMultiplyNumbers(balance!, tokenPrice);
+  const tokenValue =
+    status !== "loading"
+      ? calculateMultiplyNumbers(balance!, tokenPrice ?? 0)
+      : 0;
 
   return (
     <tr
@@ -31,7 +28,7 @@ export function TokenBalanceRow(token : ITokenBalanceRow) {
               detail.logoURI ? detail.logoURI : "/assets/token-not-found.png"
             }
             alt={detail.symbol}
-            className="w-10 h-10"
+            className="h-10 w-10"
           />
           <Flex direction="column" customStyle="ml-3">
             <h6 className="font-bold uppercase">{detail?.symbol}</h6>
@@ -41,18 +38,7 @@ export function TokenBalanceRow(token : ITokenBalanceRow) {
       </td>
       <td className="px-4">
         <Flex>
-          {newAllCustomChains.map(
-            (chain) =>
-              chain.id === detail.chainId && (
-                <Image
-                  src={chain.icon!}
-                  alt="icon"
-                  width={60}
-                  height={60}
-                  className="relative right-1 rounded-full"
-                />
-              )
-          )}
+          <ChainIcon chainId={detail.chainId} />
         </Flex>
       </td>
       <td className="px-4">
@@ -72,3 +58,5 @@ export function TokenBalanceRow(token : ITokenBalanceRow) {
     </tr>
   );
 }
+
+export default memo(TokenBalanceRow);

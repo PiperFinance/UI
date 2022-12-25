@@ -1,8 +1,6 @@
-import { IToken } from "@store/store";
-import { Badge } from "@ui/Badge/Badge";
+import type { IToken } from "@store/store";
 import Flex from "@ui/Flex/Flex";
-import { calculateNumberDecimal, formatNumber } from "@utils/bignumber";
-import { IRouteInfo } from "@utils/swap";
+import type { IRouteInfo } from "@utils/swap/types";
 import ModalHeader from "../ModalHeader";
 import RouteRow from "./RouteRow";
 
@@ -17,7 +15,6 @@ interface ISwapRoutesModal {
 export default function SwapRouteModal({
   routes,
   onDismiss,
-  destinationToken,
   selectedRoute,
   changeRoute,
 }: ISwapRoutesModal) {
@@ -27,8 +24,9 @@ export default function SwapRouteModal({
       customStyle="max-w-2xl bg-gray-800 rounded-2xl p-5 space-y-2 text-gray-300 max-h-[90%] overflow-y-auto"
     >
       <ModalHeader title="Select a Route" onClick={onDismiss} />
-      {routes.map((route) => (
+      {routes.map((route, index) => (
         <RouteRow
+          key={route.type + index}
           route={route}
           selectedRoute={selectedRoute}
           changeRoute={changeRoute}

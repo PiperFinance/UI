@@ -3,14 +3,15 @@ import Flex from "@ui/Flex/Flex";
 import Input from "@ui/Input/Input";
 
 import React, { useState } from "react";
-import { Modal } from "../Modal/Modal";
-import TokenListModal from "../TokenListModal";
-import { IToken, searchAtom } from "@store/store";
+import type { IToken } from "@store/store";
+import { searchAtom } from "@store/store";
 import { useAtom } from "jotai";
 import { CurrencyIcon } from "@ui/CurrencyIcon";
 import { formatNumber } from "@utils/bignumber";
 import useHasMounted from "@hooks/useHasMounted";
 import { CurrencyInputPanelSkeleton } from "@ui/Skeleton";
+import TokenListModal from "../TokenListModal";
+import { Modal } from "../Modal/Modal";
 
 interface ICurrencyInputPanel {
   disabled?: boolean;

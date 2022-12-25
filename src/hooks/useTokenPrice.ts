@@ -1,19 +1,21 @@
-import { newAllCustomChains } from "@constants/networkList";
 import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 export const baseURL = "https://tp.piper.finance/";
 
-const fetchTokenPrice = async (chainId:number, tokenId:number) => {
-  const res = await fetch(
+const fetchTokenPrice = async (chainId: number, tokenId: string) => {
+  const { data } = await axios.get(
     `${baseURL}?chainId=${chainId}&tokenId=${tokenId}`
   );
-  return res.ok ? res.json() : [];
+  return data.result;
 };
 
-const useTokenPrice = (chainId:number, tokenId:number) => {
-  return useQuery({
-    queryKey: ["tokenPrise"],
+const useTokenPrice = (chainId: number, tokenId: string) => {
+  const { data, status } = useQuery({
+    queryKey: ["tokenPrice", tokenId, chainId],
     queryFn: () => fetchTokenPrice(chainId, tokenId),
   });
+
+  return { data, status };
 };
 
 export { useTokenPrice, fetchTokenPrice };

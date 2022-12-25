@@ -1,11 +1,11 @@
-import { FC, ReactNode, Suspense, useTransition } from "react";
+import type { FC, ReactNode } from "react";
 import Head from "next/head";
-import Sidebar from "./Sidebar/Sidebar";
 import { Inter } from "@next/font/google";
 import Flex from "@ui/Flex/Flex";
 import Container from "@ui/Container/Container";
 import dynamic from "next/dynamic";
 import ToastContainer from "@components/ToastContainer";
+import Sidebar from "./Sidebar/Sidebar";
 
 const WalletConnect = dynamic(() => import("../WalletConnect"));
 

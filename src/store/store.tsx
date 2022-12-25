@@ -145,7 +145,7 @@ const updateTokenList = (
 };
 
 export const updateBalance = <T, R>(balances: T[]): R[] => {
-  const flatBalances: R[] = [];
+  const flatBalances: R[] | R = [];
   try {
     Object.values(balances).forEach((chainBalance: any) => {
       Object.keys(chainBalance).map((key: string) => {

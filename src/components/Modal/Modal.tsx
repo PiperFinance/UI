@@ -1,9 +1,9 @@
-import Overlay from "@ui/Overlay";
 import getPortalRoot from "@utils/getPortalRoot";
 import { AnimatePresence, domMax, LazyMotion } from "framer-motion";
-import React, { useRef } from "react";
+import React from "react";
 import { createPortal } from "react-dom";
 import { Inter } from "@next/font/google";
+import Overlay from "@ui/Overlay";
 
 export interface ModalV2Props {
   isOpen?: boolean;
@@ -35,7 +35,7 @@ export function Modal({
         <AnimatePresence>
           {isOpen && (
             <div
-              className={`${inter.variable} font-sans fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center overflow-hidden bg-gray-999`}
+              className={`${inter.variable} fixed inset-0 flex items-center justify-center overflow-hidden bg-gray-999 font-sans`}
               {...props}
             >
               {children}

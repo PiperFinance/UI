@@ -1,6 +1,5 @@
-import { fetchUserBalances, useUserBalances } from "@hooks/useUserBalances";
 import { allTokens, balancesList, updateTokenListAtom } from "@store/store";
-import { dehydrate, QueryClient } from "@tanstack/query-core";
+import { useUserBalances } from "@views/Portfolio/hooks/useUserBalances";
 import { useAtom, useAtomValue } from "jotai";
 import dynamic from "next/dynamic";
 import { useAccount } from "wagmi";

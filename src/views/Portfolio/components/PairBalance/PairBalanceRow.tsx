@@ -1,23 +1,12 @@
-import { newAllCustomChains } from "@constants/networkList";
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import Flex from "@ui/Flex/Flex";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import { getTokenPrice } from "@utils/coingecko";
-import { formatNumber, calculateMultiplyNumbers } from "@utils/bignumber";
-import { IPairBalanceRow } from "./types";
+import React from "react";
+import { formatNumber, calculateNumberDecimal } from "@utils/bignumber";
+import { TPairBalanceRow } from "./types";
+import ChainIcon from "@ui/ChainIcon";
 
-export function PairBalanceRow(pair: IPairBalanceRow) {
+export function PairBalanceRow(pair: TPairBalanceRow) {
   const { detail, balance, value } = pair[1];
-  const [tokenPrice, setTokenPrice] = useState<number>(0);
-
-  useEffect(() => {
-    getTokenPrice(detail.symbol).then((result) => {
-      if (result) setTokenPrice(result);
-    });
-  }, [pair]);
-
-  const tokenValue = calculateMultiplyNumbers(balance!, tokenPrice);
 
   const firstToken = Object.values(detail.tokens)[0];
   const secondToken = Object.values(detail.tokens)[1];
@@ -28,7 +17,7 @@ export function PairBalanceRow(pair: IPairBalanceRow) {
       className="group cursor-pointer border-b last:border-b-0 hover:bg-gray-50 dark:border-gray-500 dark:hover:bg-gray-600"
     >
       <td className="p-4">
-        <Flex>
+        <Flex alignItems="center">
           <img
             src={
               firstToken?.detail.logoURI
@@ -36,7 +25,7 @@ export function PairBalanceRow(pair: IPairBalanceRow) {
                 : "/assets/token-not-found.png"
             }
             alt={firstToken?.detail.symbol!}
-            className="w-10 h-10"
+            className="mr-1 h-8 w-8"
           />
           <img
             src={
@@ -45,7 +34,7 @@ export function PairBalanceRow(pair: IPairBalanceRow) {
                 : "/assets/token-not-found.png"
             }
             alt={secondToken?.detail.symbol}
-            className="w-10 h-10"
+            className="mr-1 h-8 w-8"
           />
           <Flex direction="column" customStyle="ml-3">
             <h6 className="font-bold uppercase">{detail?.name}</h6>
@@ -55,18 +44,7 @@ export function PairBalanceRow(pair: IPairBalanceRow) {
       </td>
       <td className="px-4">
         <Flex>
-          {newAllCustomChains.map(
-            (chain) =>
-              chain.id === detail.chainId && (
-                <Image
-                  src={chain.icon!}
-                  alt="icon"
-                  width={60}
-                  height={60}
-                  className="relative right-1 rounded-full"
-                />
-              )
-          )}
+          <ChainIcon chainId={detail.chainId} />
         </Flex>
       </td>
       {/* <td className="px-4">
@@ -74,9 +52,10 @@ export function PairBalanceRow(pair: IPairBalanceRow) {
       </td> */}
       <td className="px-4">
         <div>
-          <b>${formatNumber(tokenValue, 3)}</b>
-          <div className="text-sm text-gray-400">
-            {formatNumber(balance!, 8)} <span>{detail?.name}</span>
+          {/* <b>${formatNumber(tokenValue, 3)}</b> */}
+          <div className="text-md text-gray-400">
+            {formatNumber(calculateNumberDecimal(balance!, 18), 8)}{" "}
+            <span>{detail?.name}</span>
           </div>
         </div>
       </td>
