@@ -1,4 +1,4 @@
-import LIFI, { Route as lifiRoute } from "@lifi/sdk";
+import LIFI, { Route as lifiRoute, SwitchChainHook } from "@lifi/sdk";
 import { sortData } from "@utils/customSort";
 
 import {
@@ -220,9 +220,21 @@ export default class swap {
     }
   }
 
-  public executeLifiSwap = async (signer: any, route: lifiRoute) => {
+  public executeLifiSwap = async (
+    signer: any,
+    route: lifiRoute,
+    switchChainHook:SwitchChainHook
+  ) => {
     if (!route || !signer) return;
-    await this.Lifi.executeRoute(signer, route);
+    await this.Lifi.executeRoute(signer, route, { ...switchChainHook });
+  };
+
+  public executeSymbiosisSwap = async (
+    signer: any,
+    route: ISwapExactInSymbiosis
+  ) => {
+    if (!route || !signer) return;
+    await route.execute(signer);
   };
 
   public executeRangoSwap = async (signer: any, data: IRouteRequest) => {
