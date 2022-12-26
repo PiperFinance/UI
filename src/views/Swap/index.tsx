@@ -24,7 +24,8 @@ import { toast } from "react-hot-toast";
 import { ToastError, ToastWarning } from "@components/Toast";
 import { trpc } from "@utils/trpc";
 import { Skeleton } from "@ui/Skeleton";
-import { IRouteInfo } from "@utils/swap/types";
+import { IRouteInfo, ISwapExactInSymbiosis } from "@utils/swap/types";
+import { Signer } from "ethers";
 
 interface ISwap {
   amountIn: string;
@@ -115,6 +116,15 @@ export default function Swap() {
       address: address,
     });
   };
+
+  const switchChainHook = async (
+    requiredChainId: number
+  ): Promise<Signer | undefined> => {
+    switchNetwork?.(requiredChainId);
+
+    return signer as unknown as Promise<Signer | undefined>;
+  };
+
   const execute = (selectedRoute: IRouteInfo | undefined) => {
     if (
       !selectedRoute ||
@@ -149,7 +159,17 @@ export default function Swap() {
         break;
       case "lifiRoute":
         handleSwap
-          .executeLifiSwap(signer, response as lifiRoute)
+          .executeLifiSwap(signer, response as lifiRoute, switchChainHook)
+          .then((res) => {
+            setIsLoading(false);
+          })
+          .catch((e) => {
+            setIsLoading(false);
+          });
+        break;
+      case "ISwapExactInSymbiosis":
+        handleSwap
+          .executeSymbiosisSwap(signer, response as ISwapExactInSymbiosis)
           .then((res) => {
             setIsLoading(false);
           })
