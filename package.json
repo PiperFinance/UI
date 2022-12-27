@@ -38,7 +38,6 @@
     "react-countdown-circle-timer": "^3.1.0",
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.0",
-    "react-use": "^17.4.0",
     "react-window": "^1.8.8",
     "superjson": "1.12.0",
     "symbiosis-js-sdk": "^2.9.7",
