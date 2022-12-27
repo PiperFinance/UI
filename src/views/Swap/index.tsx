@@ -160,7 +160,6 @@ export default function Swap() {
             setIsLoading(false);
           })
           .catch((e) => {
-            console.log(e);
             setIsLoading(false);
           });
         break;

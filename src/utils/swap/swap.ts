@@ -76,7 +76,6 @@ export default class swap {
 
       return lifiResult.routes;
     } catch (err) {
-      console.log(err);
     }
   }
 
