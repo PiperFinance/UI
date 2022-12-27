@@ -25,6 +25,7 @@ import { trpc } from "@utils/trpc";
 import { Skeleton } from "@ui/Skeleton";
 import { IRouteInfo, ISwapExactInSymbiosis } from "@utils/swap/types";
 import { Signer } from "ethers";
+import { useDebounce } from "react-use";
 
 interface ISwap {
   amountIn: string;
@@ -71,18 +72,18 @@ export default function Swap() {
     chainId: chain?.id,
   });
 
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
+  useDebounce(
+    () => {
       if (!amount || !fromToken || !toToken || !address) return;
       const convertedAmountIn = calculateNumberDecimalContract(
         amount,
         fromToken.detail?.decimals!
       );
       getRoute({ amountIn: convertedAmountIn, fromToken, toToken, address });
-    }, 2000);
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [amount, fromToken, toToken, address, refRoute]);
+    },
+    2000,
+    [amount, fromToken, toToken, address, refRoute]
+  );
 
   const mutation = trpc.swap.routes.useMutation({
     onMutate: () => {
