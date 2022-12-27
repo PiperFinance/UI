@@ -18,7 +18,6 @@ import Spinner from "@ui/Spinner/Spinner";
 import CurrencyInputPanel from "@components/CurrencyInputPanel";
 import SwitchCurrencyInput from "@components/SwitchCurrencyInput";
 import SwapRoute from "@components/SwapRoutes";
-import RootLayout from "@layout/layout";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { toast } from "react-hot-toast";
 import { ToastError, ToastWarning } from "@components/Toast";
@@ -26,6 +25,7 @@ import { trpc } from "@utils/trpc";
 import { Skeleton } from "@ui/Skeleton";
 import { IRouteInfo, ISwapExactInSymbiosis } from "@utils/swap/types";
 import { Signer } from "ethers";
+import { useDebounce } from "react-use";
 
 interface ISwap {
   amountIn: string;
@@ -72,22 +72,18 @@ export default function Swap() {
     chainId: chain?.id,
   });
 
-  const insufficientBalance = Boolean(
-    Number(fromTokenBalance?.formatted) < Number(amount)
-  );
-
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
+  useDebounce(
+    () => {
       if (!amount || !fromToken || !toToken || !address) return;
       const convertedAmountIn = calculateNumberDecimalContract(
         amount,
         fromToken.detail?.decimals!
       );
       getRoute({ amountIn: convertedAmountIn, fromToken, toToken, address });
-    }, 2000);
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [amount, fromToken, toToken, address, refRoute]);
+    },
+    2000,
+    [amount, fromToken, toToken, address, refRoute]
+  );
 
   const mutation = trpc.swap.routes.useMutation({
     onMutate: () => {
@@ -164,6 +160,7 @@ export default function Swap() {
             setIsLoading(false);
           })
           .catch((e) => {
+            console.log(e);
             setIsLoading(false);
           });
         break;
@@ -190,82 +187,84 @@ export default function Swap() {
     switchNetwork?.(fromToken?.detail.chainId);
   };
 
-  return (
-    <RootLayout pageName="Swap">
-      <Container customStyle="h-full flex items-center justify-center">
-        <Flex customStyle="max-w-lg" alignItems="center" direction="column">
-          <h1 className="my-5 mx-3 text-4xl font-bold text-wheat-500">SWAP</h1>
-          <CurrencyInputPanel
-            tokenList={tokenList}
-            selectedCurrency={fromToken}
-            setToken={setFormToken}
-            currencyBalance={fromTokenBalance?.formatted}
-            setAmount={setAmount}
-            amount={amount}
-          />
-          <SwitchCurrencyInput />
-          <CurrencyInputPanel
-            tokenList={tokenList}
-            setAmount={() => {}}
-            selectedCurrency={toToken}
-            setToken={setToToken}
-            currencyBalance={toTokenBalance?.formatted}
-            amount={selectedRoute ? selectedRoute.amountOut : ""}
-            disabled
-          />
+  const insufficientBalance = Boolean(
+    Number(fromTokenBalance?.formatted) < Number(amount)
+  );
 
-          {mutation.isLoading ? (
-            <Skeleton />
-          ) : (
-            selectedRoute &&
-            swapRoute && (
-              <SwapRoute
-                destinationToken={toToken!}
-                routes={swapRoute}
-                selectedRoute={selectedRoute}
-                changeRoute={setSelectedRoute}
-              >
-                <CountdownCircleTimer
-                  isPlaying={
-                    !amount || !fromToken || !toToken || !address ? false : true
-                  }
-                  duration={60000}
-                  colors="#aaa"
-                  size={15}
-                  trailColor="rgba(0,0,0,0)"
-                  strokeWidth={2}
-                  onComplete={() => {
-                    setRefRoute(!refRoute);
-                    return { shouldRepeat: true };
-                  }}
-                />
-              </SwapRoute>
-            )
-          )}
-          {isLoading ? (
-            <Button disable={true} width="half" intent="disablePrimary">
-              <Flex width="fit" justifyContent="center" alignItems="center">
-                <Spinner />
-                Processing...
-              </Flex>
-            </Button>
-          ) : (
-            <Button
-              disable={insufficientBalance || !selectedRoute ? true : false}
-              onClick={() =>
-                chain?.id !== fromToken?.detail.chainId
-                  ? handleSwitchNetwork()
-                  : execute(selectedRoute!)
-              }
-              width="half"
+  return (
+    <Container customStyle="h-full flex items-center justify-center">
+      <Flex customStyle="max-w-lg" alignItems="center" direction="column">
+        <h1 className="my-5 mx-3 text-4xl font-bold text-wheat-500">SWAP</h1>
+        <CurrencyInputPanel
+          tokenList={tokenList}
+          selectedCurrency={fromToken}
+          setToken={setFormToken}
+          currencyBalance={fromTokenBalance?.formatted}
+          setAmount={setAmount}
+          amount={amount}
+        />
+        <SwitchCurrencyInput />
+        <CurrencyInputPanel
+          tokenList={tokenList}
+          setAmount={() => {}}
+          selectedCurrency={toToken}
+          setToken={setToToken}
+          currencyBalance={toTokenBalance?.formatted}
+          amount={selectedRoute ? selectedRoute.amountOut : ""}
+          disabled
+        />
+
+        {mutation.isLoading ? (
+          <Skeleton />
+        ) : (
+          selectedRoute &&
+          swapRoute && (
+            <SwapRoute
+              destinationToken={toToken!}
+              routes={swapRoute}
+              selectedRoute={selectedRoute}
+              changeRoute={setSelectedRoute}
             >
-              {insufficientBalance
-                ? `Insufficient ${fromToken?.detail.symbol} balance`
-                : "Swap"}
-            </Button>
-          )}
-        </Flex>
-      </Container>
-    </RootLayout>
+              <CountdownCircleTimer
+                isPlaying={
+                  !amount || !fromToken || !toToken || !address ? false : true
+                }
+                duration={30000}
+                colors="#aaa"
+                size={15}
+                trailColor="rgba(0,0,0,0)"
+                strokeWidth={2}
+                onComplete={() => {
+                  setRefRoute(!refRoute);
+                  return { shouldRepeat: true };
+                }}
+              />
+            </SwapRoute>
+          )
+        )}
+        {isLoading ? (
+          <Button disable={true} width="half" intent="disablePrimary">
+            <Flex width="fit" justifyContent="center" alignItems="center">
+              <Spinner />
+              Processing...
+            </Flex>
+          </Button>
+        ) : (
+          <Button
+            disable={insufficientBalance || !selectedRoute ? true : false}
+            onClick={() =>
+              chain?.id !== fromToken?.detail.chainId
+                ? handleSwitchNetwork()
+                : execute(selectedRoute!)
+            }
+            width="half"
+          >
+            {insufficientBalance
+              ? `Insufficient ${fromToken?.detail.symbol} balance`
+              : "Swap"}
+          </Button>
+        )}
+      </Flex>
+    </Container>
   );
 }

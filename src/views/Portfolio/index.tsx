@@ -47,53 +47,48 @@ export default function Portfolio() {
   }, [address]);
 
   return (
-    <RootLayout pageName="Portfolio">
-      <Container>
-        <Flex
-          direction="column"
-          customStyle="bg-gray-122 rounded-2xl p-5 h-fit"
-        >
-          <Tab.Group selectedIndex={tab} onChange={setTab}>
-            <Tab.List className="flex justify-between text-center text-sm font-medium text-gray-500  dark:border-gray-700 dark:text-gray-400 ">
-              <h1 className="my-3 text-2xl font-semibold text-gray-100">
-                Assets
-              </h1>
-              <div className="space-x-4">
-                {tabs.map((tab: string) => (
-                  <Tab
-                    key={tab}
-                    onClick={() => addParams({ tab: tab.toLowerCase() })}
-                    className={({ selected }) =>
-                      classNames(
-                        "inline-block rounded-xl p-3 outline-none",
-                        selected
-                          ? "border border-primary-400 text-blue-700 dark:bg-gray-800 dark:text-blue-300"
-                          : "hover:bg-gray-50 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300"
-                      )
-                    }
-                  >
-                    {tab}
-                  </Tab>
-                ))}
-              </div>
-            </Tab.List>
-            <Tab.Panels>
-              <Tab.Panel>
-                <TokenBalance />
-              </Tab.Panel>
-              <Tab.Panel>
-                <PairTokenTable />
-              </Tab.Panel>
-              <Tab.Panel>
-                <NFTList saveSucceeded={isSuccess} />
-              </Tab.Panel>
-              <Tab.Panel>
-                <TransactionHistory saveSucceeded={isSuccess} />
-              </Tab.Panel>
-            </Tab.Panels>
-          </Tab.Group>
-        </Flex>
-      </Container>
-    </RootLayout>
+    <Container>
+      <Flex direction="column" customStyle="bg-gray-122 rounded-2xl p-5 h-fit">
+        <Tab.Group selectedIndex={tab} onChange={setTab}>
+          <Tab.List className="flex justify-between text-center text-sm font-medium text-gray-500  dark:border-gray-700 dark:text-gray-400 ">
+            <h1 className="my-3 text-2xl font-semibold text-gray-100">
+              Assets
+            </h1>
+            <div className="space-x-4">
+              {tabs.map((tab: string) => (
+                <Tab
+                  key={tab}
+                  onClick={() => addParams({ tab: tab.toLowerCase() })}
+                  className={({ selected }) =>
+                    classNames(
+                      "inline-block rounded-xl p-3 outline-none",
+                      selected
+                        ? "border border-primary-400 text-blue-700 dark:bg-gray-800 dark:text-blue-300"
+                        : "hover:bg-gray-50 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300"
+                    )
+                  }
+                >
+                  {tab}
+                </Tab>
+              ))}
+            </div>
+          </Tab.List>
+          <Tab.Panels>
+            <Tab.Panel>
+              <TokenBalance />
+            </Tab.Panel>
+            <Tab.Panel>
+              <PairTokenTable />
+            </Tab.Panel>
+            <Tab.Panel>
+              <NFTList saveSucceeded={isSuccess} />
+            </Tab.Panel>
+            <Tab.Panel>
+              <TransactionHistory saveSucceeded={isSuccess} />
+            </Tab.Panel>
+          </Tab.Panels>
+        </Tab.Group>
+      </Flex>
+    </Container>
   );
 }

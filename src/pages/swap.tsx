@@ -1,3 +1,4 @@
+import RootLayout from "@components/layout/layout";
 import { allTokens, balancesList, updateTokenListAtom } from "@store/store";
 import { useUserBalances } from "@views/Portfolio/hooks/useUserBalances";
 import { useAtom, useAtomValue } from "jotai";
@@ -14,7 +15,12 @@ export default function SwapPage() {
   const { tokensList } = useAtomValue(updateTokenListAtom);
   setBalances(data);
   setTokens(tokensList);
-  return <Swap />;
+
+  return (
+    <RootLayout pageName="Swap">
+      <Swap />
+    </RootLayout>
+  );
 }
 
 // export async function getStaticProps() {

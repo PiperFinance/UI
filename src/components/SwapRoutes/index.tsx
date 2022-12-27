@@ -37,7 +37,7 @@ export default function SwapRoute({
         onClick={() => setOpen(routes.length > 0)}
       >
         <Flex alignItems="center" customStyle="space-x-3">
-          <h1 className="font-bold">Receive: {formatNumber(amountOut, 3)}</h1>
+          <h1 className="font-bold">Receive: {formatNumber(amountOut, 6)}</h1>
           {children}
         </Flex>
         <Flex alignItems="center" width="fit" customStyle="space-x-2">
@@ -63,7 +63,7 @@ export default function SwapRoute({
           )}
           <Badge>
             <ClockIcon className="h-4 w-4" />
-            {estimateTime ? Math.round(estimateTime / 60) : "?"}
+            {estimateTime ? Math.round(estimateTime / 60) + "m" : "?"}
           </Badge>
         </Flex>
         <ChevronRightIcon className="h-5 w-5" />
