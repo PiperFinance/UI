@@ -118,7 +118,6 @@ export const updateBalance = <T, R>(balances: T[]): R[] => {
       });
     });
   } catch (e) {
-    console.log(e);
   }
   return flatBalances;
 };
