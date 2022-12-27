@@ -1,3 +1,4 @@
+import { newAllCustomChains } from "@constants/networkList";
 import LIFI, { Route as lifiRoute, SwitchChainHook } from "@lifi/sdk";
 import { sortData } from "@utils/customSort";
 
@@ -33,7 +34,6 @@ export default class swap {
   private Lifi: LIFI;
   private Rango: RangoClient;
   private symbiosis: Symbiosis;
-  private rangoMetaData: MetaResponse | undefined;
   constructor() {
     this.Lifi = new LIFI();
     this.Rango = new RangoClient("a43dfccc-bb38-48f7-9ac9-5b928df2ecc0");
@@ -45,14 +45,12 @@ export default class swap {
       this.getLifiRoutes(data),
       this.getSymbiosisRoutes(data),
       this.getRangoRoutes(data),
-      this.Rango.meta(),
     ]).then((routes) => {
-      this.rangoMetaData = routes[3];
       return this.handleConvertRoutes(
         {
           lifi: routes[0],
           symbiosis: routes[1],
-          rango: routes[2],
+          rango: routes[2]!,
         },
         data
       );
@@ -141,34 +139,34 @@ export default class swap {
 
   private async getRangoRoutes(
     data: IRouteRequest
-  ): Promise<QuoteSimulationResult | null> {
-    if (!this.rangoMetaData) return null;
-    const { fromToken, toToken } = data;
+  ): Promise<QuoteSimulationResult | null | undefined> {
+    try {
+      const { fromToken, toToken } = data;
 
-    const sourceToken = this.rangoMetaData.tokens.find(
-      (t) => t.address?.toLowerCase() === fromToken.address.toLowerCase()
-    );
-    console.log(sourceToken);
-    const destinationToken = this.rangoMetaData.tokens.find(
-      (t) => t.address?.toLowerCase() === toToken.address.toLowerCase()
-    );
+      const sourceToken = newAllCustomChains.find(
+        (chain) => chain.id === fromToken.chainId
+      );
+      const destinationToken = newAllCustomChains.find(
+        (chain) => chain.id === toToken.chainId
+      );
 
-    if (!sourceToken || !destinationToken) return null;
-    const routes = await this.Rango.quote({
-      from: {
-        blockchain: sourceToken.blockchain,
-        symbol: sourceToken.symbol,
-        address: sourceToken.address,
-      },
-      to: {
-        blockchain: destinationToken.blockchain,
-        symbol: destinationToken.symbol,
-        address: destinationToken.address,
-      },
-      amount: data.amount,
-    });
+      if (!sourceToken || !destinationToken) return null;
+      const routes = await this.Rango.quote({
+        from: {
+          blockchain: sourceToken.name.toUpperCase(),
+          symbol: fromToken.symbol.toUpperCase(),
+          address: fromToken.address.toLowerCase(),
+        },
+        to: {
+          blockchain: destinationToken.name.toUpperCase(),
+          symbol: toToken.symbol.toUpperCase(),
+          address: toToken.address.toLowerCase(),
+        },
+        amount: data.amount,
+      });
 
-    return routes.route;
+      return routes.route;
+    } catch (e) {}
   }
 
   private handleConvertRoutes(
@@ -223,7 +221,7 @@ export default class swap {
   public executeLifiSwap = async (
     signer: any,
     route: lifiRoute,
-    switchChainHook:SwitchChainHook
+    switchChainHook: SwitchChainHook
   ) => {
     if (!route || !signer) return;
     await this.Lifi.executeRoute(signer, route, { ...switchChainHook });
@@ -238,28 +236,29 @@ export default class swap {
   };
 
   public executeRangoSwap = async (signer: any, data: IRouteRequest) => {
-    if (!data || !this.rangoMetaData) return;
+    if (!data || !newAllCustomChains) return;
 
     const { amount, fromToken, toToken, address } = data;
-    const sourceToken = this.rangoMetaData.tokens.find(
-      (t) => t.address?.toLowerCase() === fromToken.address.toLowerCase()
+
+    const sourceToken = newAllCustomChains.find(
+      (chain) => chain.id === fromToken.chainId
     );
-    const destinationToken = this.rangoMetaData.tokens.find(
-      (t) => t.address?.toLowerCase() === toToken.address.toLowerCase()
+    const destinationToken = newAllCustomChains.find(
+      (chain) => chain.id === toToken.chainId
     );
 
     if (!sourceToken || !destinationToken) return null;
 
     const swapResponse = await this.Rango.swap({
       from: {
-        blockchain: sourceToken.blockchain,
-        symbol: sourceToken.symbol,
-        address: sourceToken.address,
+        blockchain: sourceToken.name.toUpperCase(),
+        symbol: fromToken.symbol.toUpperCase(),
+        address: fromToken.address.toLowerCase(),
       },
       to: {
-        blockchain: destinationToken.blockchain,
-        symbol: destinationToken.symbol,
-        address: destinationToken.address,
+        blockchain: destinationToken.name.toUpperCase(),
+        symbol: toToken.symbol.toUpperCase(),
+        address: toToken.address.toLowerCase(),
       },
       amount: amount,
       fromAddress: address,

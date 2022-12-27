@@ -43,7 +43,7 @@ export default function RouteRow({
           <Flex justifyContent="between" alignItems="center">
             <Flex alignItems="center">
               <h1 className="font-bold">
-                Receive: {formatNumber(amountOut, 3)}{" "}
+                Receive: {formatNumber(amountOut, 6)}{" "}
               </h1>
               <h4 className="text-sm">
                 &nbsp; &#8771; &nbsp;${amountOutValue}
@@ -73,7 +73,7 @@ export default function RouteRow({
               )}
               <Badge>
                 <ClockIcon className="h-4 w-4" />
-                {estimateTime ? Math.round(estimateTime / 60) : "?"}
+                {estimateTime ? Math.round(estimateTime / 60) + "m" : "?"}
               </Badge>
             </Flex>
             <Disclosure.Button onClick={(e: any) => e.stopPropagation()}>

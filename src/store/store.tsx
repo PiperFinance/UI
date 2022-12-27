@@ -30,7 +30,7 @@ export interface ITokenDetailDefault {
 }
 
 export interface ITokenDetail extends ITokenDetailDefault {
-  coingeckoId?: string;
+  coingeckoId?: string | null;
   tags?: string[];
   lifiId?: string | null;
   listedIn: string[];
@@ -76,11 +76,15 @@ export const chainFilterAtom = atom((get) => {
 export const tokenAtom = atom((get) => {
   const search: string = get(searchAtom).toLowerCase();
   const chianFilteredTokens: IToken[] = get(chainFilterAtom);
-  return chianFilteredTokens.filter(
-    (token: IToken) =>
-      token.detail?.name.toLowerCase().includes(search) ||
-      token.detail?.symbol.toLowerCase().includes(search) ||
-      token.detail?.address.toLowerCase().includes(search)
+  return sortData(
+    chianFilteredTokens.filter(
+      (token: IToken) =>
+        token.detail?.name.toLowerCase().includes(search) ||
+        token.detail?.symbol.toLowerCase().includes(search) ||
+        token.detail?.address.toLowerCase().includes(search)
+    ),
+    "balance",
+    "value"
   );
 });
 
@@ -88,15 +92,11 @@ export const updateTokenListAtom = atom((get): { tokensList: IToken[] } => {
   const tokens: ITokenResponse[] = get(getAllTokens);
   const balances: IChainResponse[] = get(balancesList);
   return {
-    tokensList: sortData(
-      Object.values(
-        updateTokenList(
-          tokens,
-          updateBalance<IChainResponse, ITokenResponse>(balances)
-        )
-      ),
-      "balance",
-      "value"
+    tokensList: Object.values(
+      updateTokenList(
+        tokens,
+        updateBalance<IChainResponse, ITokenResponse>(balances)
+      )
     ),
   };
 });

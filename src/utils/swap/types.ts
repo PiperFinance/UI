@@ -1,9 +1,10 @@
 import { QuotePath, QuoteSimulationResult, SwapFee } from "rango-sdk-basic/lib";
-import LIFI, { Route as lifiRoute, LifiStep, Step } from "@lifi/sdk";
+import { Route as lifiRoute, LifiStep, Step } from "@lifi/sdk";
 import { ITokenDetail, ITokenDetailDefault } from "@store/store";
 import { Execute, Percent, Token, TokenAmount } from "symbiosis-js-sdk";
 import { Signer } from "ethers";
 import { calculateNumberDecimal } from "@utils/bignumber";
+import { formatNumber } from "@utils/bignumber";
 
 export type TSelectedRoute =
   | lifiRoute
@@ -64,10 +65,7 @@ export class ConvertLifiRoute {
   constructor(route: lifiRoute, swapData: IRouteRequest) {
     const { toAmount, toAmountUSD, gasCostUSD, steps } = route;
     this._ROUTE = {
-      amountOut: calculateNumberDecimal(
-        toAmount,
-        swapData.toToken.decimals
-      ),
+      amountOut: calculateNumberDecimal(toAmount, swapData.toToken.decimals),
       amountOutValue: toAmountUSD,
       totalGasFee: String(gasCostUSD),
       estimateTime: Number(steps[0]?.estimate.executionDuration),
@@ -126,46 +124,69 @@ export class ConvertSymbiosisRoute {
 export class ConvertRangoRoute {
   _ROUTE: IRouteInfo;
   constructor(route: QuoteSimulationResult, swapData: IRouteRequest) {
+    const amountOut = calculateNumberDecimal(
+      route.outputAmount,
+      swapData.toToken.decimals
+    );
+
+    const amountOutValue = Number(amountOut) * (route as any).to.usdPrice;
+
     this._ROUTE = {
-      amountOut: calculateNumberDecimal(
-        route.outputAmount,
-        swapData.toToken.decimals
-      ),
-      amountOutValue: route.outputAmount,
+      amountOut,
+      amountOutValue: formatNumber(amountOutValue, 2),
       totalGasFee: String(this.calcFeeRango(route.fee)),
       estimateTime: route.estimatedTimeInSeconds,
       response: route,
-      path: this.getPath(route),
+      path: this.getPath(route, swapData),
       type: "QuoteSimulationResult",
     };
   }
 
-  private getPath(route: QuoteSimulationResult): IRouteInfoPath[] | undefined {
-    return route.path?.map((step: QuotePath) => {
-      return {
-        fromToken: {
-          address: step.from.address!,
-          decimals: step.from.decimals,
-          name: step.from.name,
-          symbol: step.from.symbol,
-          logoURI: step.from.image,
-          chainId: -1,
-        },
-        toToken: {
-          address: step.to.address!,
-          decimals: step.to.decimals,
-          name: step.to.name,
-          symbol: step.to.symbol,
-          logoURI: step.to.image,
-          chainId: -1,
-        },
-        tool: {
-          title: step.swapper.title,
-          logo: step.swapper.logo,
-        },
-        type: "rangoStep",
-      };
-    });
+  private getPath(
+    route: QuoteSimulationResult,
+    swapData: IRouteRequest
+  ): IRouteInfoPath[] | undefined {
+    try {
+      if (!route.path) {
+        return [
+          {
+            fromToken: swapData.fromToken as unknown as ITokenDetailDefault,
+            toToken: swapData.toToken as unknown as ITokenDetailDefault,
+            tool: {
+              title: route.swapper.title,
+              logo: route.swapper.logo,
+            },
+            type: "rangoStep",
+          },
+        ];
+      }
+
+      return route.path?.map((step: QuotePath) => {
+        return {
+          fromToken: {
+            address: step.from.address!,
+            decimals: step.from.decimals,
+            name: step.from.name,
+            symbol: step.from.symbol,
+            logoURI: step.from.image,
+            chainId: -1,
+          },
+          toToken: {
+            address: step.to.address!,
+            decimals: step.to.decimals,
+            name: step.to.name,
+            symbol: step.to.symbol,
+            logoURI: step.to.image,
+            chainId: -1,
+          },
+          tool: {
+            title: step.swapper.title,
+            logo: step.swapper.logo,
+          },
+          type: "rangoStep",
+        };
+      });
+    } catch (e) {}
   }
 
   private calcFeeRango = (fees: SwapFee[]): number => {
