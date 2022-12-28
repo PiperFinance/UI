@@ -26,6 +26,7 @@ import { Skeleton } from "@ui/Skeleton";
 import { IRouteInfo, ISwapExactInSymbiosis } from "@utils/swap/types";
 import { Signer } from "ethers";
 import { useDebounce } from "react-use";
+import { ArrowPathIcon } from "@heroicons/react/24/solid";
 
 interface ISwap {
   amountIn: string;
@@ -81,7 +82,7 @@ export default function Swap() {
       );
       getRoute({ amountIn: convertedAmountIn, fromToken, toToken, address });
     },
-    2000,
+    500,
     [amount, fromToken, toToken, address, refRoute]
   );
 
@@ -160,6 +161,27 @@ export default function Swap() {
             setIsLoading(false);
           })
           .catch((e) => {
+            if (
+              e.includes("500") ||
+              e.toLowerCase().includes("network error")
+            ) {
+              toast.custom((t) => (
+                <ToastWarning
+                  title="Try Again"
+                  dismiss={() => toast.dismiss(t.id)}
+                />
+              ));
+            }
+
+            if (e.includes("exchange rate")) {
+              toast.custom((t) => (
+                <ToastWarning
+                  title="The price has been change please press the 'Refresh' button"
+                  dismiss={() => toast.dismiss(t.id)}
+                />
+              ));
+            }
+
             setIsLoading(false);
           });
         break;
@@ -193,7 +215,13 @@ export default function Swap() {
   return (
     <Container customStyle="h-full flex items-center justify-center">
       <Flex customStyle="max-w-lg" alignItems="center" direction="column">
-        <h1 className="my-5 mx-3 text-4xl font-bold text-wheat-500">SWAP</h1>
+        <h1 className=" text-4xl font-bold text-wheat-500">SWAP</h1>
+        <Flex justifyContent="end" width="full" customStyle="px-5">
+          <ArrowPathIcon
+            onClick={() => setRefRoute(!refRoute)}
+            className="h-5 w-5 cursor-pointer text-gray-600 transition hover:text-gray-200"
+          />
+        </Flex>
         <CurrencyInputPanel
           tokenList={tokenList}
           selectedCurrency={fromToken}
@@ -228,7 +256,7 @@ export default function Swap() {
                 isPlaying={
                   !amount || !fromToken || !toToken || !address ? false : true
                 }
-                duration={30000}
+                duration={60}
                 colors="#aaa"
                 size={15}
                 trailColor="rgba(0,0,0,0)"
