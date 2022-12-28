@@ -13,6 +13,7 @@ const useUserBalances = (wallet: string | undefined) => {
   return useQuery({
     queryKey: ["userBalances"],
     queryFn: () => fetchUserBalances(wallet),
+    staleTime: 60000,
   });
 };
 

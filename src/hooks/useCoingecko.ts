@@ -5,16 +5,21 @@ import CoinGecko from "coingecko-api";
 const coinGeckoClient = new CoinGecko();
 
 const useCoingecko = (tokenSymbol: string) => {
-  const tokenId = CoinGeckoIds.find(
+  const tokenId: any = CoinGeckoIds.find(
     (tokenDetail) =>
       tokenSymbol.toLowerCase() === tokenDetail.symbol.toLowerCase()
   );
-  const { data, status } = useQuery(["tokenPrice", tokenId], async () => {
-    const { data } = await coinGeckoClient.simple.price({
-      ids: [tokenId?.id!],
-      vs_currencies: ["usd"],
-    });
-    return data[tokenId?.id!].usd || 0;
+  const { data, status } = useQuery({
+    queryKey: ["tokenPrice", tokenId],
+    queryFn: async () => {
+      const { data } = await coinGeckoClient.simple.price({
+        ids: [tokenId?.id!],
+        vs_currencies: ["usd"],
+      });
+      return data[tokenId?.id!].usd || 0;
+    },
+    enabled: Boolean(tokenSymbol),
+    placeholderData: 0,
   });
   return { data, status };
 };

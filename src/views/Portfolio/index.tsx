@@ -9,13 +9,11 @@ import Flex from "@ui/Flex/Flex";
 import { classNames } from "@utils/classNames";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import NFTList from "./components/NFTList";
 import PairTokenTable from "./components/PairBalance";
-// import TokenBalance from "./components/TokenBalance";
 import TransactionHistory from "./components/TransactionHistory";
-import { useUserBalances } from "./hooks/useUserBalances";
 
 const TokenBalance = dynamic(() => import("./components/TokenBalance"), {
   loading: () => <div>lol</div>,
@@ -39,12 +37,12 @@ export default function Portfolio() {
     address ? String(address).toLowerCase() : undefined
   );
 
-  useEffect(() => {
-    if (!address) return;
-    newAllCustomChains.forEach((chain) => {
-      mutate({ chainId: chain.id });
-    });
-  }, [address]);
+  // useEffect(() => {
+  //   if (!address) return;
+  //   newAllCustomChains.forEach((chain) => {
+  //     mutate({ chainId: chain.id });
+  //   });
+  // }, [address]);
 
   return (
     <Container>

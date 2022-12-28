@@ -1,6 +1,6 @@
 import { Button } from "@ui/Button/Button";
 import Flex from "@ui/Flex/Flex";
-import React, { Fragment, useEffect, useState, useTransition } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useAccount, useBalance, useDisconnect, useNetwork } from "wagmi";
 import { Modal } from "../Modal/Modal";
 import WalletConnectModal from "../WalletConnectModal";
@@ -9,7 +9,6 @@ import { handleSliceHashString } from "@utils/sliceHashString";
 import { formatNumber } from "@utils/bignumber";
 import { Skeleton } from "../UI/Skeleton";
 import { Menu, Transition } from "@headlessui/react";
-import { ClockIcon } from "@heroicons/react/20/solid";
 import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/solid";
 
 export default function WalletConnect() {
@@ -63,6 +62,14 @@ export function WalletInfo() {
             alt={activeConnector?.name!}
             width={30}
             height={30}
+          />
+          <Image
+            //@ts-ignore
+            src={chain?.icon.src}
+            alt={activeConnector?.name!}
+            width={30}
+            height={30}
+            className="rounded-lg bg-gray-800"
           />
           {!data ? (
             <Skeleton />
