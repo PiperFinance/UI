@@ -20,6 +20,8 @@ const useCoingecko = (tokenSymbol: string) => {
     },
     enabled: Boolean(tokenSymbol),
     placeholderData: 0,
+    staleTime: 30000,
+    refetchInterval: 30000,
   });
   return { data, status };
 };

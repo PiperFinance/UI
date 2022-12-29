@@ -9,6 +9,7 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { useState } from "react";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const App: AppType = ({ Component, pageProps }: AppProps) => {
   const [queryClient] = useState(() => new QueryClient());
@@ -20,6 +21,7 @@ const App: AppType = ({ Component, pageProps }: AppProps) => {
           <Component {...pageProps} />
         </WagmiConfig>
       </Hydrate>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 };

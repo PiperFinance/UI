@@ -19,7 +19,7 @@ const TokenBalanceTable = dynamic(() => import("./TokenBalanceTable"), {
 
 function TokenBalance() {
   const { address } = useAccount();
-  const { data, isLoading, isFetched } = useUserBalances(
+  const { data, isLoading, isFetched, isRefetching } = useUserBalances(
     address ? address.toString() : undefined
   );
 
@@ -28,7 +28,7 @@ function TokenBalance() {
       Object.entries(
         updateBalance<IChainResponse, Text>(data)
       ) as unknown as TTokenBalanceRow[],
-    [data]
+    [data, isRefetching]
   );
 
   return <TokenBalanceTable {...{ balances, isLoading, isFetched }} />;
