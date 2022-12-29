@@ -42,7 +42,7 @@ const useTable = <T>({
       const slice = sliceData<T>({ data, page, rowsPerPage });
       setSlice([...slice]);
     }
-  }, [isFetched, page]);
+  }, [isFetched, page, data]);
 
   return { slice, range };
 };

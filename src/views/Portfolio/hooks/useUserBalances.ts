@@ -11,9 +11,10 @@ const fetchUserBalances = async (wallet: string | undefined) => {
 
 const useUserBalances = (wallet: string | undefined) => {
   return useQuery({
-    queryKey: ["userBalances"],
+    queryKey: ["balances", wallet],
     queryFn: () => fetchUserBalances(wallet),
     staleTime: 60000,
+    refetchInterval: 60000,
   });
 };
 

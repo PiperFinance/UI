@@ -3,7 +3,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 export const baseURL = "https://th.piper.finance";
 
-
 const handleSaveTransaction = async (
   wallet: string | undefined,
   chainId: number
@@ -15,11 +14,13 @@ const handleSaveTransaction = async (
 };
 
 const useSaveTransactions = (wallet: string | undefined) => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ chainId }: any) =>
       handleSaveTransaction(wallet, chainId),
     retry: 0,
     onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ["userTX"] });
     },
   });
 };

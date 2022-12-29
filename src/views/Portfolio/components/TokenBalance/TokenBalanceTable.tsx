@@ -15,7 +15,6 @@ function TokenBalanceTable({
   isLoading,
 }: ITokenBalanceTable) {
   const [page, setPage] = useState<number>(1);
-
   const { slice, range } = useTable<TTokenBalanceRow>({
     data: balances,
     page,

@@ -11,12 +11,11 @@ const fetchUserPairBalances = async (wallet: string | undefined) => {
 
 const useUserPairBalances = (wallet: string | undefined) => {
   return useQuery({
-    queryKey: ["userPairBalances"],
+    queryKey: ["liquidities", wallet],
     queryFn: () => fetchUserPairBalances(wallet),
     staleTime: 60000,
+    refetchInterval: 60000,
   });
 };
 
 export { useUserPairBalances, fetchUserPairBalances };
-
-// 0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82

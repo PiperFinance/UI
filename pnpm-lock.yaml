@@ -9,6 +9,7 @@ specifiers:
   '@tanstack/eslint-plugin-query': ^4.20.2
   '@tanstack/query-core': ^4.20.2
   '@tanstack/react-query': ^4.20.2
+  '@tanstack/react-query-devtools': ^4.20.4
   '@trpc/client': ^10.5.0
   '@trpc/next': ^10.5.0
   '@trpc/react-query': ^10.5.0
@@ -69,6 +70,7 @@ dependencies:
   '@next/font': 13.0.6
   '@tanstack/query-core': 4.20.2
   '@tanstack/react-query': 4.20.2_biqbaboplfbrettd7655fr4n2y
+  '@tanstack/react-query-devtools': 4.20.4_eo7er5vt2wr5dzkvijrpcw63qq
   '@trpc/client': 10.5.0_@trpc+server@10.5.0
   '@trpc/next': 10.5.0_dtx3crhz4grm7p3sex74bgwpyq
   '@trpc/react-query': 10.5.0_ujqebui43qs7rddibf3kooeqqu
@@ -1040,6 +1042,13 @@ packages:
     resolution: {integrity: sha512-HF/X1VV5aa6DzvqhvmtMyPFg7vky6CpZwAMBDREaEEidqVGQ8GXCF0Sm16K6fkHJo5k1RvfPLAj3ibJhbfMLyQ==}
     dev: true
 
+  /@tanstack/match-sorter-utils/8.7.2:
+    resolution: {integrity: sha512-bptNeoexeDB947fWoCPwUchPSx5FA9gwzU0bkXz0du5pT8Ud2+1ob+xOgHj6EF3VN0kdXtLhwjPyhY7/dJglkg==}
+    engines: {node: '>=12'}
+    dependencies:
+      remove-accents: 0.4.2
+    dev: false
+
   /@tanstack/query-core/4.20.2:
     resolution: {integrity: sha512-50tydwMY+fZuSPHiW+mdMQHSgjR9+3xXDoLBPt1tJWyF0mZDjMetlBxLWNaFb/Aid/ml0ZE5nRUW7CZCtwzpHQ==}
     dev: false
@@ -1058,6 +1067,21 @@ packages:
       '@tanstack/query-persist-client-core': 4.20.2_uqvakufs4eosoehmdmpf277bqi
     transitivePeerDependencies:
       - '@tanstack/query-core'
+    dev: false
+
+  /@tanstack/react-query-devtools/4.20.4_eo7er5vt2wr5dzkvijrpcw63qq:
+    resolution: {integrity: sha512-4e4wOmqAYjLS1RQ7gRBLCk3koCjbOfCMvbxS3CPCAN5+FLBemLAvoYvFJ/i/7DPsIsltGwsnd7YAFFGMzdSx7A==}
+    peerDependencies:
+      '@tanstack/react-query': 4.20.4
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@tanstack/match-sorter-utils': 8.7.2
+      '@tanstack/react-query': 4.20.2_biqbaboplfbrettd7655fr4n2y
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      superjson: 1.12.0
+      use-sync-external-store: 1.2.0_react@18.2.0
     dev: false
 
   /@tanstack/react-query-persist-client/4.20.2_fplwjzmjqjwqnevnaxxputo5by:
@@ -4783,6 +4807,10 @@ packages:
     resolution: {integrity: sha512-pq2bWo9mVD43nbts2wGv17XLiNLya+GklZ8kaDLV2Z08gDCsGpnKn9BFMepvWuHCbyVvY7J5o5+BVvoQbmlJLg==}
     engines: {node: '>=8'}
     dev: true
+
+  /remove-accents/0.4.2:
+    resolution: {integrity: sha512-7pXIJqJOq5tFgG1A2Zxti3Ht8jJF337m4sowbuHsW30ZnkQFnDzy9qBNhgzX8ZLW4+UBcXiiR7SwR6pokHsxiA==}
+    dev: false
 
   /require-directory/2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
