@@ -1,7 +1,8 @@
 import Flex from "@ui/Flex/Flex";
 import React from "react";
+import { INft } from "./types";
 
-export function NftBox(nft: any) {
+export function NftBox(nft: INft) {
   return (
     <Flex
       direction="column"

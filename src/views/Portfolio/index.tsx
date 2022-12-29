@@ -1,22 +1,34 @@
-import RootLayout from "@components/layout/layout";
-import { newAllCustomChains } from "@constants/networkList";
 import { Tab } from "@headlessui/react";
 import useAddParams from "@hooks/useAddParams";
 import useHasMounted from "@hooks/useHasMounted";
-import { useSaveTransactions } from "@views/Portfolio/hooks/useTransactionHistory";
 import Container from "@ui/Container/Container";
 import Flex from "@ui/Flex/Flex";
+import { TableRowSkeleton } from "@ui/Skeleton";
 import { classNames } from "@utils/classNames";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useAccount } from "wagmi";
 import NFTList from "./components/NFTList";
-import PairTokenTable from "./components/PairBalance";
 import TransactionHistory from "./components/TransactionHistory";
 
 const TokenBalance = dynamic(() => import("./components/TokenBalance"), {
-  loading: () => <div>lol</div>,
+  loading: () => (
+    <Flex direction="column">
+      <TableRowSkeleton />
+      <TableRowSkeleton />
+      <TableRowSkeleton />
+    </Flex>
+  ),
+});
+
+const PairTokenTable = dynamic(() => import("./components/PairBalance"), {
+  loading: () => (
+    <Flex direction="column">
+      <TableRowSkeleton />
+      <TableRowSkeleton />
+      <TableRowSkeleton />
+    </Flex>
+  ),
 });
 
 export default function Portfolio() {
@@ -24,7 +36,6 @@ export default function Portfolio() {
   const router = useRouter();
   const hasMounted = useHasMounted();
   const addParams = useAddParams();
-  const { address } = useAccount();
   const tabs: string[] = ["Tokens", "Liquidities", "NFTs", "Transactions"];
 
   useEffect(() => {
@@ -32,17 +43,6 @@ export default function Portfolio() {
       (tab, index) => tab.toLowerCase() === router.query.tab && setTab(index)
     );
   }, [hasMounted, router]);
-
-  const { mutate, isSuccess } = useSaveTransactions(
-    address ? String(address).toLowerCase() : undefined
-  );
-
-  // useEffect(() => {
-  //   if (!address) return;
-  //   newAllCustomChains.forEach((chain) => {
-  //     mutate({ chainId: chain.id });
-  //   });
-  // }, [address]);
 
   return (
     <Container>
@@ -79,10 +79,10 @@ export default function Portfolio() {
               <PairTokenTable />
             </Tab.Panel>
             <Tab.Panel>
-              <NFTList saveSucceeded={isSuccess} />
+              <NFTList />
             </Tab.Panel>
             <Tab.Panel>
-              <TransactionHistory saveSucceeded={isSuccess} />
+              <TransactionHistory />
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
