@@ -7,7 +7,6 @@ import { useAccount } from "wagmi";
 import { ITransaction } from "./types";
 import { TransactionRow } from "./TransactionRow";
 import { Skeleton } from "@ui/Skeleton";
-import { newAllCustomChains } from "@constants/networkList";
 import Flex from "@ui/Flex/Flex";
 
 export default function TransactionHistory() {

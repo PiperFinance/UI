@@ -1,3 +1,5 @@
+import type { IToken } from "@store/store";
+
 export interface ITransaction {
   chainId: number;
   userAddress: string;
@@ -13,6 +15,7 @@ export interface ITransaction {
   value: string;
   tokenName: string;
   tokenSymbol: string;
+  token?: IToken;
   tokenDecimal: number;
   transactionIndex: string;
   gas: string;
