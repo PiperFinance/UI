@@ -44,7 +44,7 @@ export default function NFTList() {
   }
 
   return (
-    <Flex customStyle="p-2 h-full overflow-y-auto" justifyContent="evenly">
+    <Flex customStyle="p-2 h-full overflow-y-auto flex-wrap" justifyContent="evenly" >
       {data.map((nft: INft) => (
         <NftBox {...nft} />
       ))}

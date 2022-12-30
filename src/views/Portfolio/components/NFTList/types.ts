@@ -1,5 +1,5 @@
 export interface INft {
-  nftDetail: INftDetail;
+  detail: INftDetail;
   userAddress: string;
   balance: string;
   totalSupply: string;
@@ -17,4 +17,6 @@ export interface INftDetail {
   description?: string;
   uri?: string;
   verified: boolean;
+  chainId: number;
+  deleted: boolean;
 }
