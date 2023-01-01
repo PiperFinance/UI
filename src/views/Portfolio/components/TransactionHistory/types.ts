@@ -28,5 +28,5 @@ export interface ITransaction {
 
 export interface ITransactionLabel {
   title: string;
-  value: string | number;
+  value: string;
 }

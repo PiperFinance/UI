@@ -3,7 +3,7 @@ import { ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid";
 import Flex from "@ui/Flex/Flex";
 import React from "react";
 import ChainIcon from "@ui/ChainIcon";
-import { ITransaction } from "./types";
+import { ITransaction, ITransactionLabel } from "./types";
 import { handleSliceHashString } from "@utils/sliceHashString";
 import {
   formatNumber,
@@ -14,9 +14,8 @@ import Label from "@ui/Label/Label";
 import { stringToColor } from "@utils/stringToColor";
 
 export function TransactionRow(transaction: ITransaction) {
-  const labels = "swap";
-
-  const { userAddress, token, gasUsed, gasPrice, timeStamp } = transaction;
+  const { userAddress, token, gasUsed, gasPrice, timeStamp, labels } =
+    transaction;
 
   const currentChain = newAllCustomChains.find(
     (chain) => chain.id === transaction.chainId && chain
@@ -45,12 +44,22 @@ export function TransactionRow(transaction: ITransaction) {
         <ChainIcon chainId={transaction.chainId} />
         <Flex direction="column" width="fit" customStyle="h-fit space-y-1">
           <Flex>
-            <h1 className="text-md text-gray-100 capitalize">{labels}</h1>
-            {/* {labels.map((label: string) => ( */}
-            {/* <Label bgColor={stringToColor(labels)} key={labels}>
-              {labels}
-            </Label> */}
-            {/* ))} */}
+            {labels ? (
+              labels?.map((label: ITransactionLabel, index) =>
+                label.title === "function" ? (
+                  <h1
+                    key={label.value + index}
+                    className="text-md capitalize text-gray-100"
+                  >
+                    {label.value}
+                  </h1>
+                ) : (
+                  ""
+                )
+              )
+            ) : (
+              <h1 className="text-md capitalize text-gray-100">#</h1>
+            )}
           </Flex>
           <h3 className="text-xs text-gray-400">{date}</h3>
         </Flex>

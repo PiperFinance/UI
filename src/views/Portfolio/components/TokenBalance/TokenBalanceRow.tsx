@@ -1,6 +1,6 @@
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import Flex from "@ui/Flex/Flex";
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 import { formatNumber, calculateMultiplyNumbers } from "@utils/bignumber";
 import { TTokenBalanceRow } from "./types";
 import ChainIcon from "@ui/ChainIcon";
@@ -8,7 +8,6 @@ import { useCoingecko } from "@hooks/useCoingecko";
 
 export function TokenBalanceRow(token: TTokenBalanceRow) {
   const { detail, balance } = token[1];
-
   const { data: tokenPrice, status } = useCoingecko(detail?.symbol);
 
   const tokenValue =

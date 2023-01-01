@@ -37,14 +37,32 @@ export default function NFTList() {
 
   if (error) {
     return (
-      <Flex direction="column" customStyle="p-2 h-full overflow-y-auto">
+      <Flex
+        customStyle="h-40 text-gray-100"
+        justifyContent="center"
+        alignItems="center"
+      >
         Something went wrong
       </Flex>
     );
   }
 
+  if (data?.length === 0) {
+    return (
+      <Flex
+        customStyle="h-40 text-gray-100"
+        justifyContent="center"
+        alignItems="center"
+      >
+        No Activity
+      </Flex>
+    );
+  }
   return (
-    <Flex customStyle="p-2 h-full overflow-y-auto flex-wrap" justifyContent="evenly" >
+    <Flex
+      customStyle="p-2 h-full overflow-y-auto flex-wrap"
+      justifyContent="evenly"
+    >
       {data.map((nft: INft) => (
         <NftBox {...nft} />
       ))}
