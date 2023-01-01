@@ -3,7 +3,7 @@ import TableBody from "@components/Table/TableBody";
 import TableHeader from "@components/Table/TableHeader";
 import Flex from "@ui/Flex/Flex";
 import { TableRowSkeleton } from "@ui/Skeleton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TokenBalanceRow } from "./TokenBalanceRow";
 import { ITokenBalanceTable, TTokenBalanceRow } from "./types";
 import { memo } from "react";

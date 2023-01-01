@@ -1,3 +1,4 @@
+import TotalValue from "@components/TotalValue";
 import { Tab } from "@headlessui/react";
 import useAddParams from "@hooks/useAddParams";
 import useHasMounted from "@hooks/useHasMounted";
@@ -46,6 +47,7 @@ export default function Portfolio() {
 
   return (
     <Container>
+      {/* <TotalValue /> */}
       <Flex direction="column" customStyle="bg-gray-122 rounded-2xl p-5 h-fit">
         <Tab.Group selectedIndex={tab} onChange={setTab}>
           <Tab.List className="flex justify-between text-center text-sm font-medium text-gray-500  dark:border-gray-700 dark:text-gray-400 ">

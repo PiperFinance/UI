@@ -24,7 +24,7 @@ export function NftBox(nft: INft) {
         </div>
         <img
           className="h-auto w-full rounded-t-lg"
-          src="https://media.nftb.io/media/thumbnails/nfts/3HjGOa7lRDfIfGcYYLTcGx1656748352789.png"
+          src={detail.uri}
           alt=""
         />
       </div>

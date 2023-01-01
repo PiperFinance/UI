@@ -45,6 +45,7 @@ const useNftList = (
   return useQuery({
     queryKey: ["userNFTs", wallet, pageSize, pageNumber],
     queryFn: () => getNftList(wallet, pageSize, pageNumber),
+    enabled: saveSucceeded,
   });
 };
 

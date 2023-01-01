@@ -161,26 +161,26 @@ export default function Swap() {
             setIsLoading(false);
           })
           .catch((e) => {
-            if (
-              e.includes("500") ||
-              e.toLowerCase().includes("network error")
-            ) {
-              toast.custom((t) => (
-                <ToastWarning
-                  title="Try Again"
-                  dismiss={() => toast.dismiss(t.id)}
-                />
-              ));
-            }
+            // if (
+            //   e.includes("500") ||
+            //   e.toLowerCase().includes("network error")
+            // ) {
+            //   toast.custom((t) => (
+            //     <ToastWarning
+            //       title="Try Again"
+            //       dismiss={() => toast.dismiss(t.id)}
+            //     />
+            //   ));
+            // }
 
-            if (e.includes("exchange rate")) {
-              toast.custom((t) => (
-                <ToastWarning
-                  title="The price has been change please press the 'Refresh' button"
-                  dismiss={() => toast.dismiss(t.id)}
-                />
-              ));
-            }
+            // if (e.includes("exchange rate")) {
+            //   toast.custom((t) => (
+            //     <ToastWarning
+            //       title="The price has been change please press the 'Refresh' button"
+            //       dismiss={() => toast.dismiss(t.id)}
+            //     />
+            //   ));
+            // }
 
             setIsLoading(false);
           });
@@ -254,7 +254,9 @@ export default function Swap() {
             >
               <CountdownCircleTimer
                 isPlaying={
-                  !amount || !fromToken || !toToken || !address ? false : true
+                  !amount || !fromToken || !toToken || !address || isLoading
+                    ? false
+                    : true
                 }
                 duration={60}
                 colors="#aaa"
@@ -271,7 +273,7 @@ export default function Swap() {
         )}
         {isLoading ? (
           <Button disable={true} width="half" intent="disablePrimary">
-            <Flex width="fit" justifyContent="center" alignItems="center">
+            <Flex width="auto" justifyContent="center" alignItems="center">
               <Spinner />
               Processing...
             </Flex>
