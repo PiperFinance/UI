@@ -2,11 +2,11 @@ import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import Flex from "@ui/Flex/Flex";
 import React from "react";
 import { formatNumber, calculateNumberDecimal } from "@utils/bignumber";
-import { TPairBalanceRow } from "./types";
 import ChainIcon from "@ui/ChainIcon";
+import type { TPairBalanceRow } from "./types";
 
 export function PairBalanceRow(pair: TPairBalanceRow) {
-  const { detail, balance, value } = pair[1];
+  const { detail, balance } = pair[1];
 
   const firstToken = Object.values(detail.tokens)[0];
   const secondToken = Object.values(detail.tokens)[1];

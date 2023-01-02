@@ -6,7 +6,7 @@ import { TableRowSkeleton } from "@ui/Skeleton";
 import useTable from "@views/Portfolio/hooks/useTable";
 import { memo, useState } from "react";
 import { PairBalanceRow } from "./PairBalanceRow";
-import { TPairBalanceRow, IPairBalanceTable } from "./types";
+import type { TPairBalanceRow, IPairBalanceTable } from "./types";
 
 function PairBalanceTable({
   pairBalances,
@@ -43,7 +43,7 @@ function PairBalanceTable({
       <TableHeader titleList={["Token", "Networks", "Balance"]} />
       <TableBody>
         {slice.map((pair: TPairBalanceRow) => (
-          <PairBalanceRow {...pair} />
+          <PairBalanceRow key={pair[0]} {...pair} />
         ))}
       </TableBody>
     </Table>

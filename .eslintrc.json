@@ -56,7 +56,8 @@
 //         "import/newline-after-import": "error",
 //         "import/no-duplicates": "error",
 //         "tailwindcss/no-custom-classname": "off",
-//         "tailwindcss/classnames-order": "off"
+//         "tailwindcss/classnames-order": "off",
+//         "@typescript-eslint/no-non-null-asserted-optional-chain": "off"
 //       }
 //     }
 //   ]

@@ -1,6 +1,7 @@
 import { newAllCustomChains } from "@constants/networkList";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+
 export const baseURL = "https://nt.piper.finance";
 
 const handleSaveNFTs = async (wallet: string | undefined) => {
@@ -38,9 +39,9 @@ const getNftList = async (
 
 const useNftList = (
   wallet: string | undefined,
-  pageSize: number = 10,
-  pageNumber: number = 1,
-  saveSucceeded: boolean
+  saveSucceeded: boolean,
+  pageSize = 10,
+  pageNumber = 1
 ) => {
   return useQuery({
     queryKey: ["userNFTs", wallet, pageSize, pageNumber],

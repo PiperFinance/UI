@@ -4,7 +4,7 @@ import { useNftList, useSaveNFTs } from "@views/Portfolio/hooks/useNFTs";
 import { useEffect } from "react";
 import { useAccount } from "wagmi";
 import { NftBox } from "./NftBox";
-import { INft } from "./types";
+import type { INft } from "./types";
 
 export default function NFTList() {
   const { address } = useAccount();
@@ -20,9 +20,9 @@ export default function NFTList() {
 
   const { data, isLoading, error } = useNftList(
     address ? address.toString().toLowerCase() : undefined,
+    isSuccess,
     10,
-    1,
-    isSuccess
+    1
   );
 
   if (isLoading) {
@@ -64,7 +64,7 @@ export default function NFTList() {
       justifyContent="evenly"
     >
       {data.map((nft: INft) => (
-        <NftBox {...nft} />
+        <NftBox key={nft.detail.id} {...nft} />
       ))}
     </Flex>
   );

@@ -3,7 +3,7 @@ import { useUserPairBalances } from "@views/Portfolio/hooks/useUserPairs";
 import { memo, useMemo } from "react";
 import { useAccount } from "wagmi";
 import PairBalanceTable from "./PairBalanceTable";
-import { IPair, TPairBalanceRow, IPairResponse } from "./types";
+import type { IPair, TPairBalanceRow, IPairResponse } from "./types";
 
 function PairBalance() {
   const { address } = useAccount();

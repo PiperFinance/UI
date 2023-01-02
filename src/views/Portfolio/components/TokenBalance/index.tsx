@@ -1,8 +1,9 @@
 import { useAccount } from "wagmi";
 import { memo, useMemo } from "react";
 import { useUserBalances } from "@views/Portfolio/hooks/useUserBalances";
-import { TTokenBalanceRow } from "./types";
-import { IChainResponse, updateBalance } from "@store/store";
+import type { IChainResponse } from "@store/store";
+import { updateBalance } from "@store/store";
+import type { TTokenBalanceRow } from "./types";
 import TokenBalanceTable from "./TokenBalanceTable";
 
 function TokenBalance() {

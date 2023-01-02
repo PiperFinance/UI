@@ -1,13 +1,13 @@
 import {
   useSaveTransactions,
   useTransactions,
-} from "@views/Portfolio/hooks/useTransactions";
-import { useEffect } from "react";
-import { useAccount } from "wagmi";
-import { ITransaction } from "./types";
-import { TransactionRow } from "./TransactionRow";
-import { Skeleton } from "@ui/Skeleton";
-import Flex from "@ui/Flex/Flex";
+} from '@views/Portfolio/hooks/useTransactions';
+import { useEffect } from 'react';
+import { useAccount } from 'wagmi';
+import { Skeleton } from '@ui/Skeleton';
+import Flex from '@ui/Flex/Flex';
+import type { ITransaction } from './types';
+import { TransactionRow } from './TransactionRow';
 
 export default function TransactionHistory() {
   const { address } = useAccount();
@@ -23,9 +23,9 @@ export default function TransactionHistory() {
 
   const { data, isLoading, error } = useTransactions(
     address ? String(address) : undefined,
+    isSuccess,
     10,
-    1,
-    isSuccess
+    1
   );
 
   if (isLoading) {
@@ -65,7 +65,7 @@ export default function TransactionHistory() {
   return (
     <Flex direction="column" customStyle="p-2 h-full overflow-y-auto">
       {data?.map((transaction: ITransaction) => (
-        <TransactionRow {...transaction} />
+        <TransactionRow key={transaction.hash} {...transaction} />
       ))}
     </Flex>
   );
