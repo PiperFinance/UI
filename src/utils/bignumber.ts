@@ -16,7 +16,7 @@ export const convertToString = (_Number: BigNumber): string => {
 
 export const formatNumber = (
   _number: number | string | BigNumber,
-  _decimal: number = 0,
+  _decimal: number,
   _roundingMode: BigNumber.RoundingMode = 1
 ): string => {
   const bigAmount = convertToBigNumber(_number);
@@ -32,7 +32,7 @@ export const roundNumber = (
   return bigAmount.decimalPlaces(_decimal, _roundingMode);
 };
 
-//calculation
+// calculation
 export const calculateNumberDecimal = (
   _number: number | string | BigNumber,
   _decimal: number
@@ -89,7 +89,7 @@ export const calculateMinusNumbers = (
   return bigAmount.minus(bigDecimal);
 };
 
-//compare
+// compare
 
 export const isEqual = (
   _firstNumber: BigNumber,

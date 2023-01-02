@@ -3,11 +3,10 @@ import TableBody from "@components/Table/TableBody";
 import TableHeader from "@components/Table/TableHeader";
 import Flex from "@ui/Flex/Flex";
 import { TableRowSkeleton } from "@ui/Skeleton";
-import { useEffect, useState } from "react";
-import { TokenBalanceRow } from "./TokenBalanceRow";
-import { ITokenBalanceTable, TTokenBalanceRow } from "./types";
-import { memo } from "react";
+import { useState, memo } from "react";
 import useTable from "@views/Portfolio/hooks/useTable";
+import { TokenBalanceRow } from "./TokenBalanceRow";
+import type { ITokenBalanceTable, TTokenBalanceRow } from "./types";
 
 function TokenBalanceTable({
   balances,
@@ -44,7 +43,7 @@ function TokenBalanceTable({
       <TableHeader titleList={["Token", "Network", "Price", "Balance", ""]} />
       <TableBody>
         {slice.map((token: TTokenBalanceRow) => (
-          <TokenBalanceRow {...token} />
+          <TokenBalanceRow key={token[0]} {...token} />
         ))}
       </TableBody>
     </Table>

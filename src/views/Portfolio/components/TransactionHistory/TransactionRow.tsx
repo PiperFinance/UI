@@ -3,15 +3,13 @@ import { ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid";
 import Flex from "@ui/Flex/Flex";
 import React from "react";
 import ChainIcon from "@ui/ChainIcon";
-import { ITransaction, ITransactionLabel } from "./types";
 import { handleSliceHashString } from "@utils/sliceHashString";
 import {
   formatNumber,
   calculateMultiplyNumbers,
   calculateNumberDecimal,
 } from "@utils/bignumber";
-import Label from "@ui/Label/Label";
-import { stringToColor } from "@utils/stringToColor";
+import type { ITransaction, ITransactionLabel } from "./types";
 
 export function TransactionRow(transaction: ITransaction) {
   const { userAddress, token, gasUsed, gasPrice, timeStamp, labels } =
@@ -100,7 +98,7 @@ export function TransactionRow(transaction: ITransaction) {
           target="_blank"
           rel="noopener noreferrer"
           href={`${currentChain?.blockExplorers?.default.url}/tx/${transaction.hash}`}
-          className="w-auto overflow-hidden overflow-ellipsis text-sm hover:text-gray-400 dark:text-gray-300"
+          className="w-auto overflow-hidden text-ellipsis text-sm hover:text-gray-400 dark:text-gray-300"
         >
           <ArrowTopRightOnSquareIcon className="w-7" />
         </a>

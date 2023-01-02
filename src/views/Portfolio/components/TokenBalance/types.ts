@@ -1,4 +1,4 @@
-import { IToken } from "@store/store";
+import type { IToken } from "@store/store";
 
 export interface ITokenBalanceTable {
   balances: TTokenBalanceRow[];

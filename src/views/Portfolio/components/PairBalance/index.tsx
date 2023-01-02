@@ -1,21 +1,9 @@
 import { updateBalance } from "@store/store";
-import Flex from "@ui/Flex/Flex";
-import { TableRowSkeleton } from "@ui/Skeleton";
 import { useUserPairBalances } from "@views/Portfolio/hooks/useUserPairs";
-import dynamic from "next/dynamic";
 import { memo, useMemo } from "react";
 import { useAccount } from "wagmi";
-import { IPair, TPairBalanceRow, IPairResponse } from "./types";
-
-const PairBalanceTable = dynamic(() => import("./PairBalanceTable"), {
-  loading: () => (
-    <Flex direction="column">
-      <TableRowSkeleton />
-      <TableRowSkeleton />
-      <TableRowSkeleton />
-    </Flex>
-  ),
-});
+import PairBalanceTable from "./PairBalanceTable";
+import type { IPair, TPairBalanceRow, IPairResponse } from "./types";
 
 function PairBalance() {
   const { address } = useAccount();
