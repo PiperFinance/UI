@@ -10,7 +10,7 @@ const fetchUserBalances = async (wallet: string | undefined) => {
   const { data, status } = await axios.get(
     `${baseURL}?wallet=${wallet}${chainList.join("")}`
   );
-  return status === 200 ? data.result : [];
+  return status === 200 ? data : [];
 };
 
 const useUserBalances = (wallet: string | undefined) => {
