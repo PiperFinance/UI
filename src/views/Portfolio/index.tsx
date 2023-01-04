@@ -1,18 +1,16 @@
-import TotalValue from "@components/TotalValue";
-import { Tab } from "@headlessui/react";
-import useAddParams from "@hooks/useAddParams";
-import useHasMounted from "@hooks/useHasMounted";
-import Container from "@ui/Container/Container";
-import Flex from "@ui/Flex/Flex";
-import { TableRowSkeleton } from "@ui/Skeleton";
-import { classNames } from "@utils/classNames";
-import dynamic from "next/dynamic";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import NFTList from "./components/NFTList";
-import TransactionHistory from "./components/TransactionHistory";
+import TotalValue from '@components/TotalValue';
+import { Tab } from '@headlessui/react';
+import useAddParams from '@hooks/useAddParams';
+import useHasMounted from '@hooks/useHasMounted';
+import Container from '@ui/Container/Container';
+import Flex from '@ui/Flex/Flex';
+import { Skeleton, TableRowSkeleton } from '@ui/Skeleton';
+import { classNames } from '@utils/classNames';
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
-const TokenBalance = dynamic(() => import("./components/TokenBalance"), {
+const TokenBalance = dynamic(() => import('./components/TokenBalance'), {
   loading: () => (
     <Flex direction="column">
       <TableRowSkeleton />
@@ -22,12 +20,35 @@ const TokenBalance = dynamic(() => import("./components/TokenBalance"), {
   ),
 });
 
-const PairTokenTable = dynamic(() => import("./components/PairBalance"), {
+const PairTokenTable = dynamic(() => import('./components/PairBalance'), {
   loading: () => (
     <Flex direction="column">
       <TableRowSkeleton />
       <TableRowSkeleton />
       <TableRowSkeleton />
+    </Flex>
+  ),
+});
+
+const TransactionHistory = dynamic(
+  () => import('./components/TransactionHistory'),
+  {
+    loading: () => (
+      <Flex direction="column">
+        <Skeleton />
+        <Skeleton />
+        <Skeleton />
+      </Flex>
+    ),
+  }
+);
+
+const NFTList = dynamic(() => import('./components/NFTList'), {
+  loading: () => (
+    <Flex direction="column">
+      <Skeleton />
+      <Skeleton />
+      <Skeleton />
     </Flex>
   ),
 });
@@ -37,7 +58,7 @@ export default function Portfolio() {
   const router = useRouter();
   const hasMounted = useHasMounted();
   const addParams = useAddParams();
-  const tabs: string[] = ["Tokens", "Liquidities", "NFTs", "Transactions"];
+  const tabs: string[] = ['Tokens', 'Liquidities', 'NFTs', 'Transactions'];
 
   useEffect(() => {
     tabs.find(
@@ -61,10 +82,10 @@ export default function Portfolio() {
                   onClick={() => addParams({ tab: tab.toLowerCase() })}
                   className={({ selected }) =>
                     classNames(
-                      "inline-block rounded-xl p-3 outline-none",
+                      'inline-block rounded-xl p-3 outline-none',
                       selected
-                        ? "border border-primary-400 text-blue-700 dark:bg-gray-800 dark:text-blue-300"
-                        : "hover:bg-gray-50 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300"
+                        ? 'border border-primary-400 text-blue-700 dark:bg-gray-800 dark:text-blue-300'
+                        : 'hover:bg-gray-50 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300'
                     )
                   }
                 >

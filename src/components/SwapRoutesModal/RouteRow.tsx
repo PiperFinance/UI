@@ -5,7 +5,7 @@ import {
 } from "@heroicons/react/20/solid";
 import { ChevronRightIcon, ClockIcon } from "@heroicons/react/24/solid";
 import { Badge } from "@ui/Badge/Badge";
-import { CurrencyIcon } from "@ui/CurrencyIcon";
+import { CurrencyIcon } from "@components/CurrencyIcon";
 import Flex from "@ui/Flex/Flex";
 import { formatNumber } from "@utils/bignumber";
 import type { IRouteInfo } from "@utils/swap/types";

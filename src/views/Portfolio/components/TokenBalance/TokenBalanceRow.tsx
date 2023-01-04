@@ -2,7 +2,7 @@ import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import Flex from "@ui/Flex/Flex";
 import React, { memo } from "react";
 import { formatNumber, calculateMultiplyNumbers } from "@utils/bignumber";
-import ChainIcon from "@ui/ChainIcon";
+import ChainIcon from "@components/ChainIcon";
 import { useCoingecko } from "@hooks/useCoingecko";
 import type { TTokenBalanceRow } from "./types";
 

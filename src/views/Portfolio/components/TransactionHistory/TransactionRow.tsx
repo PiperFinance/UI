@@ -2,7 +2,7 @@ import { newAllCustomChains } from "@constants/networkList";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid";
 import Flex from "@ui/Flex/Flex";
 import React from "react";
-import ChainIcon from "@ui/ChainIcon";
+import ChainIcon from "@components/ChainIcon";
 import { handleSliceHashString } from "@utils/sliceHashString";
 import {
   formatNumber,

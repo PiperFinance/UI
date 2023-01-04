@@ -1,32 +1,32 @@
-import { destinationToken, IToken, originToken, tokenAtom } from "@store/store";
-import { Button } from "@ui/Button/Button";
-import Container from "@ui/Container/Container";
-import Flex from "@ui/Flex/Flex";
-import { calculateNumberDecimalContract } from "@utils/bignumber";
-import swap from "@utils/swap/swap";
-import { useAtom, useAtomValue } from "jotai";
-import { Route as lifiRoute } from "@lifi/sdk";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { destinationToken, IToken, originToken, tokenAtom } from '@store/store';
+import { Button } from '@ui/Button/Button';
+import Container from '@ui/Container/Container';
+import Flex from '@ui/Flex/Flex';
+import { calculateNumberDecimalContract } from '@utils/bignumber';
+import swap from '@utils/swap/swap';
+import { useAtom, useAtomValue } from 'jotai';
+import { Route as lifiRoute } from '@lifi/sdk';
+import React, { useMemo, useState } from 'react';
 import {
   useAccount,
   useBalance,
   useNetwork,
   useSigner,
   useSwitchNetwork,
-} from "wagmi";
-import Spinner from "@ui/Spinner/Spinner";
-import CurrencyInputPanel from "@components/CurrencyInputPanel";
-import SwitchCurrencyInput from "@components/SwitchCurrencyInput";
-import SwapRoute from "@components/SwapRoutes";
-import { CountdownCircleTimer } from "react-countdown-circle-timer";
-import { toast } from "react-hot-toast";
-import { ToastError, ToastWarning } from "@components/Toast";
-import { trpc } from "@utils/trpc";
-import { Skeleton } from "@ui/Skeleton";
-import { IRouteInfo, ISwapExactInSymbiosis } from "@utils/swap/types";
-import { Signer } from "ethers";
-import { useDebounce } from "react-use";
-import { ArrowPathIcon } from "@heroicons/react/24/solid";
+} from 'wagmi';
+import Spinner from '@ui/Spinner/Spinner';
+import CurrencyInputPanel from '@components/CurrencyInputPanel';
+import SwitchCurrencyInput from '@components/SwitchCurrencyInput';
+import SwapRoute from '@components/SwapRoutes';
+import { CountdownCircleTimer } from 'react-countdown-circle-timer';
+import { toast } from 'react-hot-toast';
+import { ToastError, ToastWarning } from '@components/Toast';
+import { trpc } from '@utils/trpc';
+import { Skeleton } from '@ui/Skeleton';
+import { IRouteInfo, ISwapExactInSymbiosis } from '@utils/swap/types';
+import { Signer } from 'ethers';
+import { useDebounce } from 'react-use';
+import { ArrowPathIcon } from '@heroicons/react/24/solid';
 
 interface ISwap {
   amountIn: string;
@@ -36,15 +36,16 @@ interface ISwap {
 }
 
 export default function Swap() {
-  const handleSwap = useMemo(() => new swap(), []);
   const tokenList = useAtomValue(tokenAtom);
+  const [fromToken, setFormToken] = useAtom(originToken);
+  const [toToken, setToToken] = useAtom(destinationToken);
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [swapRoute, setSwapRoute] = useState<IRouteInfo[]>();
   const [amount, setAmount] = useState<string>();
   const [selectedRoute, setSelectedRoute] = useState<IRouteInfo>();
-  const [fromToken, setFormToken] = useAtom(originToken);
-  const [refRoute, setRefRoute] = useState<boolean>(false);
-  const [toToken, setToToken] = useAtom(destinationToken);
+  const [refreshRoute, setRefreshRoute] = useState<boolean>(false);
+
   const { address } = useAccount();
   const { chain } = useNetwork();
   const { switchNetwork } = useSwitchNetwork();
@@ -52,7 +53,7 @@ export default function Swap() {
     address: address,
     token:
       fromToken?.detail?.address.toLowerCase() ===
-      "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE".toLowerCase()
+      '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'.toLowerCase()
         ? undefined
         : (fromToken?.detail?.address as `0x${string}`),
     chainId: fromToken?.detail?.chainId,
@@ -62,7 +63,7 @@ export default function Swap() {
     address: address,
     token:
       toToken?.detail?.address.toLowerCase() ===
-      "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE".toLowerCase()
+      '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'.toLowerCase()
         ? undefined
         : (toToken?.detail?.address as `0x${string}`),
     chainId: toToken?.detail?.chainId,
@@ -73,19 +74,7 @@ export default function Swap() {
     chainId: chain?.id,
   });
 
-  useDebounce(
-    () => {
-      if (!amount || !fromToken || !toToken || !address) return;
-      const convertedAmountIn = calculateNumberDecimalContract(
-        amount,
-        fromToken.detail?.decimals!
-      );
-      getRoute({ amountIn: convertedAmountIn, fromToken, toToken, address });
-    },
-    500,
-    [amount, fromToken, toToken, address, refRoute]
-  );
-
+  const handleSwap = useMemo(() => new swap(), []);
   const mutation = trpc.swap.routes.useMutation({
     onMutate: () => {
       setSwapRoute(undefined);
@@ -104,6 +93,19 @@ export default function Swap() {
       ));
     },
   });
+
+  useDebounce(
+    () => {
+      if (!amount || !fromToken || !toToken || !address) return;
+      const convertedAmountIn = calculateNumberDecimalContract(
+        amount,
+        fromToken.detail?.decimals!
+      );
+      getRoute({ amountIn: convertedAmountIn, fromToken, toToken, address });
+    },
+    500,
+    [amount, fromToken, toToken, address, refreshRoute]
+  );
 
   const getRoute = ({ amountIn, fromToken, toToken, address }: ISwap) => {
     mutation.mutate({
@@ -139,7 +141,7 @@ export default function Swap() {
     );
     const { type, response } = selectedRoute;
     switch (type) {
-      case "QuoteSimulationResult":
+      case 'QuoteSimulationResult':
         handleSwap
           .executeRangoSwap(signer, {
             fromToken: fromToken.detail!,
@@ -154,7 +156,7 @@ export default function Swap() {
             setIsLoading(false);
           });
         break;
-      case "lifiRoute":
+      case 'lifiRoute':
         handleSwap
           .executeLifiSwap(signer, response as lifiRoute, switchChainHook)
           .then((res) => {
@@ -185,7 +187,7 @@ export default function Swap() {
             setIsLoading(false);
           });
         break;
-      case "ISwapExactInSymbiosis":
+      case 'ISwapExactInSymbiosis':
         handleSwap
           .executeSymbiosisSwap(signer, response as ISwapExactInSymbiosis)
           .then((res) => {
@@ -218,7 +220,7 @@ export default function Swap() {
         <h1 className=" text-4xl font-bold text-wheat-500">SWAP</h1>
         <Flex justifyContent="end" width="full" customStyle="px-5">
           <ArrowPathIcon
-            onClick={() => setRefRoute(!refRoute)}
+            onClick={() => setRefreshRoute(!refreshRoute)}
             className="h-5 w-5 cursor-pointer text-gray-600 transition hover:text-gray-200"
           />
         </Flex>
@@ -237,7 +239,7 @@ export default function Swap() {
           selectedCurrency={toToken}
           setToken={setToToken}
           currencyBalance={toTokenBalance?.formatted}
-          amount={selectedRoute ? selectedRoute.amountOut : ""}
+          amount={selectedRoute ? selectedRoute.amountOut : ''}
           disabled
         />
 
@@ -264,7 +266,7 @@ export default function Swap() {
                 trailColor="rgba(0,0,0,0)"
                 strokeWidth={2}
                 onComplete={() => {
-                  setRefRoute(!refRoute);
+                  setRefreshRoute(!refreshRoute);
                   return { shouldRepeat: true };
                 }}
               />
@@ -290,7 +292,7 @@ export default function Swap() {
           >
             {insufficientBalance
               ? `Insufficient ${fromToken?.detail.symbol} balance`
-              : "Swap"}
+              : 'Swap'}
           </Button>
         )}
       </Flex>
