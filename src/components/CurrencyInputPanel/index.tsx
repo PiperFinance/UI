@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import type { IToken } from "@store/store";
 import { searchAtom } from "@store/store";
 import { useAtom } from "jotai";
-import { CurrencyIcon } from "@ui/CurrencyIcon";
+import { CurrencyIcon } from "@components/CurrencyIcon";
 import { formatNumber } from "@utils/bignumber";
 import useHasMounted from "@hooks/useHasMounted";
 import { CurrencyInputPanelSkeleton } from "@ui/Skeleton";

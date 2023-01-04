@@ -1,10 +1,11 @@
-import { useAccount } from "wagmi";
-import { memo, useMemo } from "react";
-import { useUserBalances } from "@views/Portfolio/hooks/useUserBalances";
-import type { IChainResponse } from "@store/store";
-import { updateBalance } from "@store/store";
-import type { TTokenBalanceRow } from "./types";
-import TokenBalanceTable from "./TokenBalanceTable";
+import { useAccount } from 'wagmi';
+import { memo, useMemo } from 'react';
+import { useUserBalances } from '@views/Portfolio/hooks/useUserBalances';
+import type { IChainResponse } from '@store/store';
+import { updateBalance } from '@store/store';
+import type { TTokenBalanceRow } from './types';
+import TokenBalanceTable from './TokenBalanceTable';
+import { sortData } from '@utils/customSort';
 
 function TokenBalance() {
   const { address } = useAccount();
@@ -14,8 +15,10 @@ function TokenBalance() {
 
   const balances: TTokenBalanceRow[] = useMemo(
     () =>
-      Object.entries(
-        updateBalance<IChainResponse, Text>(data)
+      sortData(
+        Object.entries(updateBalance<IChainResponse, Text>(data)),
+        'balance',
+        'value'
       ) as unknown as TTokenBalanceRow[],
     [data, isRefetching]
   );

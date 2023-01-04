@@ -1,10 +1,9 @@
-import { atom } from "jotai";
-import { atomWithStorage } from "jotai/utils";
-import { atomsWithQuery } from "jotai-tanstack-query";
-import { ReactNode } from "react";
-import { IChain, newAllCustomChains } from "@constants/networkList";
-import { sortData } from "@utils/customSort";
-export const baseURL = "https://piper.finance/api/";
+import { atom } from 'jotai';
+import { atomWithStorage } from 'jotai/utils';
+import { atomsWithQuery } from 'jotai-tanstack-query';
+import { IChain, newAllCustomChains } from '@constants/networkList';
+import { sortData } from '@utils/customSort';
+export const baseURL = 'https://piper.finance/api/';
 
 export interface IChainResponse {
   [key: string]: ITokenResponse;
@@ -40,11 +39,11 @@ export interface ITokenDetail extends ITokenDetailDefault {
 
 export const toast = atom<JSX.Element>(<></>);
 export const originToken = atomWithStorage<IToken | undefined>(
-  "originToken",
+  'originToken',
   undefined
 );
 export const destinationToken = atomWithStorage<IToken | undefined>(
-  "destinationToken",
+  'destinationToken',
   undefined
 );
 export const selectedChains = atom<IChain[]>(newAllCustomChains);
@@ -52,7 +51,7 @@ export const allTokens = atom<IToken[]>([]);
 export const balancesList = atom<IChainResponse[]>([]);
 
 export const [getAllTokens] = atomsWithQuery<ITokenResponse[]>(() => ({
-  queryKey: ["allTokens"],
+  queryKey: ['allTokens'],
   queryFn: async () => {
     const res = await fetch(
       `https://raw.githubusercontent.com/PiperFinance/CD/main/tokens/outVerified/all_tokens.json`
@@ -61,7 +60,7 @@ export const [getAllTokens] = atomsWithQuery<ITokenResponse[]>(() => ({
   },
 }));
 
-export const searchAtom = atom<string>("");
+export const searchAtom = atom<string>('');
 
 export const chainFilterAtom = atom((get) => {
   const tokens: IToken[] = get(allTokens);
@@ -83,22 +82,22 @@ export const tokenAtom = atom((get) => {
         token.detail?.symbol.toLowerCase().includes(search) ||
         token.detail?.address.toLowerCase().includes(search)
     ),
-    "balance",
-    "value"
+    'balance',
+    'value'
   );
 });
 
-export const updateTokenListAtom = atom((get): { tokensList: IToken[] } => {
+export const updateTokenListAtom = atom((get): IToken[] => {
   const tokens: ITokenResponse[] = get(getAllTokens);
   const balances: IChainResponse[] = get(balancesList);
-  return {
-    tokensList: Object.values(
-      updateTokenList(
-        tokens,
-        updateBalance<IChainResponse, ITokenResponse>(balances)
-      )
-    ),
-  };
+
+  const tokensList = Object.values(
+    updateTokenList(
+      tokens,
+      updateBalance<IChainResponse, ITokenResponse>(balances)
+    )
+  );
+  return tokensList;
 });
 
 const updateTokenList = (
@@ -117,7 +116,6 @@ export const updateBalance = <T, R>(balances: T[]): R[] => {
         flatBalances[Number(key)] = value;
       });
     });
-  } catch (e) {
-  }
+  } catch (e) {}
   return flatBalances;
 };

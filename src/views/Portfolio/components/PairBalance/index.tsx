@@ -1,9 +1,10 @@
-import { updateBalance } from "@store/store";
-import { useUserPairBalances } from "@views/Portfolio/hooks/useUserPairs";
-import { memo, useMemo } from "react";
-import { useAccount } from "wagmi";
-import PairBalanceTable from "./PairBalanceTable";
-import type { IPair, TPairBalanceRow, IPairResponse } from "./types";
+import { updateBalance } from '@store/store';
+import { sortData } from '@utils/customSort';
+import { useUserPairBalances } from '@views/Portfolio/hooks/useUserPairs';
+import { memo, useMemo } from 'react';
+import { useAccount } from 'wagmi';
+import PairBalanceTable from './PairBalanceTable';
+import type { IPair, TPairBalanceRow, IPairResponse } from './types';
 
 function PairBalance() {
   const { address } = useAccount();
@@ -13,8 +14,10 @@ function PairBalance() {
 
   const pairBalances: TPairBalanceRow[] = useMemo(
     () =>
-      Object.entries(
-        updateBalance<IPairResponse, IPair>(data)
+      sortData(
+        Object.entries(updateBalance<IPairResponse, IPair>(data)),
+        'balance',
+        'value'
       ) as unknown as TPairBalanceRow[],
     [data]
   );

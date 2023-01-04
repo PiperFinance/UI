@@ -1,5 +1,5 @@
 import { newAllCustomChains } from '@constants/networkList';
-import ChainIcon from '@ui/ChainIcon';
+import ChainIcon from '@components/ChainIcon';
 import Flex from '@ui/Flex/Flex';
 import { handleSliceHashString } from '@utils/sliceHashString';
 import React from 'react';
