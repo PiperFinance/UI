@@ -1,9 +1,9 @@
-import { ChevronRightIcon } from "@heroicons/react/20/solid";
-import Flex from "@ui/Flex/Flex";
-import React from "react";
-import { formatNumber, calculateNumberDecimal } from "@utils/bignumber";
-import type { TPairBalanceRow } from "./types";
-import ChainIcon from "@components/ChainIcon";
+import { ChevronRightIcon } from '@heroicons/react/20/solid';
+import Flex from '@ui/Flex/Flex';
+import React from 'react';
+import { formatNumber, calculateNumberDecimal } from '@utils/bignumber';
+import type { TPairBalanceRow } from './types';
+import ChainIcon from '@components/ChainIcon';
 
 export function PairBalanceRow(pair: TPairBalanceRow) {
   const { detail, balance } = pair[1];
@@ -14,7 +14,7 @@ export function PairBalanceRow(pair: TPairBalanceRow) {
   return (
     <tr
       key={detail?.address}
-      className="group cursor-pointer border-b last:border-b-0 hover:bg-gray-50 dark:border-gray-500 dark:hover:bg-gray-600"
+      className="group cursor-pointer border-b last:border-b-0 border-gray-500 hover:bg-gray-600"
     >
       <td className="p-4">
         <Flex alignItems="center">
@@ -22,7 +22,7 @@ export function PairBalanceRow(pair: TPairBalanceRow) {
             src={
               firstToken?.detail.logoURI
                 ? firstToken?.detail.logoURI
-                : "/assets/token-not-found.png"
+                : '/assets/token-not-found.png'
             }
             alt={firstToken?.detail.symbol!}
             className="mr-1 h-8 w-8"
@@ -31,7 +31,7 @@ export function PairBalanceRow(pair: TPairBalanceRow) {
             src={
               secondToken?.detail.logoURI
                 ? secondToken?.detail.logoURI
-                : "/assets/token-not-found.png"
+                : '/assets/token-not-found.png'
             }
             alt={secondToken?.detail.symbol}
             className="mr-1 h-8 w-8"
@@ -54,7 +54,7 @@ export function PairBalanceRow(pair: TPairBalanceRow) {
         <div>
           {/* <b>${formatNumber(tokenValue, 3)}</b> */}
           <div className="text-md text-gray-400">
-            {formatNumber(calculateNumberDecimal(balance!, 18), 8)}{" "}
+            {formatNumber(calculateNumberDecimal(balance!, 18), 8)}{' '}
             <span>{detail?.name}</span>
           </div>
         </div>

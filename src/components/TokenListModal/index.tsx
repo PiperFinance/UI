@@ -1,18 +1,18 @@
-import Flex from "@ui/Flex/Flex";
-import React, { useCallback } from "react";
-import type { ListChildComponentProps } from "react-window";
-import { FixedSizeList } from "react-window";
-import type { IToken } from "@store/store";
-import { selectedChains } from "@store/store";
-import type { SetStateAction } from "jotai";
-import { useAtom } from "jotai";
-import { formatNumber } from "@utils/bignumber";
-import Input from "@ui/Input/Input";
-import Image from "next/image";
-import { useAccount, useBalance } from "wagmi";
-import type { IChain } from "@constants/networkList";
-import { newAllCustomChains } from "@constants/networkList";
-import ModalHeader from "../ModalHeader";
+import Flex from '@ui/Flex/Flex';
+import React, { useCallback } from 'react';
+import type { ListChildComponentProps } from 'react-window';
+import { FixedSizeList } from 'react-window';
+import type { IToken } from '@store/store';
+import { selectedChains } from '@store/store';
+import type { SetStateAction } from 'jotai';
+import { useAtom } from 'jotai';
+import { formatNumber } from '@utils/bignumber';
+import Input from '@ui/Input/Input';
+import Image from 'next/image';
+import { useAccount, useBalance } from 'wagmi';
+import type { IChain } from '@constants/networkList';
+import { newAllCustomChains } from '@constants/networkList';
+import ModalHeader from '../ModalHeader';
 
 interface ITokenListModal {
   onDismiss: () => void;
@@ -54,7 +54,7 @@ export default function TokenListModal({
       address,
       token:
         currency.detail.address.toLowerCase() ===
-        "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE".toLowerCase()
+        '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'.toLowerCase()
           ? undefined
           : (currency.detail.address as `0x${string}`),
       chainId: currency.detail.chainId,
@@ -64,19 +64,20 @@ export default function TokenListModal({
     const handleSelectToken = (token: IToken) => {
       setToken(token);
       onDismiss();
-      setSearch("");
+      setSearch('');
     };
 
     return (
       <Flex
         style={style}
         onClick={() => handleSelectToken(currency)}
-        customStyle="h-16 overflow-x-hidden overflow-hidden"
+        customStyle="h-16"
+        overflow="hidden"
         alignItems="center"
       >
         <Flex
           customStyle={`${
-            isSelected ? "text-wheat-400" : "text-gray-100"
+            isSelected ? 'text-wheat-400' : 'text-gray-100'
           }  cursor-pointer hover:text-wheat-400 transition`}
           alignItems="center"
         >
@@ -84,7 +85,7 @@ export default function TokenListModal({
             src={
               currency.detail.logoURI
                 ? currency.detail.logoURI
-                : "/assets/token-not-found.png"
+                : '/assets/token-not-found.png'
             }
             alt={currency.detail.name}
             className="h-11 w-11 rounded-full"
@@ -97,7 +98,7 @@ export default function TokenListModal({
                   <Flex alignItems="center" customStyle="space-x-1">
                     <h5 className="text-xs text-gray-300">on {chain.name}</h5>
                     <div className="relative h-5 w-5 rounded-md bg-gray-1000 ">
-                      <Image src={chain.icon!} alt={""} fill />
+                      <Image src={chain.icon!} alt={''} fill />
                     </div>
                   </Flex>
                 )
@@ -106,7 +107,7 @@ export default function TokenListModal({
           <span className="w-32 text-center text-sm font-semibold">
             {balance && Number(balance.value) > 0
               ? formatNumber(balance.formatted, 5)
-              : "0"}
+              : '0'}
           </span>
         </Flex>
       </Flex>
@@ -121,18 +122,18 @@ export default function TokenListModal({
       <ModalHeader
         title="Connect Wallet"
         onClick={() => {
-          setSearch("");
+          setSearch('');
           onDismiss();
         }}
       />
-      <Flex justifyContent="between" customStyle="flex-wrap">
+      <Flex justifyContent="between" wrap={true}>
         {newAllCustomChains.map((chain) => (
           <div
             onClick={() => toggleChain(chain)}
             className={`${
               currentChain.includes(chain)
-                ? "border-green-300 hover:border-green-700"
-                : "border-gray-600 hover:border-gray-100"
+                ? 'border-green-300 hover:border-green-700'
+                : 'border-gray-600 hover:border-gray-100'
             } relative m-1 h-14 basis-1/6 cursor-pointer rounded-lg border  p-3 transition hover:border-gray-100`}
           >
             <Image src={chain.icon!} alt={chain.name} fill />

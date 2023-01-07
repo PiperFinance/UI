@@ -1,10 +1,10 @@
-import Flex from "@ui/Flex/Flex";
-import { Skeleton } from "@ui/Skeleton";
-import { useNftList, useSaveNFTs } from "@views/Portfolio/hooks/useNFTs";
-import { useEffect } from "react";
-import { useAccount } from "wagmi";
-import { NftBox } from "./NftBox";
-import type { INft } from "./types";
+import Flex from '@ui/Flex/Flex';
+import { Skeleton } from '@ui/Skeleton';
+import { useNftList, useSaveNFTs } from '@views/Portfolio/hooks/useNFTs';
+import { useEffect } from 'react';
+import { useAccount } from 'wagmi';
+import { NftBox } from './NftBox';
+import type { INft } from './types';
 
 export default function NFTList() {
   const { address } = useAccount();
@@ -60,7 +60,9 @@ export default function NFTList() {
   }
   return (
     <Flex
-      customStyle="p-2 h-full overflow-y-auto flex-wrap"
+      customStyle="p-2 h-full"
+      overflow="yAuto"
+      wrap={true}
       justifyContent="evenly"
     >
       {data.map((nft: INft) => (

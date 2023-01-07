@@ -1,4 +1,4 @@
-import type { IToken } from "@store/store";
+import type { IToken } from '@store/store';
 
 export interface ITransaction {
   chainId: number;
@@ -13,10 +13,7 @@ export interface ITransaction {
   contractAddress: string;
   to: string;
   value: string;
-  tokenName: string;
-  tokenSymbol: string;
-  token?: IToken;
-  tokenDecimal: number;
+  token: IToken[] | null;
   transactionIndex: string;
   gas: string;
   gasPrice: string;

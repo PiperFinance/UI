@@ -23,7 +23,7 @@ export default function Table({
 }: ITable) {
   return (
     <>
-      <table className="text-md my-7 w-full text-left text-gray-800 dark:text-gray-300">
+      <table className="text-md my-7 w-full text-left text-gray-300">
         {children}
       </table>
       <TableFooter
