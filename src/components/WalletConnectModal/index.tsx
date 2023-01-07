@@ -1,16 +1,16 @@
-import Flex from "@ui/Flex/Flex";
-import React from "react";
-import metamask from "@assets/wallets/metamask.svg";
-import phantom from "@assets/wallets/phantom.svg";
-import trust from "@assets/wallets/trust.svg";
-import walletConnect from "@assets/wallets/walletconnect.svg";
-import xdefi from "@assets/wallets/xdefi.svg";
-import coinbase from "@assets/wallets/coinbase wallet.svg";
-import Image from "next/image";
-import { XMarkIcon } from "@heroicons/react/20/solid";
-import { useConnect, useDisconnect } from "wagmi";
-import { InjectedConnector } from "wagmi/connectors/injected";
-import ModalHeader from "../ModalHeader";
+import Flex from '@ui/Flex/Flex';
+import React from 'react';
+import metamask from '@assets/wallets/metamask.svg';
+import phantom from '@assets/wallets/phantom.svg';
+import trust from '@assets/wallets/trust.svg';
+import walletConnect from '@assets/wallets/walletconnect.svg';
+import xdefi from '@assets/wallets/xdefi.svg';
+import coinbase from '@assets/wallets/coinbase wallet.svg';
+import Image from 'next/image';
+import { XMarkIcon } from '@heroicons/react/20/solid';
+import { useConnect, useDisconnect } from 'wagmi';
+import { InjectedConnector } from 'wagmi/connectors/injected';
+import ModalHeader from '../ModalHeader';
 
 type TWalletList = {
   name: string;
@@ -32,27 +32,27 @@ export default function WalletConnectModal({ onDismiss }: IWalletConnectModal) {
 
   const walletList: TWalletList[] = [
     {
-      name: "Metamask",
+      name: 'Metamask',
       icon: metamask,
     },
     {
-      name: "Phantom",
+      name: 'Phantom',
       icon: phantom,
     },
     {
-      name: "Trust Wallet",
+      name: 'Trust Wallet',
       icon: trust,
     },
     {
-      name: "Wallet Connect",
+      name: 'Wallet Connect',
       icon: walletConnect,
     },
     {
-      name: "Xdefi",
+      name: 'Xdefi',
       icon: xdefi,
     },
     {
-      name: "Coinbase",
+      name: 'Coinbase',
       icon: coinbase,
     },
   ];
@@ -63,7 +63,7 @@ export default function WalletConnectModal({ onDismiss }: IWalletConnectModal) {
       customStyle="max-w-lg bg-gray-800 rounded-2xl p-5 space-y-2"
     >
       <ModalHeader title="Connect Wallet" onClick={onDismiss} />
-      <Flex justifyContent="between" customStyle="flex-wrap">
+      <Flex justifyContent="between" wrap={true}>
         {connectors.map((connector) => (
           <Flex
             key={connector.id}
@@ -73,8 +73,8 @@ export default function WalletConnectModal({ onDismiss }: IWalletConnectModal) {
             alignItems="center"
             customStyle={`text-gray-50 text-sm rounded-2xl bg-gray-999 cursor-pointer h-32 my-4 ${
               isLoading && connector.id === pendingConnector?.id
-                ? "animate-pulse"
-                : ""
+                ? 'animate-pulse'
+                : ''
             }`}
             onClick={() => connect({ connector })}
           >

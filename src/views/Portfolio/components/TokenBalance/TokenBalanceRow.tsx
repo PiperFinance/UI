@@ -1,30 +1,30 @@
-import { ChevronRightIcon } from "@heroicons/react/20/solid";
-import Flex from "@ui/Flex/Flex";
-import React, { memo } from "react";
-import { formatNumber, calculateMultiplyNumbers } from "@utils/bignumber";
-import ChainIcon from "@components/ChainIcon";
-import { useCoingecko } from "@hooks/useCoingecko";
-import type { TTokenBalanceRow } from "./types";
+import { ChevronRightIcon } from '@heroicons/react/20/solid';
+import Flex from '@ui/Flex/Flex';
+import React, { memo } from 'react';
+import { formatNumber, calculateMultiplyNumbers } from '@utils/bignumber';
+import ChainIcon from '@components/ChainIcon';
+import { useCoingecko } from '@hooks/useCoingecko';
+import type { TTokenBalanceRow } from './types';
 
 export function TokenBalanceRow(token: TTokenBalanceRow) {
   const { detail, balance } = token[1];
   const { data: tokenPrice, status } = useCoingecko(detail?.symbol);
 
   const tokenValue =
-    status !== "loading"
+    status !== 'loading'
       ? calculateMultiplyNumbers(balance!, tokenPrice ?? 0)
       : 0;
 
   return (
     <tr
       key={detail?.address}
-      className="group cursor-pointer border-b last:border-b-0 hover:bg-gray-50 dark:border-gray-500 dark:hover:bg-gray-600"
+      className="group cursor-pointer border-b last:border-b-0 border-gray-500 hover:bg-gray-600"
     >
       <td className="p-4">
         <Flex>
           <img
             src={
-              detail.logoURI ? detail.logoURI : "/assets/token-not-found.png"
+              detail.logoURI ? detail.logoURI : '/assets/token-not-found.png'
             }
             alt={detail.symbol}
             className="h-10 w-10"
@@ -41,7 +41,7 @@ export function TokenBalanceRow(token: TTokenBalanceRow) {
         </Flex>
       </td>
       <td className="px-4">
-        <div>${tokenPrice?.toFixed(2)}</div>{" "}
+        <div>${tokenPrice?.toFixed(2)}</div>{' '}
       </td>
       <td className="px-4">
         <div>

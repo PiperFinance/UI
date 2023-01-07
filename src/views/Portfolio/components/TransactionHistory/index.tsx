@@ -63,7 +63,7 @@ export default function TransactionHistory() {
   }
 
   return (
-    <Flex direction="column" customStyle="p-2 h-full overflow-y-auto">
+    <Flex direction="column" customStyle="p-2 h-full" overflow="yAuto">
       {data?.map((transaction: ITransaction) => (
         <TransactionRow key={transaction.hash} {...transaction} />
       ))}

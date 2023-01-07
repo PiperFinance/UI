@@ -1,15 +1,15 @@
-import { newAllCustomChains } from "@constants/networkList";
-import { ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid";
-import Flex from "@ui/Flex/Flex";
-import React from "react";
-import ChainIcon from "@components/ChainIcon";
-import { handleSliceHashString } from "@utils/sliceHashString";
+import { newAllCustomChains } from '@constants/networkList';
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
+import Flex from '@ui/Flex/Flex';
+import React from 'react';
+import ChainIcon from '@components/ChainIcon';
+import { handleSliceHashString } from '@utils/sliceHashString';
 import {
   formatNumber,
   calculateMultiplyNumbers,
   calculateNumberDecimal,
-} from "@utils/bignumber";
-import type { ITransaction, ITransactionLabel } from "./types";
+} from '@utils/bignumber';
+import type { ITransaction, ITransactionLabel } from './types';
 
 export function TransactionRow(transaction: ITransaction) {
   const { userAddress, token, gasUsed, gasPrice, timeStamp, labels } =
@@ -30,7 +30,7 @@ export function TransactionRow(transaction: ITransaction) {
   const date = new Date(timeStamp * 1000)
     .toISOString()
     .slice(0, 19)
-    .replace("T", " ");
+    .replace('T', ' ');
 
   return (
     <Flex
@@ -44,7 +44,7 @@ export function TransactionRow(transaction: ITransaction) {
           <Flex>
             {labels ? (
               labels?.map((label: ITransactionLabel, index) =>
-                label.title === "function" ? (
+                label.title === 'function' ? (
                   <h1
                     key={label.value + index}
                     className="text-md capitalize text-gray-100"
@@ -52,7 +52,7 @@ export function TransactionRow(transaction: ITransaction) {
                     {label.value}
                   </h1>
                 ) : (
-                  ""
+                  ''
                 )
               )
             ) : (
@@ -76,15 +76,23 @@ export function TransactionRow(transaction: ITransaction) {
         )}
       </Flex>
       <Flex width="half" alignItems="center" customStyle="space-x-3">
-        {token && (
-          <>
-            <img
-              src={token?.detail.logoURI}
-              alt={token?.detail.name}
-              className="h-8 w-8 rounded-full"
-            />
-            <h3 className="text-md text-gray-300">{token?.detail.symbol}</h3>
-          </>
+        {Array.isArray(token) ? (
+          token.map((token) => (
+            <>
+              <img
+                src={
+                  token.detail.logoURI
+                    ? token?.detail.logoURI
+                    : '/assets/token-not-found.png'
+                }
+                alt={token?.detail.symbol}
+                className="h-8 w-8 rounded-full"
+              />
+              <h3 className="text-md text-gray-300">{token?.detail.symbol}</h3>
+            </>
+          ))
+        ) : (
+          <></>
         )}
       </Flex>
       <Flex width="fit">
@@ -98,7 +106,7 @@ export function TransactionRow(transaction: ITransaction) {
           target="_blank"
           rel="noopener noreferrer"
           href={`${currentChain?.blockExplorers?.default.url}/tx/${transaction.hash}`}
-          className="w-auto overflow-hidden text-ellipsis text-sm hover:text-gray-400 dark:text-gray-300"
+          className="w-auto overflow-hidden text-ellipsis text-sm hover:text-gray-400 text-gray-300"
         >
           <ArrowTopRightOnSquareIcon className="w-7" />
         </a>
