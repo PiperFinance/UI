@@ -144,6 +144,7 @@ export default function TokenListModal({
         border="full"
         fontSize="sm"
         placeholder="Search Token by name/symbol/address"
+        type="search"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         autoFocus

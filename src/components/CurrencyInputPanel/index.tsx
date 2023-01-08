@@ -1,17 +1,17 @@
-import { Button } from "@ui/Button/Button";
-import Flex from "@ui/Flex/Flex";
-import Input from "@ui/Input/Input";
+import { Button } from '@ui/Button/Button';
+import Flex from '@ui/Flex/Flex';
+import Input from '@ui/Input/Input';
 
-import React, { useState } from "react";
-import type { IToken } from "@store/store";
-import { searchAtom } from "@store/store";
-import { useAtom } from "jotai";
-import { CurrencyIcon } from "@components/CurrencyIcon";
-import { formatNumber } from "@utils/bignumber";
-import useHasMounted from "@hooks/useHasMounted";
-import { CurrencyInputPanelSkeleton } from "@ui/Skeleton";
-import TokenListModal from "../TokenListModal";
-import { Modal } from "../Modal/Modal";
+import React, { useState } from 'react';
+import type { IToken } from '@store/store';
+import { searchAtom } from '@store/store';
+import { useAtom } from 'jotai';
+import { CurrencyIcon } from '@components/CurrencyIcon';
+import { formatNumber } from '@utils/bignumber';
+import useHasMounted from '@hooks/useHasMounted';
+import { CurrencyInputPanelSkeleton } from '@ui/Skeleton';
+import TokenListModal from '../TokenListModal';
+import { Modal } from '../Modal/Modal';
 
 interface ICurrencyInputPanel {
   disabled?: boolean;
@@ -51,10 +51,10 @@ export default function CurrencyInputPanel({
         justifyContent="between"
       >
         <span>
-          Balance:{" "}
+          Balance:{' '}
           {currencyBalance && Number(currencyBalance) > 0
             ? formatNumber(currencyBalance, 5)
-            : "0"}
+            : '0'}
         </span>
         {!disabled && (
           <button
@@ -69,9 +69,14 @@ export default function CurrencyInputPanel({
       </Flex>
       <Flex justifyContent="between" alignItems="center">
         <Input
+          type="text"
+          pattern="^[0-9]*[.,]?[0-9]*$"
+          autoCorrect="off"
+          autoComplete="off"
+          spellCheck="false"
+          inputMode="decimal"
           placeholder="0"
           disabled={disabled}
-          autoComplete="off"
           onChange={(e) => setAmount(e.target.value)}
           fontSize="xl"
           value={amount}
@@ -84,7 +89,7 @@ export default function CurrencyInputPanel({
                 src={
                   selectedCurrency.detail?.logoURI
                     ? selectedCurrency.detail?.logoURI
-                    : "/assets/token-not-found.png"
+                    : '/assets/token-not-found.png'
                 }
                 alt={selectedCurrency.detail?.name}
                 chainId={selectedCurrency.detail?.chainId}
@@ -92,7 +97,7 @@ export default function CurrencyInputPanel({
               <h3>{selectedCurrency.detail?.symbol}</h3>
             </Flex>
           ) : (
-            "Select"
+            'Select'
           )}
         </Button>
         <Modal

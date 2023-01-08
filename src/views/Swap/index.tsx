@@ -1,4 +1,10 @@
-import { destinationToken, IToken, originToken, tokenAtom } from '@store/store';
+import {
+  destinationToken,
+  IToken,
+  originToken,
+  slippage,
+  tokenAtom,
+} from '@store/store';
 import { Button } from '@ui/Button/Button';
 import Container from '@ui/Container/Container';
 import Flex from '@ui/Flex/Flex';
@@ -26,7 +32,8 @@ import { Skeleton } from '@ui/Skeleton';
 import { IRouteInfo, ISwapExactInSymbiosis } from '@utils/swap/types';
 import { Signer } from 'ethers';
 import { useDebounce } from 'react-use';
-import { ArrowPathIcon } from '@heroicons/react/24/solid';
+import { ArrowPathIcon, Cog6ToothIcon } from '@heroicons/react/24/solid';
+import SwapSetting from './components/SwapSetting';
 
 interface ISwap {
   amountIn: string;
@@ -39,6 +46,7 @@ export default function Swap() {
   const tokenList = useAtomValue(tokenAtom);
   const [fromToken, setFormToken] = useAtom(originToken);
   const [toToken, setToToken] = useAtom(destinationToken);
+  const [currentSlippage] = useAtom(slippage);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [swapRoute, setSwapRoute] = useState<IRouteInfo[]>();
@@ -113,6 +121,7 @@ export default function Swap() {
       toToken: toToken.detail,
       amount: amountIn,
       address: address,
+      slippage: currentSlippage,
     });
   };
 
@@ -148,6 +157,7 @@ export default function Swap() {
             toToken: toToken.detail!,
             amount: convertedAmountIn,
             address: address,
+            slippage: currentSlippage,
           })
           .then((res) => {
             setIsLoading(false);
@@ -218,12 +228,7 @@ export default function Swap() {
     <Container customStyle="h-full flex items-center justify-center">
       <Flex customStyle="max-w-lg" alignItems="center" direction="column">
         <h1 className=" text-4xl font-bold text-wheat-500">SWAP</h1>
-        <Flex justifyContent="end" width="full" customStyle="px-5">
-          <ArrowPathIcon
-            onClick={() => setRefreshRoute(!refreshRoute)}
-            className="h-5 w-5 cursor-pointer text-gray-600 transition hover:text-gray-200"
-          />
-        </Flex>
+        <SwapSetting setRefreshRoute={() => setRefreshRoute(!refreshRoute)} />
         <CurrencyInputPanel
           tokenList={tokenList}
           selectedCurrency={fromToken}
