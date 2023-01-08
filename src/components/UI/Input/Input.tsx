@@ -17,7 +17,7 @@ const inputStyles = cva(
         sm: "text-sm",
       },
       fullWidth: {
-        true: "w-full",
+        true: "max-w-full",
       },
     },
     defaultVariants: {

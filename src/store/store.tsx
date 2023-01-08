@@ -46,6 +46,9 @@ export const destinationToken = atomWithStorage<IToken | undefined>(
   'destinationToken',
   undefined
 );
+
+export const slippage = atomWithStorage<number>('slippage', 0.5);
+
 export const selectedChains = atom<IChain[]>(newAllCustomChains);
 export const allTokens = atom<IToken[]>([]);
 export const balancesList = atom<IChainResponse[]>([]);
@@ -78,9 +81,8 @@ export const tokenAtom = atom((get) => {
   return sortData(
     chianFilteredTokens.filter(
       (token: IToken) =>
-        token.detail?.name.toLowerCase().includes(search) ||
         token.detail?.symbol.toLowerCase().includes(search) ||
-        token.detail?.address.toLowerCase().includes(search)
+        token.detail?.address.toLowerCase() === search.toLowerCase()
     ),
     'balance',
     'value'

@@ -1,18 +1,18 @@
-import { newAllCustomChains } from "@constants/networkList";
-import LIFI, { Route as lifiRoute, SwitchChainHook } from "@lifi/sdk";
-import { sortData } from "@utils/customSort";
+import { newAllCustomChains } from '@constants/networkList';
+import LIFI, { Route as lifiRoute, SwitchChainHook } from '@lifi/sdk';
+import { sortData } from '@utils/customSort';
 
 import {
   EvmTransaction,
   MetaResponse,
   QuoteSimulationResult,
   RangoClient,
-} from "rango-sdk-basic";
-import { Symbiosis, Token, TokenAmount } from "symbiosis-js-sdk";
+} from 'rango-sdk-basic';
+import { Symbiosis, Token, TokenAmount } from 'symbiosis-js-sdk';
 import {
   checkApprovalSync,
   prepareEvmTransaction,
-} from "../prepareEvmTransaction";
+} from '../prepareEvmTransaction';
 import {
   ConvertLifiRoute,
   ConvertRangoRoute,
@@ -22,7 +22,7 @@ import {
   IRouteRequest,
   ISwapExactInSymbiosis,
   TSelectedRoute,
-} from "./types";
+} from './types';
 
 enum RouteType {
   Rango,
@@ -36,8 +36,8 @@ export default class swap {
   private symbiosis: Symbiosis;
   constructor() {
     this.Lifi = new LIFI();
-    this.Rango = new RangoClient("a43dfccc-bb38-48f7-9ac9-5b928df2ecc0");
-    this.symbiosis = new Symbiosis("mainnet", "piper.finance");
+    this.Rango = new RangoClient('a43dfccc-bb38-48f7-9ac9-5b928df2ecc0');
+    this.symbiosis = new Symbiosis('mainnet', 'piper.finance');
   }
 
   public getRoutes(data: IRouteRequest): Promise<IRouteInfo[]> {
@@ -60,7 +60,7 @@ export default class swap {
   private async getLifiRoutes(
     data: IRouteRequest
   ): Promise<lifiRoute[] | undefined> {
-    const { amount, fromToken, toToken } = data;
+    const { amount, fromToken, toToken, slippage } = data;
     try {
       const lifiResult = await this.Lifi.getRoutes({
         fromChainId: fromToken.chainId,
@@ -69,31 +69,30 @@ export default class swap {
         toTokenAddress: toToken.address,
         fromAmount: amount,
         options: {
-          slippage: 3 / 100,
-          order: "RECOMMENDED",
+          slippage: slippage / 100,
+          order: 'RECOMMENDED',
         },
       });
 
       return lifiResult.routes;
-    } catch (err) {
-    }
+    } catch (err) {}
   }
 
   private async getSymbiosisRoutes(
     data: IRouteRequest
   ): Promise<ISwapExactInSymbiosis | undefined> {
-    const { address, amount, fromToken, toToken } = data;
+    const { address, amount, fromToken, toToken, slippage } = data;
     const tokenIn = new Token({
       chainId: fromToken.chainId,
       address:
         fromToken.address.toLowerCase() ===
-        "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE".toLowerCase()
-          ? ""
+        '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'.toLowerCase()
+          ? ''
           : fromToken.address,
       name: fromToken.name,
       isNative:
         fromToken.address.toLowerCase() ===
-        "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE".toLowerCase()
+        '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'.toLowerCase()
           ? true
           : false,
       symbol: fromToken.symbol,
@@ -106,13 +105,13 @@ export default class swap {
       chainId: toToken.chainId,
       address:
         toToken.address.toLowerCase() ===
-        "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE".toLowerCase()
-          ? ""
+        '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'.toLowerCase()
+          ? ''
           : toToken.address,
       name: toToken.name,
       isNative:
         toToken.address.toLowerCase() ===
-        "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE".toLowerCase()
+        '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'.toLowerCase()
           ? true
           : false,
       symbol: toToken.symbol,
@@ -128,7 +127,7 @@ export default class swap {
         address,
         address,
         address,
-        300,
+        slippage * 100,
         Date.now() + 20 * 60
       );
 
@@ -191,10 +190,10 @@ export default class swap {
 
     return sortData(
       parsedRoutes,
-      "amountOut",
-      "amountOutValue",
-      "totalGasFee",
-      "estimateTime"
+      'amountOut',
+      'amountOutValue',
+      'totalGasFee',
+      'estimateTime'
     );
   }
 
@@ -237,7 +236,7 @@ export default class swap {
   public executeRangoSwap = async (signer: any, data: IRouteRequest) => {
     if (!data || !newAllCustomChains) return;
 
-    const { amount, fromToken, toToken, address } = data;
+    const { amount, fromToken, toToken, address, slippage } = data;
 
     const sourceToken = newAllCustomChains.find(
       (chain) => chain.id === fromToken.chainId
@@ -262,7 +261,7 @@ export default class swap {
       amount: amount,
       fromAddress: address,
       toAddress: address,
-      slippage: "1.0",
+      slippage: String(slippage / 100),
       disableEstimate: false,
       referrerAddress: null,
       referrerFee: null,

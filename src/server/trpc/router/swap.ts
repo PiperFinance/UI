@@ -1,7 +1,7 @@
-import swap from "@utils/swap/swap";
-import { IRouteInfo } from "@utils/swap/types";
-import { z } from "zod";
-import { router, publicProcedure } from "../trpc";
+import swap from '@utils/swap/swap';
+import { IRouteInfo } from '@utils/swap/types';
+import { z } from 'zod';
+import { router, publicProcedure } from '../trpc';
 
 const handleSwap = new swap();
 
@@ -28,16 +28,11 @@ export const swapRouter = router({
         toToken: Token,
         amount: z.string(),
         address: z.string(),
+        slippage: z.number(),
       })
     )
     .mutation(async ({ input }): Promise<IRouteInfo[]> => {
-      const { fromToken, toToken, amount, address } = input;
-      const routes = await handleSwap.getRoutes({
-        fromToken,
-        toToken,
-        amount,
-        address,
-      });
+      const routes = await handleSwap.getRoutes(input);
       return routes;
     }),
 });
