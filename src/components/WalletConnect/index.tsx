@@ -1,15 +1,15 @@
-import { Button } from "@ui/Button/Button";
-import Flex from "@ui/Flex/Flex";
-import React, { Fragment, useEffect, useState } from "react";
-import { useAccount, useBalance, useDisconnect, useNetwork } from "wagmi";
-import { Modal } from "../Modal/Modal";
-import WalletConnectModal from "../WalletConnectModal";
-import Image from "next/image";
-import { handleSliceHashString } from "@utils/sliceHashString";
-import { formatNumber } from "@utils/bignumber";
-import { Skeleton } from "../UI/Skeleton";
-import { Menu, Transition } from "@headlessui/react";
-import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/solid";
+import { Button } from '@ui/Button/Button';
+import Flex from '@ui/Flex/Flex';
+import React, { Fragment, useEffect, useState } from 'react';
+import { useAccount, useBalance, useDisconnect, useNetwork } from 'wagmi';
+import { Modal } from '../Modal/Modal';
+import WalletConnectModal from '../WalletConnectModal';
+import Image from 'next/image';
+import { handleSliceHashString } from '@utils/sliceHashString';
+import { formatNumber } from '@utils/bignumber';
+import { Skeleton } from '../UI/Skeleton';
+import { Menu, Transition } from '@headlessui/react';
+import { ArrowRightOnRectangleIcon } from '@heroicons/react/24/solid';
 
 export default function WalletConnect() {
   const [open, setOpen] = useState(false);
@@ -55,7 +55,7 @@ export function WalletInfo() {
       <Menu.Button>
         <Flex
           alignItems="center"
-          customStyle="p-2 bg-wheat-200 rounded-2xl space-x-3"
+          customStyle="p-2 bg-wheat-200 rounded-2xl text-base space-x-3"
         >
           <Image
             src={`/assets/wallets/${activeConnector?.name.toLowerCase()}.svg`}
@@ -74,12 +74,12 @@ export function WalletInfo() {
           {!data ? (
             <Skeleton />
           ) : (
-            <Flex>
+            <Flex customStyle="text-sm lg:text-lg">
               {formatNumber(String(data?.formatted), 6)}
               {data?.symbol}
             </Flex>
           )}
-          <span className="rounded-lg bg-primary-800 px-3 text-lg text-gray-200">
+          <span className="rounded-lg bg-primary-800 px-3 max-[420px]:hidden sm:text-base lg:text-lg text-gray-200">
             {address && handleSliceHashString(address!)}
           </span>
         </Flex>
@@ -96,7 +96,7 @@ export function WalletInfo() {
         <Menu.Items className="absolute right-0 mt-2 origin-top-right rounded-2xl border border-gray-700 bg-gray-122 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <Menu.Item>
             <Flex
-              customStyle="p-2 text-gray-500 rounded-2xl w-96 text-sm"
+              customStyle="p-2 text-gray-500 rounded-2xl w-72 sm:w-96 text-sm"
               alignItems="center"
             >
               <Flex alignItems="center" customStyle="space-x-3 w-1/2">

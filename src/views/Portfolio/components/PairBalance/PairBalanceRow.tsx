@@ -25,7 +25,7 @@ export function PairBalanceRow(pair: TPairBalanceRow) {
                 : '/assets/token-not-found.png'
             }
             alt={firstToken?.detail.symbol!}
-            className="mr-1 h-8 w-8"
+            className="sm:mr-1 h-5 w-5 sm:h-8 sm:w-8"
           />
           <img
             src={
@@ -34,15 +34,15 @@ export function PairBalanceRow(pair: TPairBalanceRow) {
                 : '/assets/token-not-found.png'
             }
             alt={secondToken?.detail.symbol}
-            className="mr-1 h-8 w-8"
+            className="sm:mr-1 h-5 w-5 sm:h-8 sm:w-8"
           />
-          <Flex direction="column" customStyle="ml-3">
-            <h6 className="font-bold uppercase">{detail?.name}</h6>
-            <h6 className="text-sm text-gray-400">{detail?.dex}</h6>
+          <Flex direction="column" customStyle="ml-3 max-sm:ml-1">
+            <h6 className="font-bold uppercase max-sm:text-xs">{detail?.name}</h6>
+            <h6 className="text-sm text-gray-400 max-sm:hidden">{detail?.dex}</h6>
           </Flex>
         </Flex>
       </td>
-      <td className="px-4">
+      <td className="px-4 max-sm:hidden">
         <Flex>
           <ChainIcon chainId={detail.chainId} />
         </Flex>
@@ -53,7 +53,7 @@ export function PairBalanceRow(pair: TPairBalanceRow) {
       <td className="px-4">
         <div>
           {/* <b>${formatNumber(tokenValue, 3)}</b> */}
-          <div className="text-md text-gray-400">
+          <div className="text-xs sm:text-md text-gray-400">
             {formatNumber(calculateNumberDecimal(balance!, 18), 8)}{' '}
             <span>{detail?.name}</span>
           </div>
