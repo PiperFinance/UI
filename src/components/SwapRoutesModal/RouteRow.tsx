@@ -1,14 +1,14 @@
-import { Disclosure } from "@headlessui/react";
+import { Disclosure } from '@headlessui/react';
 import {
   ArrowsRightLeftIcon,
   ChevronDoubleRightIcon,
-} from "@heroicons/react/20/solid";
-import { ChevronRightIcon, ClockIcon } from "@heroicons/react/24/solid";
-import { Badge } from "@ui/Badge/Badge";
-import { CurrencyIcon } from "@components/CurrencyIcon";
-import Flex from "@ui/Flex/Flex";
-import { formatNumber } from "@utils/bignumber";
-import type { IRouteInfo } from "@utils/swap/types";
+} from '@heroicons/react/20/solid';
+import { ChevronRightIcon, ClockIcon } from '@heroicons/react/24/solid';
+import { Badge } from '@ui/Badge/Badge';
+import { CurrencyIcon } from '@components/CurrencyIcon';
+import Flex from '@ui/Flex/Flex';
+import { formatNumber } from '@utils/bignumber';
+import type { IRouteInfo } from '@utils/swap/types';
 
 interface IRoutesRow {
   route: IRouteInfo;
@@ -32,8 +32,8 @@ export default function RouteRow({
           direction="column"
           customStyle={`border ${
             selectedRoute.response === route.response
-              ? "border-wheat-900 bg-wheat-122"
-              : "border-gray-700 hover:border-wheat-900"
+              ? 'border-wheat-900 bg-wheat-122'
+              : 'border-gray-700 hover:border-wheat-900'
           } p-4 rounded-2xl cursor-pointer transition max-h-96`}
           onClick={() => {
             changeRoute(route);
@@ -43,7 +43,7 @@ export default function RouteRow({
           <Flex justifyContent="between" alignItems="center">
             <Flex alignItems="center">
               <h1 className="font-bold">
-                Receive: {formatNumber(amountOut, 6)}{" "}
+                Receive: {formatNumber(amountOut, 6)}{' '}
               </h1>
               <h4 className="text-sm">
                 &nbsp; &#8771; &nbsp;${amountOutValue}
@@ -73,13 +73,13 @@ export default function RouteRow({
               )}
               <Badge>
                 <ClockIcon className="h-4 w-4" />
-                {estimateTime ? Math.round(estimateTime / 60) + "m" : "?"}
+                {estimateTime ? Math.round(estimateTime / 60) + 'm' : '?'}
               </Badge>
             </Flex>
             <Disclosure.Button onClick={(e: any) => e.stopPropagation()}>
               <ChevronRightIcon
                 className={`ml-3 h-6 w-6 rounded-md p-1 hover:bg-gray-900 ${
-                  open ? "rotate-90" : ""
+                  open ? 'rotate-90' : ''
                 }`}
               />
             </Disclosure.Button>
@@ -113,13 +113,13 @@ export default function RouteRow({
                         src={
                           step.fromToken.logoURI
                             ? step.fromToken.logoURI
-                            : "/assets/token-not-found.png"
+                            : '/assets/token-not-found.png'
                         }
                         alt={step.fromToken.name}
                         chainId={step.fromToken.chainId}
                       />
                     </Flex>
-                    {step.type === "bridge" ? (
+                    {step.type === 'bridge' ? (
                       <svg
                         width="16"
                         height="16"
@@ -141,7 +141,7 @@ export default function RouteRow({
                         src={
                           step.toToken.logoURI
                             ? step.toToken.logoURI
-                            : "/assets/token-not-found.png"
+                            : '/assets/token-not-found.png'
                         }
                         alt={step.toToken.name}
                         chainId={step.toToken.chainId}

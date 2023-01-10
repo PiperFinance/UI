@@ -32,6 +32,7 @@ const flexStyle = cva('flex', {
       around: 'justify-around',
       start: 'justify-start',
       end: 'justify-end',
+      mdBetween: 'lg:justify-end justify-between',
     },
     wrap: {
       true: 'flex-wrap',
@@ -81,7 +82,7 @@ const Flex = ({
         alignItems,
         justifyContent,
         wrap,
-        overflow
+        overflow,
       })} ${customStyle}`}
       {...props}
     ></div>

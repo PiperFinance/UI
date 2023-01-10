@@ -2,31 +2,40 @@ import {
   ArrowsPointingOutIcon,
   ChartBarIcon,
   DocumentTextIcon,
-} from "@heroicons/react/24/solid";
-import Link from "next/link";
-import { useState } from "react";
-import Logo from "../../Logo/Logo";
+} from '@heroicons/react/24/solid';
+import { sidebar } from '@store/store';
+import { useAtom } from 'jotai';
+import Link from 'next/link';
+import { useState } from 'react';
+import Logo from '../../Logo/Logo';
 
 export default function Sidebar() {
-  const iconClass = "w-5 h-5 text-gray-500 duration-75 text-gray-400";
+  const [isSidebarOpen] = useAtom(sidebar);
+
+  const iconClass = 'w-5 h-5 text-gray-500 duration-75 text-gray-400';
 
   const [navs] = useState([
     {
       id: 0,
-      name: "Portfolio",
-      link: "/",
+      name: 'Portfolio',
+      link: '/',
       icon: <ChartBarIcon className={iconClass} />,
     },
     {
       id: 1,
-      name: "Cross Swap",
-      link: "/swap",
+      name: 'Cross Swap',
+      link: '/swap',
       icon: <ArrowsPointingOutIcon className={iconClass} />,
     },
   ]);
 
   return (
-    <aside className="h-screen w-fit bg-gray-122" aria-label="Sidebar">
+    <aside
+      className={`h-screen w-fit bg-gray-122 ${
+        !isSidebarOpen ? 'hidden' : 'block absolute bg-gray-800 z-10'
+      } lg:block`}
+      aria-label="Sidebar"
+    >
       <div className="h-full overflow-y-auto  p-4">
         <Logo />
         <ul className="space-y-6">

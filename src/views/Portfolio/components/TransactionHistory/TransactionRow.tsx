@@ -47,7 +47,7 @@ export function TransactionRow(transaction: ITransaction) {
                 label.title === 'function' ? (
                   <h1
                     key={label.value + index}
-                    className="text-md capitalize text-gray-100"
+                    className="text-xs sm:text-base capitalize text-gray-100"
                   >
                     {label.value}
                   </h1>
@@ -62,7 +62,7 @@ export function TransactionRow(transaction: ITransaction) {
           <h3 className="text-xs text-gray-400">{date}</h3>
         </Flex>
       </Flex>
-      <Flex width="fit">
+      <Flex width="fit" customStyle='max-sm:hidden'>
         {userAddress && (
           <div className="text-md w-fit cursor-pointer rounded-full bg-slate-700 px-4 py-1 text-gray-200">
             <a
@@ -75,7 +75,7 @@ export function TransactionRow(transaction: ITransaction) {
           </div>
         )}
       </Flex>
-      <Flex width="half" alignItems="center" customStyle="space-x-3">
+      <Flex width="half" alignItems="center" customStyle="space-x-3 max-md:hidden">
         {Array.isArray(token) ? (
           token.map((token) => (
             <>
@@ -96,7 +96,7 @@ export function TransactionRow(transaction: ITransaction) {
         )}
       </Flex>
       <Flex width="fit">
-        <h3 className="text-sm text-gray-400">
+        <h3 className="text-xs sm:text-sm text-gray-400">
           {transactionFee}&nbsp;
           {currentChain?.nativeCurrency.symbol.toUpperCase()}
         </h3>
@@ -108,7 +108,7 @@ export function TransactionRow(transaction: ITransaction) {
           href={`${currentChain?.blockExplorers?.default.url}/tx/${transaction.hash}`}
           className="w-auto overflow-hidden text-ellipsis text-sm hover:text-gray-400 text-gray-300"
         >
-          <ArrowTopRightOnSquareIcon className="w-7" />
+          <ArrowTopRightOnSquareIcon className="w-5 sm:w-7" />
         </a>
       </Flex>
     </Flex>

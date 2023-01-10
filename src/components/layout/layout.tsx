@@ -6,6 +6,9 @@ import Container from '@ui/Container/Container';
 import dynamic from 'next/dynamic';
 import ToastContainer from '@components/ToastContainer';
 import Sidebar from './Sidebar/Sidebar';
+import { Bars3Icon } from '@heroicons/react/24/solid';
+import { useAtom } from 'jotai';
+import { sidebar } from '@store/store';
 
 const WalletConnect = dynamic(() => import('../WalletConnect'));
 
@@ -15,10 +18,12 @@ const RootLayout: FC<{ children: ReactNode; pageName: string }> = ({
   children,
   pageName,
 }) => {
+  const [, setSidebar] = useAtom(sidebar);
   return (
     <Flex
       overflow="hidden"
       customStyle={`${inter.variable} h-screen bg-gray-1000 font-sans`}
+      onClick={(e) => setSidebar(false)}
     >
       <Head>
         <title>{`${pageName} |  Piper Finance`}</title>
@@ -28,11 +33,18 @@ const RootLayout: FC<{ children: ReactNode; pageName: string }> = ({
       <Sidebar />
       <Flex direction="column" customStyle="h-screen" overflow="hidden">
         <Container>
-          <Flex justifyContent="end">
+          <Flex justifyContent="mdBetween">
+            <Bars3Icon
+              className="w-8 text-wheat-300 cursor-pointer block lg:hidden"
+              onClick={(e) => {
+                e.stopPropagation();
+                setSidebar(true);
+              }}
+            />
             <WalletConnect />
           </Flex>
         </Container>
-        <Flex customStyle="px-10 py-5" overflow="yAuto">
+        <Flex customStyle="lg:px-10 py-5" overflow="yAuto">
           {children}
         </Flex>
       </Flex>

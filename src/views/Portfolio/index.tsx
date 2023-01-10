@@ -69,20 +69,20 @@ export default function Portfolio() {
   return (
     <Container>
       {/* <TotalValue /> */}
-      <Flex direction="column" customStyle="bg-gray-122 rounded-2xl p-5 h-fit">
+      <Flex direction="column" customStyle="bg-gray-122 rounded-2xl p-1 sm:p-5 h-fit">
         <Tab.Group selectedIndex={tab} onChange={setTab}>
-          <Tab.List className="flex justify-between text-center text-sm font-medium text-gray-500  dark:border-gray-700 dark:text-gray-400 ">
+          <Tab.List className="flex-col lg:flex-row flex justify-between text-center text-sm font-medium text-gray-500  dark:border-gray-700 dark:text-gray-400 ">
             <h1 className="my-3 text-2xl font-semibold text-gray-100">
               Assets
             </h1>
-            <div className="space-x-4">
+            <div className="max-sm:space-x-1 space-x-4">
               {tabs.map((tab: string) => (
                 <Tab
                   key={tab}
                   onClick={() => addParams({ tab: tab.toLowerCase() })}
                   className={({ selected }) =>
                     classNames(
-                      'inline-block rounded-xl p-3 outline-none',
+                      'inline-block rounded-xl p-3 outline-none max-sm:text-xs max-sm:p-2',
                       selected
                         ? 'border border-primary-400 text-blue-700 dark:bg-gray-800 dark:text-blue-300'
                         : 'hover:bg-gray-50 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300'

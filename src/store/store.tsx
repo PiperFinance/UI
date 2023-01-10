@@ -37,6 +37,8 @@ export interface ITokenDetail extends ITokenDetailDefault {
   related?: IToken[];
 }
 
+export const sidebar = atom<boolean>(false);
+
 export const toast = atom<JSX.Element>(<></>);
 export const originToken = atomWithStorage<IToken | undefined>(
   'originToken',

@@ -40,7 +40,7 @@ function TokenBalanceTable({
       slice={slice}
       setPage={setPage}
     >
-      <TableHeader titleList={["Token", "Network", "Price", "Balance", ""]} />
+      <TableHeader titleList={["Token", "Networks", "Price", "Balance", ""]} />
       <TableBody>
         {slice.map((token: TTokenBalanceRow) => (
           <TokenBalanceRow key={token[0]} {...token} />

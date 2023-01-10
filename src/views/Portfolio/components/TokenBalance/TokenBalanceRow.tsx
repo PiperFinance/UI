@@ -27,26 +27,30 @@ export function TokenBalanceRow(token: TTokenBalanceRow) {
               detail.logoURI ? detail.logoURI : '/assets/token-not-found.png'
             }
             alt={detail.symbol}
-            className="h-10 w-10"
+            className="h-7 w-7 sm:h-10 sm:w-10"
           />
-          <Flex direction="column" customStyle="ml-3">
-            <h6 className="font-bold uppercase">{detail?.symbol}</h6>
-            <h6 className="text-sm text-gray-400">{detail?.name}</h6>
+          <Flex direction="column" justifyContent="center" customStyle="ml-3">
+            <h6 className="font-bold uppercase max-sm:text-xs">
+              {detail?.symbol}
+            </h6>
+            <h6 className="text-sm text-gray-400 hidden sm:block">
+              {detail?.name}
+            </h6>
           </Flex>
         </Flex>
       </td>
-      <td className="px-4">
+      <td className="px-4 max-sm:hidden">
         <Flex>
           <ChainIcon chainId={detail.chainId} />
         </Flex>
       </td>
-      <td className="px-4">
+      <td className="px-4 max-sm:hidden">
         <div>${tokenPrice?.toFixed(2)}</div>{' '}
       </td>
       <td className="px-4">
         <div>
-          <b>${formatNumber(tokenValue, 3)}</b>
-          <div className="text-sm text-gray-400">
+          <b className="max-sm:text-xs">${formatNumber(tokenValue, 3)}</b>
+          <div className="text-sm text-gray-400 max-sm:text-xs">
             {formatNumber(balance!, 8)} <span>{detail?.symbol}</span>
           </div>
         </div>
