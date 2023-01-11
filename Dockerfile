@@ -1,12 +1,8 @@
 ##### DEPENDENCIES
 
-FROM --platform=linux/amd64 node:16-alpine3.16 AS deps
+FROM --platform=linux/amd64 node:16-alpine3 AS deps
 RUN apk add --no-cache libc6-compat openssl1.1-compat
 WORKDIR /app
-
-# Install Prisma Client - remove if not using Prisma
-
-COPY prisma ./
 
 # Install dependencies based on the preferred package manager
 
@@ -60,4 +56,4 @@ USER nextjs
 EXPOSE 3000
 ENV PORT 3000
 
-CMD ["node", "server.js"]# 
+CMD ["node", "server.js"]
