@@ -12,7 +12,7 @@ import {
 import type { ITransaction, ITransactionLabel } from './types';
 
 export function TransactionRow(transaction: ITransaction) {
-  const { userAddress, token, gasUsed, gasPrice, timeStamp, labels } =
+  const { userAddress, tokens, gasUsed, gasPrice, timeStamp, labels } =
     transaction;
 
   const currentChain = newAllCustomChains.find(
@@ -56,13 +56,15 @@ export function TransactionRow(transaction: ITransaction) {
                 )
               )
             ) : (
-              <h1 className="text-md capitalize text-gray-100">#</h1>
+              <h1 className="text-md capitalize text-gray-100">
+                {'<Transaction>'}
+              </h1>
             )}
           </Flex>
           <h3 className="text-xs text-gray-400">{date}</h3>
         </Flex>
       </Flex>
-      <Flex width="fit" customStyle='max-sm:hidden'>
+      <Flex width="fit" customStyle="max-sm:hidden">
         {userAddress && (
           <div className="text-md w-fit cursor-pointer rounded-full bg-slate-700 px-4 py-1 text-gray-200">
             <a
@@ -75,25 +77,25 @@ export function TransactionRow(transaction: ITransaction) {
           </div>
         )}
       </Flex>
-      <Flex width="half" alignItems="center" customStyle="space-x-3 max-md:hidden">
-        {Array.isArray(token) ? (
-          token.map((token) => (
-            <>
-              <img
-                src={
-                  token.detail.logoURI
-                    ? token?.detail.logoURI
-                    : '/assets/token-not-found.png'
-                }
-                alt={token?.detail.symbol}
-                className="h-8 w-8 rounded-full"
-              />
-              <h3 className="text-md text-gray-300">{token?.detail.symbol}</h3>
-            </>
-          ))
-        ) : (
-          <></>
-        )}
+      <Flex
+        width="half"
+        alignItems="center"
+        customStyle="space-x-3 max-md:hidden"
+      >
+        {tokens?.map((token) => (
+          <>
+            <img
+              src={
+                token.detail.logoURI
+                  ? token?.detail.logoURI
+                  : '/assets/token-not-found.png'
+              }
+              alt={token?.detail.symbol}
+              className="h-8 w-8 rounded-full"
+            />
+            <h3 className="text-md text-gray-300">{token?.detail.symbol}</h3>
+          </>
+        ))}
       </Flex>
       <Flex width="fit">
         <h3 className="text-xs sm:text-sm text-gray-400">

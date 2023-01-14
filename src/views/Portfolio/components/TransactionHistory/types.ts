@@ -13,7 +13,7 @@ export interface ITransaction {
   contractAddress: string;
   to: string;
   value: string;
-  token: IToken[] | null;
+  tokens: IToken[] | null;
   transactionIndex: string;
   gas: string;
   gasPrice: string;

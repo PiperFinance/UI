@@ -1,8 +1,8 @@
-import { newAllCustomChains } from "@constants/networkList";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import { newAllCustomChains } from '@constants/networkList';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 
-export const baseURL = "https://nt.piper.finance";
+export const baseURL = 'https://nt.piper.finance';
 
 const handleSaveNFTs = async (wallet: string | undefined) => {
   const chainList: number[] = newAllCustomChains.map((chain) => chain.id);
@@ -18,7 +18,7 @@ const useSaveNFTs = (wallet: string | undefined) => {
     mutationFn: () => handleSaveNFTs(wallet),
     retry: 10,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["userNFTs"] });
+      queryClient.invalidateQueries({ queryKey: ['userNFTs'] });
     },
   });
 };
@@ -31,7 +31,7 @@ const getNftList = async (
   const chainList = newAllCustomChains.map((chain) => `&chainId=${chain.id}`);
   const { data, status } = await axios.get(
     `${baseURL}/get_users_nfts?userAddress=${wallet}${chainList.join(
-      ""
+      ''
     )}&pageSize=${pageSize}&pageNumber=${pageNumber}`
   );
   return status === 200 ? data.result : [];
@@ -44,9 +44,11 @@ const useNftList = (
   pageNumber = 1
 ) => {
   return useQuery({
-    queryKey: ["userNFTs", wallet, pageSize, pageNumber],
+    queryKey: ['userNFTs', wallet, pageSize, pageNumber],
     queryFn: () => getNftList(wallet, pageSize, pageNumber),
     enabled: saveSucceeded,
+    staleTime: 60000,
+    refetchInterval: 60000,
   });
 };
 
