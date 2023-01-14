@@ -48,6 +48,8 @@ const useTransactions = (
     queryKey: ["userTXs", wallet, pageSize, pageNumber],
     queryFn: () => getTransactions(wallet, pageSize, pageNumber),
     enabled: saveSucceeded,
+    staleTime: 60000,
+    refetchInterval: 60000,
   });
 };
 

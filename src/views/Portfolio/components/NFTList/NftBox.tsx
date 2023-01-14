@@ -7,7 +7,7 @@ import type { INft } from './types';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 
 export function NftBox(nft: INft) {
-  const { detail, balance, totalSupply } = nft;
+  const { detail, balance, totalSupply, userAddress } = nft;
 
   const currentChain = newAllCustomChains.find(
     (chain) => chain.id === detail.chainId && chain
@@ -42,26 +42,33 @@ export function NftBox(nft: INft) {
         </h6>
 
         <h6 className="mb-2 text-sm tracking-tight text-gray-200">
-          Contract:&nbsp;
+          Wallet:&nbsp;
           <a
             className=" transition hover:underline"
             target="_blank"
             rel="noopener noreferrer"
             href={`${
               currentChain?.blockExplorers?.default.url
-            }/token/${detail.address!}`}
+            }/address/${detail.address!}`}
           >
-            {handleSliceHashString(detail.address)}
+            {handleSliceHashString(userAddress)}
           </a>
         </h6>
         <p className="mb-3 font-normal text-gray-400">
           {detail.description ? detail.description : '<No Description>'}
         </p>
         <h6 className="mb-2 text-sm tracking-tight text-gray-300">
-          Balance: {balance}&nbsp;, Total Supply: {totalSupply}
+          Total Supply: {totalSupply}
+        </h6>
+        <h6 className="mb-2 text-sm tracking-tight text-gray-300">
+          Balance: {balance}
         </h6>
         <a
-          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={`${
+            currentChain?.blockExplorers?.default.url
+          }/token/${detail.address!}`}
           className="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           {handleSliceHashString(detail.address)}
