@@ -42,9 +42,7 @@ export function TokenBalanceRow(token: TTokenBalanceRow) {
       </td>
       <td className="px-4 max-sm:hidden">
         <Flex>
-          <Tooltip text={detail.chainId.toString()}>
-            <ChainIcon chainId={detail.chainId} />
-          </Tooltip>
+          <ChainIcon chainId={detail.chainId} />
         </Flex>
       </td>
       <td className="px-4 max-sm:hidden">
