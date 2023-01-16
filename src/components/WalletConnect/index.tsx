@@ -1,44 +1,21 @@
-import { Button } from '@ui/Button/Button';
 import Flex from '@ui/Flex/Flex';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useAccount, useBalance, useDisconnect, useNetwork } from 'wagmi';
-import { Modal } from '../Modal/Modal';
-import WalletConnectModal from '../WalletConnectModal';
 import Image from 'next/image';
 import { handleSliceHashString } from '@utils/sliceHashString';
 import { formatNumber } from '@utils/bignumber';
 import { Skeleton } from '../UI/Skeleton';
 import { Menu, Transition } from '@headlessui/react';
 import { ArrowRightOnRectangleIcon } from '@heroicons/react/24/solid';
-import Tooltip from '@components/TooltipContainer';
 import useTooltip from '@hooks/useToolTip/useToolTip';
+import ConnectWallet from '@components/ConnectWalletButton';
 
 export default function WalletConnect() {
-  const [open, setOpen] = useState(false);
   const { isConnected } = useAccount();
   const [isUserConnected, setIsUserConnected] = useState<boolean>();
 
   useEffect(() => setIsUserConnected(isConnected), [isConnected]);
-  return (
-    <div>
-      {!isUserConnected ? (
-        <Button
-          onClick={() => {
-            setOpen(true);
-          }}
-          width="sm"
-        >
-          ConnectWallet
-        </Button>
-      ) : (
-        <WalletInfo />
-      )}
-
-      <Modal isOpen={open} closeOnOverlayClick onDismiss={() => setOpen(false)}>
-        <WalletConnectModal onDismiss={() => setOpen(false)} />
-      </Modal>
-    </div>
-  );
+  return <div>{!isUserConnected ? <ConnectWallet /> : <WalletInfo />}</div>;
 }
 
 export function WalletInfo() {

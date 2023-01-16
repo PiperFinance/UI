@@ -7,9 +7,7 @@ import walletConnect from '@assets/wallets/walletconnect.svg';
 import xdefi from '@assets/wallets/xdefi.svg';
 import coinbase from '@assets/wallets/coinbase wallet.svg';
 import Image from 'next/image';
-import { XMarkIcon } from '@heroicons/react/20/solid';
-import { useConnect, useDisconnect } from 'wagmi';
-import { InjectedConnector } from 'wagmi/connectors/injected';
+import { useConnect } from 'wagmi';
 import ModalHeader from '../ModalHeader';
 
 type TWalletList = {
@@ -22,7 +20,7 @@ interface IWalletConnectModal {
   onDismiss: () => void;
 }
 
-export default function WalletConnectModal({ onDismiss }: IWalletConnectModal) {
+export default function ConnectWalletModal({ onDismiss }: IWalletConnectModal) {
   const { connect, connectors, error, isLoading, pendingConnector } =
     useConnect({
       onSuccess() {
