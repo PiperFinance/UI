@@ -5,6 +5,7 @@ import { formatNumber, calculateMultiplyNumbers } from '@utils/bignumber';
 import ChainIcon from '@components/ChainIcon';
 import { useCoingecko } from '@hooks/useCoingecko';
 import type { TTokenBalanceRow } from './types';
+import Tooltip from '@components/TooltipContainer';
 
 export function TokenBalanceRow(token: TTokenBalanceRow) {
   const { detail, balance } = token[1];
@@ -41,7 +42,9 @@ export function TokenBalanceRow(token: TTokenBalanceRow) {
       </td>
       <td className="px-4 max-sm:hidden">
         <Flex>
-          <ChainIcon chainId={detail.chainId} />
+          <Tooltip text={detail.chainId.toString()}>
+            <ChainIcon chainId={detail.chainId} />
+          </Tooltip>
         </Flex>
       </td>
       <td className="px-4 max-sm:hidden">

@@ -6,6 +6,7 @@ specifiers:
   '@heroicons/react': ^2.0.13
   '@lifi/sdk': ^1.7.2
   '@next/font': ^13.0.6
+  '@popperjs/core': ^2.11.6
   '@tanstack/eslint-plugin-query': ^4.20.2
   '@tanstack/query-core': ^4.20.2
   '@tanstack/react-query': ^4.20.2
@@ -52,6 +53,7 @@ specifiers:
   react-countdown-circle-timer: ^3.1.0
   react-dom: 18.2.0
   react-hot-toast: ^2.4.0
+  react-popper: ^2.3.0
   react-use: ^17.4.0
   react-window: ^1.8.8
   superjson: 1.12.0
@@ -67,6 +69,7 @@ dependencies:
   '@heroicons/react': 2.0.13_react@18.2.0
   '@lifi/sdk': 1.7.2
   '@next/font': 13.0.6
+  '@popperjs/core': 2.11.6
   '@tanstack/query-core': 4.20.2
   '@tanstack/react-query': 4.20.2_biqbaboplfbrettd7655fr4n2y
   '@tanstack/react-query-devtools': 4.20.4_eo7er5vt2wr5dzkvijrpcw63qq
@@ -89,6 +92,7 @@ dependencies:
   react-countdown-circle-timer: 3.1.0_react@18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-hot-toast: 2.4.0_biqbaboplfbrettd7655fr4n2y
+  react-popper: 2.3.0_r6q5zrenym2zg7je7hgi674bti
   react-use: 17.4.0_biqbaboplfbrettd7655fr4n2y
   react-window: 1.8.8_biqbaboplfbrettd7655fr4n2y
   superjson: 1.12.0
@@ -916,6 +920,10 @@ packages:
       tiny-glob: 0.2.9
       tslib: 2.4.1
     dev: true
+
+  /@popperjs/core/2.11.6:
+    resolution: {integrity: sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==}
+    dev: false
 
   /@renproject/chains-bitcoin/3.5.2:
     resolution: {integrity: sha512-66mY4bzcQRwUG73I4cM3CW0s/YoyyhHZDmDQ8pXC4epNiHyl+B9JqUjr529uXpwDm7y8D6uYps19qt4X+j6cNA==}
@@ -4671,6 +4679,10 @@ packages:
       scheduler: 0.23.0
     dev: false
 
+  /react-fast-compare/3.2.0:
+    resolution: {integrity: sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==}
+    dev: false
+
   /react-hot-toast/2.4.0_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-qnnVbXropKuwUpriVVosgo8QrB+IaPJCpL8oBI6Ov84uvHZ5QQcTp2qg6ku2wNfgJl6rlQXJIQU5q+5lmPOutA==}
     engines: {node: '>=10'}
@@ -4695,6 +4707,20 @@ packages:
       react-native: '*'
     dependencies:
       whatwg-url-without-unicode: 8.0.0-3
+    dev: false
+
+  /react-popper/2.3.0_r6q5zrenym2zg7je7hgi674bti:
+    resolution: {integrity: sha512-e1hj8lL3uM+sgSR4Lxzn5h1GxBlpa4CQz0XLF8kx4MDrDRWY0Ena4c97PUeSX9i5W3UAfDP0z0FXCTQkoXUl3Q==}
+    peerDependencies:
+      '@popperjs/core': ^2.0.0
+      react: ^16.8.0 || ^17 || ^18
+      react-dom: ^16.8.0 || ^17 || ^18
+    dependencies:
+      '@popperjs/core': 2.11.6
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      react-fast-compare: 3.2.0
+      warning: 4.0.3
     dev: false
 
   /react-ssr-prepass/1.5.0_react@18.2.0:
@@ -5475,6 +5501,12 @@ packages:
     dependencies:
       base-x: 3.0.9
       jssha: 2.3.1
+    dev: false
+
+  /warning/4.0.3:
+    resolution: {integrity: sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==}
+    dependencies:
+      loose-envify: 1.4.0
     dev: false
 
   /webidl-conversions/3.0.1:
