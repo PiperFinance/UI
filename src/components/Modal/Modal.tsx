@@ -10,6 +10,7 @@ export interface ModalV2Props {
   onDismiss?: () => void;
   closeOnOverlayClick?: boolean;
   children?: React.ReactNode;
+
 }
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });

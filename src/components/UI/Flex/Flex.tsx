@@ -1,4 +1,6 @@
 import { cva, VariantProps } from 'class-variance-authority';
+import { DetailedHTMLProps, DOMElement, ReactElement, ReactNode } from 'react';
+import { HTMLAttributes } from 'react';
 
 const flexStyle = cva('flex', {
   variants: {
@@ -59,10 +61,7 @@ type TFlex = {
 export interface Props
   extends TFlex,
     VariantProps<typeof flexStyle>,
-    React.DetailedHTMLProps<
-      React.HTMLAttributes<HTMLDivElement>,
-      HTMLDivElement
-    > {}
+    React.ComponentProps<'div'> {}
 
 const Flex = ({
   width,

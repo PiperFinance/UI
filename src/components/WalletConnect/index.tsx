@@ -1,42 +1,21 @@
-import { Button } from '@ui/Button/Button';
 import Flex from '@ui/Flex/Flex';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useAccount, useBalance, useDisconnect, useNetwork } from 'wagmi';
-import { Modal } from '../Modal/Modal';
-import WalletConnectModal from '../WalletConnectModal';
 import Image from 'next/image';
 import { handleSliceHashString } from '@utils/sliceHashString';
 import { formatNumber } from '@utils/bignumber';
 import { Skeleton } from '../UI/Skeleton';
 import { Menu, Transition } from '@headlessui/react';
 import { ArrowRightOnRectangleIcon } from '@heroicons/react/24/solid';
+import useTooltip from '@hooks/useToolTip/useToolTip';
+import ConnectWallet from '@components/ConnectWalletButton';
 
 export default function WalletConnect() {
-  const [open, setOpen] = useState(false);
   const { isConnected } = useAccount();
   const [isUserConnected, setIsUserConnected] = useState<boolean>();
 
   useEffect(() => setIsUserConnected(isConnected), [isConnected]);
-  return (
-    <div>
-      {!isUserConnected ? (
-        <Button
-          onClick={() => {
-            setOpen(true);
-          }}
-          width="sm"
-        >
-          ConnectWallet
-        </Button>
-      ) : (
-        <WalletInfo />
-      )}
-
-      <Modal isOpen={open} closeOnOverlayClick onDismiss={() => setOpen(false)}>
-        <WalletConnectModal onDismiss={() => setOpen(false)} />
-      </Modal>
-    </div>
-  );
+  return <div>{!isUserConnected ? <ConnectWallet /> : <WalletInfo />}</div>;
 }
 
 export function WalletInfo() {
@@ -50,6 +29,41 @@ export function WalletInfo() {
     watch: true,
   });
 
+  const {
+    targetRef: connectorTarget,
+    tooltip: connectorTooltip,
+    tooltipVisible: connectorVisible,
+  } = useTooltip(activeConnector?.name!, { placement: 'bottom' });
+
+  const {
+    targetRef: networkTarget,
+    tooltip: networkTooltip,
+    tooltipVisible: networkVisible,
+  } = useTooltip(chain?.network!, {
+    placement: 'bottom',
+  });
+
+  const {
+    targetRef: balanceTarget,
+    tooltip: balanceTooltip,
+    tooltipVisible: balanceVisible,
+  } = useTooltip(
+    <Flex>
+      {data?.formatted}
+      &nbsp;
+      {data?.symbol}
+    </Flex>,
+    { placement: 'bottom' }
+  );
+
+  const {
+    targetRef: addressTarget,
+    tooltip: addressTooltip,
+    tooltipVisible: addressVisible,
+  } = useTooltip(address, {
+    placement: 'top',
+  });
+
   return (
     <Menu as="div" className="relative my-5">
       <Menu.Button>
@@ -57,29 +71,40 @@ export function WalletInfo() {
           alignItems="center"
           customStyle="p-2 bg-wheat-200 rounded-2xl text-base space-x-3"
         >
-          <Image
-            src={`/assets/wallets/${activeConnector?.name.toLowerCase()}.svg`}
-            alt={activeConnector?.name!}
-            width={30}
-            height={30}
-          />
-          <Image
-            //@ts-ignore
-            src={chain?.icon.src}
-            alt={activeConnector?.name!}
-            width={30}
-            height={30}
-            className="rounded-lg bg-gray-800"
-          />
+          {connectorVisible && connectorTooltip}
+          <div className="relative h-8 w-8" ref={connectorTarget}>
+            <Image
+              src={`/assets/wallets/${activeConnector?.name.toLowerCase()}.svg`}
+              alt={activeConnector?.name!}
+              fill
+            />
+          </div>
+          {networkVisible && networkTooltip}
+          <div className="relative h-8 w-8" ref={networkTarget}>
+            <Image
+              //@ts-ignore
+              src={chain?.icon.src}
+              alt={chain?.network!}
+              fill
+              className="rounded-lg bg-gray-800"
+            />
+          </div>
+          {balanceVisible && balanceTooltip}
           {!data ? (
             <Skeleton />
           ) : (
-            <Flex customStyle="text-sm lg:text-lg">
-              {formatNumber(String(data?.formatted), 6)}
-              {data?.symbol}
-            </Flex>
+            <div ref={balanceTarget}>
+              <Flex customStyle="text-sm lg:text-lg" width="fit">
+                {formatNumber(data?.formatted.toString(), 6)}
+                {data?.symbol}
+              </Flex>
+            </div>
           )}
-          <span className="rounded-lg bg-primary-800 px-3 max-[420px]:hidden sm:text-base lg:text-lg text-gray-200">
+          {addressVisible && addressTooltip}
+          <span
+            ref={addressTarget}
+            className="rounded-lg bg-primary-800 px-3 max-[420px]:hidden sm:text-base lg:text-lg text-gray-200"
+          >
             {address && handleSliceHashString(address!)}
           </span>
         </Flex>

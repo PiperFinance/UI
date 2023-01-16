@@ -1,6 +1,9 @@
-import type { ReactNode } from "react";
-import React from "react";
-import TableFooter from "./TableFooter";
+import { ReactNode, useEffect, useState } from 'react';
+import React from 'react';
+import { useAccount } from 'wagmi';
+import TableFooter from './TableFooter';
+import Flex from '@ui/Flex/Flex';
+import ConnectWallet from '@components/ConnectWalletButton';
 
 interface ITable {
   rowsPerPage: number;
@@ -21,6 +24,23 @@ export default function Table({
   totalLength,
   children,
 }: ITable) {
+  const { isConnected } = useAccount();
+  const [isUserConnected, setIsUserConnected] = useState<boolean>();
+
+  useEffect(() => setIsUserConnected(isConnected), [isConnected]);
+
+  if (!isUserConnected)
+    return (
+      <Flex
+        customStyle="h-[30vh] text-gray-100"
+        justifyContent="center"
+        alignItems="center"
+        width="full"
+      >
+        <ConnectWallet />
+      </Flex>
+    );
+
   return (
     <>
       <table className="text-md my-7 w-full text-left text-gray-300">

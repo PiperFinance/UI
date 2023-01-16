@@ -10,10 +10,15 @@ import {
   calculateNumberDecimal,
 } from '@utils/bignumber';
 import type { ITransaction, ITransactionLabel } from './types';
+import useTooltip from '@hooks/useToolTip/useToolTip';
 
 export function TransactionRow(transaction: ITransaction) {
   const { userAddress, tokens, gasUsed, gasPrice, timeStamp, labels } =
     transaction;
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(userAddress, {
+    placement: 'bottom',
+  });
 
   const currentChain = newAllCustomChains.find(
     (chain) => chain.id === transaction.chainId && chain
@@ -65,8 +70,9 @@ export function TransactionRow(transaction: ITransaction) {
         </Flex>
       </Flex>
       <Flex width="fit" customStyle="max-sm:hidden">
+        {tooltipVisible && tooltip}
         {userAddress && (
-          <div className="text-md w-fit cursor-pointer rounded-full bg-slate-700 px-4 py-1 text-gray-200">
+          <div className="text-md w-fit cursor-pointer rounded-full bg-slate-700 px-4 py-1 text-gray-200" ref={targetRef}>
             <a
               target="_blank"
               rel="noopener noreferrer"
