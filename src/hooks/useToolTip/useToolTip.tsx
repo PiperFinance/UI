@@ -199,7 +199,7 @@ function useTooltip(
       {...animationMap}
       transition={{ duration: 0.3 }}
       variants={animationVariants}
-      className={`z-50 bg-gray-500 text-white px-3 py-2 text-sm rounded-xl -translate-x-1/2  w-fit mt-2 max-w-[320px] ${inter.variable}`}
+      className={`z-50 bg-gray-500 text-white px-3 py-2 text-sm rounded-xl -mt-2 -translate-x-1/2  w-fit max-w-[320px] ${inter.variable}`}
     >
       {content}
       <div
@@ -207,7 +207,6 @@ function useTooltip(
         style={styles.arrow}
         className="absolute z-minus-1"
       >
-        <div className="w-10 h-10 rounded-md rotate-45"></div>
       </div>
     </motion.div>
   );

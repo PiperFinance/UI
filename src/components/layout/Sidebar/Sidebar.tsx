@@ -1,12 +1,13 @@
 import {
-  ArrowsPointingOutIcon,
+  ArrowsRightLeftIcon,
+  BeakerIcon,
   ChartBarIcon,
+  CreditCardIcon,
   DocumentTextIcon,
 } from '@heroicons/react/24/solid';
 import { sidebar } from '@store/store';
 import { useAtom } from 'jotai';
 import Link from 'next/link';
-import { useState } from 'react';
 import Logo from '../../Logo/Logo';
 
 export default function Sidebar() {
@@ -14,20 +15,40 @@ export default function Sidebar() {
 
   const iconClass = 'w-5 h-5 text-gray-500 duration-75 text-gray-400';
 
-  const [navs] = useState([
+  const navs = [
     {
       id: 0,
       name: 'Portfolio',
       link: '/',
       icon: <ChartBarIcon className={iconClass} />,
+      disable: false,
+      disableText: '',
     },
     {
       id: 1,
-      name: 'Cross Swap',
+      name: 'Swap & Bridge',
       link: '/swap',
-      icon: <ArrowsPointingOutIcon className={iconClass} />,
+      icon: <ArrowsRightLeftIcon className={iconClass} />,
+      disable: false,
+      disableText: '',
     },
-  ]);
+    {
+      id: 2,
+      name: 'Yield Optimizer',
+      link: '/yield',
+      icon: <BeakerIcon className={iconClass} />,
+      disable: true,
+      disableText: 'Soon',
+    },
+    {
+      id: 2,
+      name: 'Token Approval',
+      link: '/approval',
+      icon: <CreditCardIcon className={iconClass} />,
+      disable: true,
+      disableText: 'Soon',
+    },
+  ];
 
   return (
     <aside
@@ -36,17 +57,22 @@ export default function Sidebar() {
       } lg:block`}
       aria-label="Sidebar"
     >
-      <div className="h-full overflow-y-auto  p-4">
+      <div className="h-full overflow-y-auto p-3">
         <Logo />
         <ul className="space-y-6">
           {navs.map((nav) => (
-            <li key={nav.id}>
+            <li key={nav.id} className="w-52">
               <Link
                 href={nav.link}
-                className="flex items-center rounded-lg p-2 text-base font-normal text-gray-100 hover:bg-gray-700 transition duration-75"
+                className={`${
+                  nav.disable ? 'pointer-events-none opacity-50' : ''
+                } flex space-x-2 items-center rounded-lg p-2 font-normal text-gray-100 hover:bg-gray-700 transition duration-75`}
               >
                 {nav.icon}
-                <span className="ml-3">{nav.name}</span>
+                <span className="">{nav.name}</span>
+                {nav.disable && (
+                  <span className="text-xs">{nav.disableText}</span>
+                )}
               </Link>
             </li>
           ))}
@@ -54,11 +80,11 @@ export default function Sidebar() {
         <ul className="mt-4 space-y-6 border-t pt-4 border-gray-700">
           <li>
             <Link
-              href="#"
+              href="docs.piper.finance"
               className="group flex items-center rounded-lg p-2 text-base font-normal text-gray-100 transition duration-75 hover:bg-gray-700"
             >
               <DocumentTextIcon className={iconClass} />
-              <span className="ml-3">Documentation</span>
+              <span className="ml-3">Docs</span>
             </Link>
           </li>
         </ul>

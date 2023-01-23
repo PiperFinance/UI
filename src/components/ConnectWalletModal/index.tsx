@@ -60,7 +60,7 @@ export default function ConnectWalletModal({ onDismiss }: IWalletConnectModal) {
       direction="column"
       customStyle="max-w-lg bg-gray-800 rounded-2xl p-5 space-y-2"
     >
-      <ModalHeader title="Connect Wallet" onClick={onDismiss} />
+      <ModalHeader title="Connect Your Wallet" onClick={onDismiss} />
       <Flex justifyContent="between" wrap={true}>
         {connectors.map((connector) => (
           <Flex

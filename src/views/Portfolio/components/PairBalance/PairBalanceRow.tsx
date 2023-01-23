@@ -8,8 +8,8 @@ import ChainIcon from '@components/ChainIcon';
 export function PairBalanceRow(pair: TPairBalanceRow) {
   const { detail, balance } = pair[1];
 
-  const firstToken = Object.values(detail.tokens)[0];
-  const secondToken = Object.values(detail.tokens)[1];
+  const firstToken = Object.values(detail.tokens ? detail.tokens : [])[0];
+  const secondToken = Object.values(detail.tokens ? detail.tokens : [])[1];
 
   return (
     <tr
@@ -37,8 +37,12 @@ export function PairBalanceRow(pair: TPairBalanceRow) {
             className="sm:mr-1 h-5 w-5 sm:h-8 sm:w-8"
           />
           <Flex direction="column" customStyle="ml-3 max-sm:ml-1">
-            <h6 className="font-bold uppercase max-sm:text-xs">{detail?.name}</h6>
-            <h6 className="text-sm text-gray-400 max-sm:hidden">{detail?.dex}</h6>
+            <h6 className="font-bold uppercase max-sm:text-xs">
+              {detail?.name}
+            </h6>
+            <h6 className="text-sm text-gray-400 max-sm:hidden">
+              {detail?.dex}
+            </h6>
           </Flex>
         </Flex>
       </td>

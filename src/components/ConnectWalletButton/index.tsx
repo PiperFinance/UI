@@ -14,7 +14,7 @@ const ConnectWallet = () => {
         }}
         width="sm"
       >
-        ConnectWallet
+        Connect Wallet
       </Button>
 
       <Modal isOpen={open} closeOnOverlayClick onDismiss={() => setOpen(false)}>

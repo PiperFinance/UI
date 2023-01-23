@@ -12,7 +12,7 @@ import { calculateNumberDecimalContract } from '@utils/bignumber';
 import swap from '@utils/swap/swap';
 import { useAtom, useAtomValue } from 'jotai';
 import { Route as lifiRoute } from '@lifi/sdk';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   useAccount,
   useBalance,
@@ -34,6 +34,7 @@ import { Signer } from 'ethers';
 import { useDebounce } from 'react-use';
 import { ArrowPathIcon, Cog6ToothIcon } from '@heroicons/react/24/solid';
 import SwapSetting from './components/SwapSetting';
+import ConnectWallet from '@components/ConnectWalletButton';
 
 interface ISwap {
   amountIn: string;
@@ -48,13 +49,15 @@ export default function Swap() {
   const [toToken, setToToken] = useAtom(destinationToken);
   const [currentSlippage] = useAtom(slippage);
 
+  const [isUserConnected, setIsUserConnected] = useState<boolean>();
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [swapRoute, setSwapRoute] = useState<IRouteInfo[]>();
   const [amount, setAmount] = useState<string>();
   const [selectedRoute, setSelectedRoute] = useState<IRouteInfo>();
   const [refreshRoute, setRefreshRoute] = useState<boolean>(false);
 
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const { chain } = useNetwork();
   const { switchNetwork } = useSwitchNetwork();
   const { data: fromTokenBalance } = useBalance({
@@ -82,6 +85,8 @@ export default function Swap() {
     chainId: chain?.id,
   });
 
+  useEffect(() => setIsUserConnected(isConnected), [isConnected]);
+
   const handleSwap = useMemo(() => new swap(), []);
   const mutation = trpc.swap.routes.useMutation({
     onMutate: () => {
@@ -95,7 +100,7 @@ export default function Swap() {
     onError: (error) => {
       toast.custom((t) => (
         <ToastError
-          title="Failed To Fetch Routes"
+          title="Failed To Fetch Routes. Please try again."
           dismiss={() => toast.dismiss(t.id)}
         />
       ));
@@ -227,7 +232,7 @@ export default function Swap() {
   return (
     <Container customStyle="h-full flex items-center justify-center">
       <Flex customStyle="max-w-lg" alignItems="center" direction="column">
-        <h1 className=" text-4xl font-bold text-wheat-500">SWAP</h1>
+        <h1 className=" text-4xl font-bold text-wheat-500">SWAP & BRIDGE</h1>
         <SwapSetting setRefreshRoute={() => setRefreshRoute(!refreshRoute)} />
         <CurrencyInputPanel
           tokenList={tokenList}
@@ -278,7 +283,10 @@ export default function Swap() {
             </SwapRoute>
           )
         )}
-        {isLoading ? (
+
+        {!isUserConnected ? (
+          <ConnectWallet />
+        ) : isLoading ? (
           <Button disable={true} width="half" intent="disablePrimary">
             <Flex width="auto" justifyContent="center" alignItems="center">
               <Spinner />

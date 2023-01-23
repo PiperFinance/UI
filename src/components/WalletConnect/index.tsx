@@ -64,6 +64,14 @@ export function WalletInfo() {
     placement: 'top',
   });
 
+  const {
+    targetRef: disconnectRef,
+    tooltip: disconnectTooltip,
+    tooltipVisible: disconnectVisible,
+  } = useTooltip('Disconnect', {
+    placement: 'bottom',
+  });
+
   return (
     <Menu as="div" className="relative my-5">
       <Menu.Button>
@@ -96,6 +104,7 @@ export function WalletInfo() {
             <div ref={balanceTarget}>
               <Flex customStyle="text-sm lg:text-lg" width="fit">
                 {formatNumber(data?.formatted.toString(), 6)}
+                &nbsp;
                 {data?.symbol}
               </Flex>
             </div>
@@ -146,9 +155,11 @@ export function WalletInfo() {
                 )}
               </Flex>
               <ArrowRightOnRectangleIcon
+                ref={disconnectRef}
                 onClick={() => disconnect()}
                 className="h-8 w-8 cursor-pointer transition hover:text-wheat-400"
               />
+              {disconnectVisible && disconnectTooltip}
             </Flex>
           </Menu.Item>
         </Menu.Items>

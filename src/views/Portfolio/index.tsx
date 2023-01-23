@@ -2,6 +2,7 @@ import TotalValue from '@components/TotalValue';
 import { Tab } from '@headlessui/react';
 import useAddParams from '@hooks/useAddParams';
 import useHasMounted from '@hooks/useHasMounted';
+import useTooltip from '@hooks/useToolTip/useToolTip';
 import Container from '@ui/Container/Container';
 import Flex from '@ui/Flex/Flex';
 import { Skeleton, TableRowSkeleton } from '@ui/Skeleton';
@@ -66,18 +67,28 @@ export default function Portfolio() {
     );
   }, [hasMounted, router]);
 
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    'The liquidity provided in DEXs',
+    { placement: 'bottom' }
+  );
+
   return (
     <Container>
       {/* <TotalValue /> */}
-      <Flex direction="column" customStyle="bg-gray-122 rounded-2xl p-1 sm:p-5 h-fit">
+      <Flex
+        direction="column"
+        customStyle="bg-gray-122 rounded-2xl p-1 sm:p-5 h-fit"
+      >
         <Tab.Group selectedIndex={tab} onChange={setTab}>
-          <Tab.List className="flex-col lg:flex-row flex justify-between text-center text-sm font-medium text-gray-500  dark:border-gray-700 dark:text-gray-400 ">
+          <Tab.List className="flex-col flex justify-between text-center text-sm font-medium text-gray-500  dark:border-gray-700 dark:text-gray-400 ">
             <h1 className="my-3 text-2xl font-semibold text-gray-100">
               Assets
             </h1>
             <div className="max-sm:space-x-1 space-x-4">
+              {tooltipVisible && tooltip}
               {tabs.map((tab: string) => (
                 <Tab
+                  ref={tab === 'Liquidities' ? targetRef : undefined}
                   key={tab}
                   onClick={() => addParams({ tab: tab.toLowerCase() })}
                   className={({ selected }) =>

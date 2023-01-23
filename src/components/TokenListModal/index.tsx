@@ -120,7 +120,7 @@ export default function TokenListModal({
       customStyle="max-w-sm bg-gray-800 rounded-2xl p-5 space-y-4"
     >
       <ModalHeader
-        title="Connect Wallet"
+        title="Token List"
         onClick={() => {
           setSearch('');
           onDismiss();

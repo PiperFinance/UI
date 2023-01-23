@@ -6,10 +6,15 @@ import ChainIcon from '@components/ChainIcon';
 import { useCoingecko } from '@hooks/useCoingecko';
 import type { TTokenBalanceRow } from './types';
 import Tooltip from '@components/TooltipContainer';
+import useTooltip from '@hooks/useToolTip/useToolTip';
 
 export function TokenBalanceRow(token: TTokenBalanceRow) {
   const { detail, balance } = token[1];
   const { data: tokenPrice, status } = useCoingecko(detail?.symbol);
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip('$' + tokenPrice, {
+    placement: 'bottom-start',
+  });
 
   const tokenValue =
     status !== 'loading'
@@ -46,7 +51,8 @@ export function TokenBalanceRow(token: TTokenBalanceRow) {
         </Flex>
       </td>
       <td className="px-4 max-sm:hidden">
-        <div>${tokenPrice?.toFixed(2)}</div>{' '}
+        <div ref={targetRef}>${tokenPrice?.toFixed(2)}</div>
+        {tooltipVisible && tooltip}
       </td>
       <td className="px-4">
         <div>
