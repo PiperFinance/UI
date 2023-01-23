@@ -38,11 +38,11 @@ export function NftBox(nft: INft) {
           {detail.symbol}
         </h5>
         <h6 className="mb-2 text-sm tracking-tight text-gray-200">
-          Name: {detail.name}
+          <strong>Name</strong>: {detail.name}
         </h6>
 
         <h6 className="mb-2 text-sm tracking-tight text-gray-200">
-          Wallet:&nbsp;
+          <strong>Wallet:</strong>&nbsp;
           <a
             className=" transition hover:underline"
             target="_blank"
@@ -51,29 +51,39 @@ export function NftBox(nft: INft) {
               currentChain?.blockExplorers?.default.url
             }/address/${detail.address!}`}
           >
-            {handleSliceHashString(userAddress)}
+            {handleSliceHashString(userAddress, 10).toLowerCase()}
           </a>
         </h6>
-        <p className="mb-3 font-normal text-gray-400">
-          {detail.description ? detail.description : '<No Description>'}
-        </p>
         <h6 className="mb-2 text-sm tracking-tight text-gray-300">
-          Total Supply: {totalSupply}
+          <strong>Total Supply:</strong> {totalSupply}
         </h6>
         <h6 className="mb-2 text-sm tracking-tight text-gray-300">
-          Balance: {balance}
+          <strong>Balance:</strong> {balance}
         </h6>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href={`${
-            currentChain?.blockExplorers?.default.url
-          }/token/${detail.address!}`}
-          className="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        >
-          {handleSliceHashString(detail.address)}
-          <ArrowRightIcon className="w-4" />
-        </a>
+        <Flex direction="column" customStyle='mb-5'>
+          <h6 className="mb-2 text-sm tracking-tight text-gray-300">
+            <strong>Description:</strong>{' '}
+          </h6>
+          <p className=" font-normal text-gray-400">
+            {detail.description
+              ? `"${detail.description}"`
+              : '<No Description>'}
+          </p>
+        </Flex>
+
+        <Flex justifyContent="center">
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href={`${
+              currentChain?.blockExplorers?.default.url
+            }/token/${detail.address!}`}
+            className="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            {handleSliceHashString(detail.address, 12).toLowerCase()}
+            <ArrowRightIcon className="w-4" />
+          </a>
+        </Flex>
       </div>
     </Flex>
   );

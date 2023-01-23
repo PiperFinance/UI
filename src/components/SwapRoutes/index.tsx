@@ -58,7 +58,8 @@ export default function SwapRoute({
                   <path d="M6 2.3A2.7 2.7 0 0 0 3.3 5v7A1.7 1.7 0 0 0 5 13.7h4a1.7 1.7 0 0 0 1.7-1.7V5A2.7 2.7 0 0 0 8 2.3H6ZM6 6h2M10.7 5h.6a2 2 0 0 1 2 2v3"></path>
                 </g>
               </svg>
-              {formatNumber(totalGasFee, 3)}
+              &nbsp;
+              {formatNumber(totalGasFee, 3)}$
             </Badge>
           )}
           <Badge>

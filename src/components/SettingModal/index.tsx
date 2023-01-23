@@ -4,7 +4,6 @@ import ModalHeader from '../ModalHeader';
 import { slippage } from '@store/store';
 import Input from '@ui/Input/Input';
 import { QuestionMarkCircleIcon } from '@heroicons/react/24/solid';
-import Tooltip from '@components/TooltipContainer';
 import useTooltip from '@hooks/useToolTip/useToolTip';
 
 interface ISetting {
@@ -33,17 +32,16 @@ export default function Setting({ onDismiss }: ISetting) {
           <QuestionMarkCircleIcon ref={targetRef} className="w-5 ml-1" />
         </Flex>
         <Input
-          type="text"
-          pattern="^[0-9]*[.,]?[0-9]*$"
-          autoCorrect="off"
-          autoComplete="off"
-          spellCheck="false"
           inputMode="decimal"
-          onChange={(e) => setSlippage(Number(e.target.value))}
+          onChange={(e) => {
+            setSlippage(Number(e.target.value));
+          }}
           value={currentSlippage}
           border="full"
           fullWidth={true}
           fontSize="sm"
+          pattern="^[0-9]*[.,]?[0-9]{0,2}$"
+          placeholder="0.50"
         />
       </Flex>
     </Flex>

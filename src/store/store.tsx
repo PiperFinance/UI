@@ -49,7 +49,7 @@ export const destinationToken = atomWithStorage<IToken | undefined>(
   undefined
 );
 
-export const slippage = atomWithStorage<number>('slippage', 0.5);
+export const slippage = atom<number>(0.5);
 
 export const selectedChains = atom<IChain[]>(newAllCustomChains);
 export const allTokens = atom<IToken[]>([]);

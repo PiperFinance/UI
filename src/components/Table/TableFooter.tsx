@@ -42,9 +42,9 @@ export default function TableFooter({
               ? totalLength
               : rowsPerPage * page}
           </span>{" "}
-          of{" "}
+          items out of{" "}
           <span className="font-semibold text-white">
-            {totalLength}
+            {totalLength} items
           </span>
         </span>
         <ul className="inline-flex items-center -space-x-px">

@@ -72,7 +72,10 @@ export function TransactionRow(transaction: ITransaction) {
       <Flex width="fit" customStyle="max-sm:hidden">
         {tooltipVisible && tooltip}
         {userAddress && (
-          <div className="text-md w-fit cursor-pointer rounded-full bg-slate-700 px-4 py-1 text-gray-200" ref={targetRef}>
+          <div
+            className="text-md w-fit cursor-pointer rounded-full bg-slate-700 px-4 py-1 text-gray-200"
+            ref={targetRef}
+          >
             <a
               target="_blank"
               rel="noopener noreferrer"
@@ -103,11 +106,27 @@ export function TransactionRow(transaction: ITransaction) {
           </>
         ))}
       </Flex>
-      <Flex width="fit">
-        <h3 className="text-xs sm:text-sm text-gray-400">
-          {transactionFee}&nbsp;
-          {currentChain?.nativeCurrency.symbol.toUpperCase()}
-        </h3>
+      <Flex
+        justifyContent="between"
+        alignItems="center"
+        width="basis32"
+        customStyle="text-gray-400 text-xs sm:text-sm"
+      >
+        <Flex alignItems="center">
+          <svg
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            role="img"
+            className="h-4 w-4"
+          >
+            <g stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+              <path d="M6 2.3A2.7 2.7 0 0 0 3.3 5v7A1.7 1.7 0 0 0 5 13.7h4a1.7 1.7 0 0 0 1.7-1.7V5A2.7 2.7 0 0 0 8 2.3H6ZM6 6h2M10.7 5h.6a2 2 0 0 1 2 2v3"></path>
+            </g>
+          </svg>
+          &nbsp;{transactionFee}
+        </Flex>
+        <span>{currentChain?.nativeCurrency.symbol.toUpperCase()}</span>
       </Flex>
       <Flex width="fit">
         <a
