@@ -41,7 +41,7 @@ export default function Sidebar() {
       disableText: 'Soon',
     },
     {
-      id: 2,
+      id: 3,
       name: 'Token Approval',
       link: '/approval',
       icon: <CreditCardIcon className={iconClass} />,
