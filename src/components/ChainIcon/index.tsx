@@ -34,7 +34,7 @@ const ChainIcon = ({ chainId }: IChainIcon) => {
   return (
     <>
       {newAllCustomChains.map(
-        (chain) => chain.id === chainId && <ChainIconComponent {...chain} />
+        (chain) => chain.id === chainId && <ChainIconComponent key={chain.id} {...chain} />
       )}
     </>
   );
