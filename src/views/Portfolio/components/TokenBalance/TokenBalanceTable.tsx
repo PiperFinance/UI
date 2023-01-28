@@ -17,7 +17,7 @@ function TokenBalanceTable({
   const { slice, range } = useTable<TTokenBalanceRow>({
     data: balances,
     page,
-    rowsPerPage: 5,
+    rowsPerPage: 7,
     isFetched,
   });
 
@@ -36,7 +36,7 @@ function TokenBalanceTable({
       page={page}
       range={range}
       totalLength={!isLoading ? balances.length : 0}
-      rowsPerPage={5}
+      rowsPerPage={7}
       slice={slice}
       setPage={setPage}
     >

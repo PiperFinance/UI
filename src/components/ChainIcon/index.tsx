@@ -9,7 +9,7 @@ interface IChainIcon {
 }
 
 function ChainIconComponent(chain: IChain) {
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(chain.name, {
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(chain.network, {
     placement: 'bottom',
   });
 

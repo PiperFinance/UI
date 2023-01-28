@@ -20,6 +20,18 @@ export function TransactionRow(transaction: ITransaction) {
     placement: 'bottom',
   });
 
+  const functionLabel = labels?.find(
+    (label: ITransactionLabel) => label.title === 'function'
+  );
+
+  const {
+    targetRef: labelRef,
+    tooltip: labelToolTip,
+    tooltipVisible: LabelVisible,
+  } = useTooltip(functionLabel?.value, {
+    placement: 'bottom-start',
+  });
+
   const currentChain = newAllCustomChains.find(
     (chain) => chain.id === transaction.chainId && chain
   );
@@ -47,26 +59,24 @@ export function TransactionRow(transaction: ITransaction) {
         <ChainIcon chainId={transaction.chainId} />
         <Flex direction="column" width="fit" customStyle="h-fit space-y-1">
           <Flex>
-            {labels ? (
-              labels?.map((label: ITransactionLabel, index) =>
-                label.title === 'function' ? (
-                  <h1
-                    key={label.value + index}
-                    className="text-xs sm:text-base capitalize text-gray-100"
-                  >
-                    {label.value}
-                  </h1>
-                ) : (
-                  ''
-                )
-              )
+            {functionLabel ? (
+              <>
+                <h1
+                  ref={labelRef}
+                  key={functionLabel?.value + functionLabel?.value}
+                  className="text-xs sm:text-base capitalize text-gray-100 w-32 truncate"
+                >
+                  {functionLabel?.value}
+                </h1>
+                {LabelVisible && labelToolTip}
+              </>
             ) : (
-              <h1 className="text-md capitalize text-gray-100">
+              <h1 className="text-xs sm:text-base capitalize text-gray-100">
                 {'<Transaction>'}
               </h1>
             )}
           </Flex>
-          <h3 className="text-xs text-gray-400">{date}</h3>
+          <h3 className="text-xs text-gray-400 hidden min-[400px]:block">{date}</h3>
         </Flex>
       </Flex>
       <Flex width="fit" customStyle="max-sm:hidden">
@@ -110,7 +120,7 @@ export function TransactionRow(transaction: ITransaction) {
         justifyContent="between"
         alignItems="center"
         width="basis32"
-        customStyle="text-gray-400 text-xs sm:text-sm"
+        customStyle="text-gray-400 text-xs sm:text-sm md:flex-row flex-col"
       >
         <Flex alignItems="center">
           <svg
