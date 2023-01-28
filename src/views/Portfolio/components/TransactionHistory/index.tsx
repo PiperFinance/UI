@@ -24,7 +24,7 @@ export default function TransactionHistory() {
   const { data, isLoading, error } = useTransactions(
     address ? String(address) : undefined,
     isSuccess,
-    10,
+    10000,
     1
   );
 

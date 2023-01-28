@@ -4,7 +4,7 @@ import { useAccount, useBalance, useDisconnect, useNetwork } from 'wagmi';
 import Image from 'next/image';
 import { handleSliceHashString } from '@utils/sliceHashString';
 import { formatNumber } from '@utils/bignumber';
-import { Skeleton } from '../UI/Skeleton';
+import { ReceiveAmountSkeleton } from '../UI/Skeleton';
 import { Menu, Transition } from '@headlessui/react';
 import { ArrowRightOnRectangleIcon } from '@heroicons/react/24/solid';
 import useTooltip from '@hooks/useToolTip/useToolTip';
@@ -99,7 +99,7 @@ export function WalletInfo() {
           </div>
           {balanceVisible && balanceTooltip}
           {!data ? (
-            <Skeleton />
+            <ReceiveAmountSkeleton />
           ) : (
             <div ref={balanceTarget}>
               <Flex customStyle="text-sm lg:text-lg" width="fit">
@@ -141,7 +141,7 @@ export function WalletInfo() {
                   height={40}
                 />
                 {!data ? (
-                  <Skeleton />
+                  <ReceiveAmountSkeleton />
                 ) : (
                   <Flex direction="column" customStyle=" ">
                     <span className="rounded-lg text-base font-semibold text-gray-200">
