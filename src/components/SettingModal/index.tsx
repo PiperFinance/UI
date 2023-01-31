@@ -5,6 +5,7 @@ import { slippage } from '@store/store';
 import Input from '@ui/Input/Input';
 import { QuestionMarkCircleIcon } from '@heroicons/react/24/solid';
 import useTooltip from '@hooks/useToolTip/useToolTip';
+import NumberInput from '@components/NumberInput';
 
 interface ISetting {
   onDismiss: () => void;
@@ -17,6 +18,13 @@ export default function Setting({ onDismiss }: ISetting) {
     'Setting a high slippage tolerance can help transactions succeed, but you may not get such a good price. Use with caution.',
     { placement: 'top' }
   );
+
+  function handleSetValue(e: React.ChangeEvent<HTMLInputElement>) {
+    const re = /^[0-9]*[.,]?[0-9]{0,2}$/;
+    if (re.test(e.target.value) && !isNaN(Number.parseInt(e.target.value))) {
+      setSlippage(Number.parseInt(e.target.value));
+    }
+  }
 
   return (
     <Flex
@@ -33,15 +41,14 @@ export default function Setting({ onDismiss }: ISetting) {
         </Flex>
         <Input
           inputMode="decimal"
-          onChange={(e) => {
-            setSlippage(Number(e.target.value));
-          }}
+          onChange={handleSetValue}
           value={currentSlippage}
           border="full"
           fullWidth={true}
           fontSize="sm"
           pattern="^[0-9]*[.,]?[0-9]{0,2}$"
           placeholder="0.50"
+          type="text"
         />
       </Flex>
     </Flex>

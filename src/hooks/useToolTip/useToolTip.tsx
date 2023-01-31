@@ -11,9 +11,6 @@ import {
   Variants,
 } from 'framer-motion';
 import { TooltipOptions, TooltipRefs } from './types';
-import { Inter } from '@next/font/google';
-
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 const animationMap = {
   initial: 'initial',
@@ -199,15 +196,14 @@ function useTooltip(
       {...animationMap}
       transition={{ duration: 0.3 }}
       variants={animationVariants}
-      className={`z-50 bg-gray-500 text-white px-3 py-2 text-sm rounded-xl -mt-2 -translate-x-1/2  w-fit max-w-[320px] ${inter.variable} capitalize`}
+      className="z-50 bg-gray-500 text-white px-3 py-2 text-sm rounded-xl -mt-2 -translate-x-1/2  w-fit max-w-[320px] capitalize"
     >
       {content}
       <div
         ref={setArrowElement}
         style={styles.arrow}
         className="absolute z-minus-1"
-      >
-      </div>
+      ></div>
     </motion.div>
   );
 

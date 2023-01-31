@@ -1,6 +1,5 @@
 import type { FC, ReactNode } from 'react';
 import Head from 'next/head';
-import { Inter } from '@next/font/google';
 import Flex from '@ui/Flex/Flex';
 import Container from '@ui/Container/Container';
 import dynamic from 'next/dynamic';
@@ -12,8 +11,6 @@ import { sidebar } from '@store/store';
 
 const WalletConnect = dynamic(() => import('../WalletConnect'));
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-
 const RootLayout: FC<{ children: ReactNode; pageName: string }> = ({
   children,
   pageName,
@@ -22,7 +19,7 @@ const RootLayout: FC<{ children: ReactNode; pageName: string }> = ({
   return (
     <Flex
       overflow="hidden"
-      customStyle={`${inter.variable} h-screen bg-gray-1000 font-sans`}
+      customStyle="h-screen bg-gray-1000"
       onClick={(e) => setSidebar(false)}
     >
       <Head>

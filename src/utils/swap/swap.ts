@@ -75,7 +75,8 @@ export default class swap {
       });
 
       return lifiResult.routes;
-    } catch (err) {}
+    } catch (err) {
+    }
   }
 
   private async getSymbiosisRoutes(
@@ -132,7 +133,8 @@ export default class swap {
       );
 
       return routes;
-    } catch (err) {}
+    } catch (err) {
+    }
   }
 
   private async getRangoRoutes(
@@ -164,7 +166,8 @@ export default class swap {
       });
 
       return routes.route;
-    } catch (e) {}
+    } catch (err) {
+    }
   }
 
   private handleConvertRoutes(
