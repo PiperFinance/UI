@@ -80,7 +80,9 @@ export default function Sidebar() {
         <ul className="mt-4 space-y-6 border-t pt-4 border-gray-700">
           <li>
             <Link
-              href="docs.piper.finance"
+              href="https://docs.piper.finance"
+              target="_blank"
+              rel="noreferrer"
               className="group flex items-center rounded-lg p-2 text-base font-normal text-gray-100 transition duration-75 hover:bg-gray-700"
             >
               <DocumentTextIcon className={iconClass} />

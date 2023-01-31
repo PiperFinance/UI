@@ -5,7 +5,6 @@ specifiers:
   '@headlessui/react': ^1.7.5
   '@heroicons/react': ^2.0.13
   '@lifi/sdk': ^1.7.2
-  '@next/font': ^13.0.6
   '@popperjs/core': ^2.11.6
   '@tanstack/eslint-plugin-query': ^4.20.2
   '@tanstack/query-core': ^4.20.2
@@ -68,7 +67,6 @@ dependencies:
   '@headlessui/react': 1.7.5_biqbaboplfbrettd7655fr4n2y
   '@heroicons/react': 2.0.13_react@18.2.0
   '@lifi/sdk': 1.7.2
-  '@next/font': 13.0.6
   '@popperjs/core': 2.11.6
   '@tanstack/query-core': 4.20.2
   '@tanstack/react-query': 4.20.2_biqbaboplfbrettd7655fr4n2y
@@ -758,10 +756,6 @@ packages:
     dependencies:
       glob: 7.1.7
     dev: true
-
-  /@next/font/13.0.6:
-    resolution: {integrity: sha512-5vxNmvnV0CbYjQGtztD5Axft9C7npKihbQpiFhnDwdb99f9K/QSFfcJqxz0E5QBkf67O2niVGJ5lApJDu78w0w==}
-    dev: false
 
   /@next/swc-android-arm-eabi/13.0.1:
     resolution: {integrity: sha512-M28QSbohZlNXNn//HY6lV2T3YaMzG58Jwr0YwOdVmOQv6i+7lu6xe3GqQu4kdqInqhLrBXnL+nabFuGTVSHtTg==}
