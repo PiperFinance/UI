@@ -65,7 +65,7 @@ export default function NFTList() {
       wrap={true}
       justifyContent="evenly"
     >
-      {data.map((nft: INft) => (
+      {data.nfts.map((nft: INft) => (
         <NftBox key={nft.detail.id} {...nft} />
       ))}
     </Flex>

@@ -35,7 +35,7 @@ const getTransactions = async (
       ""
     )}&pageSize=${pageSize}&pageNumber=${pageNumber}`
   );
-  return status === 200 ? sortData(data.result, "timeStamp") : [];
+  return status === 200 ? sortData(data.result.trxs, "timeStamp") : [];
 };
 
 const useTransactions = (
