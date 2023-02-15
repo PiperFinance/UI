@@ -196,7 +196,7 @@ function useTooltip(
       {...animationMap}
       transition={{ duration: 0.3 }}
       variants={animationVariants}
-      className="z-50 bg-gray-500 text-white px-3 py-2 text-sm rounded-xl -mt-2 -translate-x-1/2  w-fit max-w-[320px] capitalize"
+      className="z-50 bg-gray-500 text-white px-3 py-2 text-sm rounded-xl -mt-2 -translate-x-1/2  w-fit max-w-[400px] capitalize"
     >
       {content}
       <div
