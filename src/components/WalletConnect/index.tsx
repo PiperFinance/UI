@@ -61,7 +61,7 @@ export function WalletInfo() {
     tooltip: addressTooltip,
     tooltipVisible: addressVisible,
   } = useTooltip(address, {
-    placement: 'top',
+    placement: 'auto',
   });
 
   const {
@@ -71,6 +71,7 @@ export function WalletInfo() {
   } = useTooltip('Disconnect', {
     placement: 'bottom',
   });
+
 
   return (
     <Menu as="div" className="relative my-5">
@@ -91,7 +92,7 @@ export function WalletInfo() {
           <div className="relative h-8 w-8" ref={networkTarget}>
             <Image
               //@ts-ignore
-              src={chain?.icon.src}
+              src={chain.icon ? chain?.icon.src : undefined}
               alt={chain?.network!}
               fill
               className="rounded-lg bg-gray-800"
