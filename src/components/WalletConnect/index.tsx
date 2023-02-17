@@ -72,7 +72,6 @@ export function WalletInfo() {
     placement: 'bottom',
   });
 
-
   return (
     <Menu as="div" className="relative my-5">
       <Menu.Button>
@@ -89,16 +88,24 @@ export function WalletInfo() {
             />
           </div>
           {networkVisible && networkTooltip}
-          <div className="relative h-8 w-8" ref={networkTarget}>
-            <Image
-              //@ts-ignore
-              src={chain.icon ? chain?.icon.src : undefined}
-              alt={chain?.network!}
-              fill
-              className="rounded-lg bg-gray-800"
-            />
-          </div>
-          {balanceVisible && balanceTooltip}
+          {chain &&
+          //@ts-ignore
+          chain.icon ? (
+            <>
+              <div className="relative h-8 w-8" ref={networkTarget}>
+                <Image
+                  //@ts-ignore
+                  src={chain?.icon.src}
+                  alt={chain?.network!}
+                  fill
+                  className="rounded-lg bg-gray-800"
+                />
+              </div>
+              {balanceVisible && balanceTooltip}
+            </>
+          ) : (
+            <></>
+          )}
           {!data ? (
             <ReceiveAmountSkeleton />
           ) : (
