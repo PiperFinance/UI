@@ -2,7 +2,7 @@ import { Chains } from '@constants/networkList';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
-export const baseURL = 'https://ps.piper.finance/pairs/balance';
+export const baseURL = 'https://test_ps.piper.finance/pairs/balance';
 
 const fetchUserPairBalances = async (wallet: string | undefined) => {
   if (!wallet) return;
