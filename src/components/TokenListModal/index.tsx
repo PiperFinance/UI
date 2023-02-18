@@ -11,7 +11,7 @@ import Input from '@ui/Input/Input';
 import Image from 'next/image';
 import { useAccount, useBalance } from 'wagmi';
 import type { IChain } from '@constants/networkList';
-import { newAllCustomChains } from '@constants/networkList';
+import { Chains } from '@constants/networkList';
 import ModalHeader from '../ModalHeader';
 
 interface ITokenListModal {
@@ -92,7 +92,7 @@ export default function TokenListModal({
           />
           <Flex justifyContent="center" direction="column" customStyle="ml-3">
             <h3 className="text-sm font-bold">{currency.detail.symbol}</h3>
-            {newAllCustomChains.map(
+            {Chains.map(
               (chain) =>
                 chain.id === currency.detail.chainId && (
                   <Flex alignItems="center" customStyle="space-x-1">
@@ -126,8 +126,8 @@ export default function TokenListModal({
           onDismiss();
         }}
       />
-      <Flex justifyContent="between" wrap={true}>
-        {newAllCustomChains.map((chain) => (
+      <Flex justifyContent="start" wrap={true}>
+        {Chains.map((chain) => (
           <div
             onClick={() => toggleChain(chain)}
             className={`${
@@ -136,7 +136,7 @@ export default function TokenListModal({
                 : 'border-gray-600 hover:border-gray-100'
             } relative m-1 h-14 basis-1/6 cursor-pointer rounded-lg border  p-3 transition hover:border-gray-100`}
           >
-            <Image src={chain.icon!} alt={chain.name} fill />
+            <Image className='rounded-lg' src={chain.icon!} alt={chain.name} fill />
           </div>
         ))}
       </Flex>

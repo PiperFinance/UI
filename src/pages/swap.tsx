@@ -26,18 +26,3 @@ export default function SwapPage() {
     </RootLayout>
   );
 }
-
-// export async function getStaticProps() {
-//   const queryClient = new QueryClient();
-
-//   await queryClient.prefetchQuery({
-//     queryKey: ["userBalances"],
-//     queryFn: () => fetchUserBalances(),
-//   });
-
-//   return {
-//     props: {
-//       balances: dehydrate(queryClient),
-//     },
-//   };
-// }

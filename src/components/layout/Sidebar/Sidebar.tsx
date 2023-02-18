@@ -32,22 +32,6 @@ export default function Sidebar() {
       disable: false,
       disableText: '',
     },
-    {
-      id: 2,
-      name: 'Yield Optimizer',
-      link: '/yield',
-      icon: <BeakerIcon className={iconClass} />,
-      disable: true,
-      disableText: 'Soon',
-    },
-    {
-      id: 3,
-      name: 'Token Approval',
-      link: '/approval',
-      icon: <CreditCardIcon className={iconClass} />,
-      disable: true,
-      disableText: 'Soon',
-    },
   ];
 
   return (
@@ -76,19 +60,6 @@ export default function Sidebar() {
               </Link>
             </li>
           ))}
-        </ul>
-        <ul className="mt-4 space-y-6 border-t pt-4 border-gray-700">
-          <li>
-            <Link
-              href="https://docs.piper.finance"
-              target="_blank"
-              rel="noreferrer"
-              className="group flex items-center rounded-lg p-2 text-base font-normal text-gray-100 transition duration-75 hover:bg-gray-700"
-            >
-              <DocumentTextIcon className={iconClass} />
-              <span className="ml-3">Docs</span>
-            </Link>
-          </li>
         </ul>
       </div>
     </aside>

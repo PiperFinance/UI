@@ -1,8 +1,10 @@
 import { atom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 import { atomsWithQuery } from 'jotai-tanstack-query';
-import { IChain, newAllCustomChains } from '@constants/networkList';
+import { IChain, Chains } from '@constants/networkList';
 import { sortData } from '@utils/customSort';
+import * as testTokens from '@constants/tokenList.json';
+
 export const baseURL = 'https://piper.finance/api/';
 
 export interface IChainResponse {
@@ -51,7 +53,7 @@ export const destinationToken = atomWithStorage<IToken | undefined>(
 
 export const slippage = atom<number>(0.5);
 
-export const selectedChains = atom<IChain[]>(newAllCustomChains);
+export const selectedChains = atom<IChain[]>(Chains);
 export const allTokens = atom<IToken[]>([]);
 export const balancesList = atom<IChainResponse[]>([]);
 
@@ -72,7 +74,7 @@ export const chainFilterAtom = atom((get) => {
   const currentChain: IChain[] = get(selectedChains);
   return tokens.filter((token: IToken) =>
     currentChain.includes(
-      newAllCustomChains.find((chain) => chain.id === token.detail?.chainId)!
+      Chains.find((chain) => chain.id === token.detail?.chainId)!
     )
   );
 });
@@ -92,7 +94,7 @@ export const tokenAtom = atom((get) => {
 });
 
 export const updateTokenListAtom = atom((get): IToken[] => {
-  const tokens: ITokenResponse[] = get(getAllTokens);
+  const tokens: ITokenResponse[] = testTokens as unknown as ITokenResponse[];
   const balances: IChainResponse[] = get(balancesList);
 
   const tokensList = Object.values(

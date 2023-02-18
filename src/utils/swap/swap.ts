@@ -1,283 +1,140 @@
-import { newAllCustomChains } from '@constants/networkList';
-import LIFI, { Route as lifiRoute, SwitchChainHook } from '@lifi/sdk';
-import { sortData } from '@utils/customSort';
-
-import {
-  EvmTransaction,
-  MetaResponse,
-  QuoteSimulationResult,
-  RangoClient,
-} from 'rango-sdk-basic';
-import { Symbiosis, Token, TokenAmount } from 'symbiosis-js-sdk';
-import {
-  checkApprovalSync,
-  prepareEvmTransaction,
-} from '../prepareEvmTransaction';
-import {
-  ConvertLifiRoute,
-  ConvertRangoRoute,
-  ConvertSymbiosisRoute,
-  IFoundedRoutes,
-  IRouteInfo,
-  IRouteRequest,
-  ISwapExactInSymbiosis,
-  TSelectedRoute,
-} from './types';
-
-enum RouteType {
-  Rango,
-  Lifi,
-  Symbiosis,
-}
+import { IRouteInfo, IRouteRequest } from './types';
+import * as mantle from '@mantleio/sdk';
+import * as interfaces_1 from '@mantleio/sdk/dist/interfaces';
+const contracts_1 = require('@mantleio/contracts');
+import { CrossChainMessenger } from '@mantleio/sdk';
+import { ethers, Signer } from 'ethers';
 
 export default class swap {
-  private Lifi: LIFI;
-  private Rango: RangoClient;
-  private symbiosis: Symbiosis;
+  private crossChainMessenger: CrossChainMessenger | undefined;
   constructor() {
-    this.Lifi = new LIFI();
-    this.Rango = new RangoClient('a43dfccc-bb38-48f7-9ac9-5b928df2ecc0');
-    this.symbiosis = new Symbiosis('mainnet', 'piper.finance');
+    this.crossChainMessenger = undefined;
   }
 
-  public getRoutes(data: IRouteRequest): Promise<IRouteInfo[]> {
-    return Promise.all([
-      this.getLifiRoutes(data),
-      this.getSymbiosisRoutes(data),
-      this.getRangoRoutes(data),
-    ]).then((routes) => {
-      return this.handleConvertRoutes(
-        {
-          lifi: routes[0],
-          symbiosis: routes[1],
-          rango: routes[2]!,
-        },
-        data
-      );
-    });
-  }
+  async getRoutes(
+    data: IRouteRequest,
+    signer: Signer,
+    rpcUrl: string,
+    switchChainHook: (requiredChainId: number) => Promise<Signer | undefined>
+  ) {
+    await this.setup(data, signer, rpcUrl);
 
-  private async getLifiRoutes(
-    data: IRouteRequest
-  ): Promise<lifiRoute[] | undefined> {
-    const { amount, fromToken, toToken, slippage } = data;
-    try {
-      const lifiResult = await this.Lifi.getRoutes({
-        fromChainId: fromToken.chainId,
-        fromTokenAddress: fromToken.address,
-        toChainId: toToken.chainId,
-        toTokenAddress: toToken.address,
-        fromAmount: amount,
-        options: {
-          slippage: slippage / 100,
-          order: 'RECOMMENDED',
-        },
-      });
-
-      return lifiResult.routes;
-    } catch (err) {
+    if (data.fromToken.chainId === 5001) {
+      await this.withdrawBIT(data, switchChainHook);
+    } else {
+      await this.depositBIT(data);
     }
   }
 
-  private async getSymbiosisRoutes(
-    data: IRouteRequest
-  ): Promise<ISwapExactInSymbiosis | undefined> {
-    const { address, amount, fromToken, toToken, slippage } = data;
-    const tokenIn = new Token({
-      chainId: fromToken.chainId,
-      address:
-        fromToken.address.toLowerCase() ===
-        '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'.toLowerCase()
-          ? ''
-          : fromToken.address,
-      name: fromToken.name,
-      isNative:
-        fromToken.address.toLowerCase() ===
-        '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'.toLowerCase()
-          ? true
-          : false,
-      symbol: fromToken.symbol,
-      decimals: fromToken.decimals,
-    });
-
-    const tokenAmountIn = new TokenAmount(tokenIn, amount);
-
-    const tokenOut = new Token({
-      chainId: toToken.chainId,
-      address:
-        toToken.address.toLowerCase() ===
-        '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'.toLowerCase()
-          ? ''
-          : toToken.address,
-      name: toToken.name,
-      isNative:
-        toToken.address.toLowerCase() ===
-        '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'.toLowerCase()
-          ? true
-          : false,
-      symbol: toToken.symbol,
-      decimals: toToken.decimals,
-    });
-
-    const swapping = this.symbiosis.newSwapping();
-
-    try {
-      const routes = await swapping.exactIn(
-        tokenAmountIn,
-        tokenOut,
-        address,
-        address,
-        address,
-        slippage * 100,
-        Date.now() + 20 * 60
-      );
-
-      return routes;
-    } catch (err) {
-    }
-  }
-
-  private async getRangoRoutes(
-    data: IRouteRequest
-  ): Promise<QuoteSimulationResult | null | undefined> {
-    try {
-      const { fromToken, toToken } = data;
-
-      const sourceToken = newAllCustomChains.find(
-        (chain) => chain.id === fromToken.chainId
-      );
-      const destinationToken = newAllCustomChains.find(
-        (chain) => chain.id === toToken.chainId
-      );
-
-      if (!sourceToken || !destinationToken) return null;
-      const routes = await this.Rango.quote({
-        from: {
-          blockchain: sourceToken.name.toUpperCase(),
-          symbol: fromToken.symbol.toUpperCase(),
-          address: fromToken.address.toLowerCase(),
-        },
-        to: {
-          blockchain: destinationToken.name.toUpperCase(),
-          symbol: toToken.symbol.toUpperCase(),
-          address: toToken.address.toLowerCase(),
-        },
-        amount: data.amount,
-      });
-
-      return routes.route;
-    } catch (err) {
-    }
-  }
-
-  private handleConvertRoutes(
-    routes: IFoundedRoutes,
-    swapData: IRouteRequest
-  ): IRouteInfo[] {
-    const routeData = [
-      { type: RouteType.Lifi, data: routes?.lifi },
-      { type: RouteType.Symbiosis, data: routes?.symbiosis },
-      { type: RouteType.Rango, data: routes?.rango },
-    ];
-
-    const parsedRoutes: IRouteInfo[] = [];
-    for (const { type, data } of routeData) {
-      if (Array.isArray(data)) {
-        data.forEach((route) =>
-          parsedRoutes.push(this.showRoutesInfo(route, type, swapData))
-        );
-      } else if (data) {
-        parsedRoutes.push(this.showRoutesInfo(data!, type, swapData));
-      }
-    }
-
-    return sortData(
-      parsedRoutes,
-      'amountOut',
-      'amountOutValue',
-      'totalGasFee',
-      'estimateTime'
-    );
-  }
-
-  private showRoutesInfo(
-    route: TSelectedRoute,
-    type: RouteType,
-    swapData: IRouteRequest
-  ): IRouteInfo {
-    switch (type) {
-      case RouteType.Rango:
-        return new ConvertRangoRoute(route as QuoteSimulationResult, swapData)
-          ._ROUTE;
-      case RouteType.Lifi:
-        return new ConvertLifiRoute(route as lifiRoute, swapData)._ROUTE;
-      case RouteType.Symbiosis:
-        return new ConvertSymbiosisRoute(
-          route as ISwapExactInSymbiosis,
-          swapData
-        )._ROUTE;
-    }
-  }
-
-  public executeLifiSwap = async (
-    signer: any,
-    route: lifiRoute,
-    switchChainHook: SwitchChainHook
+  private setup = async (
+    data: IRouteRequest,
+    signer: Signer,
+    rpcUrl: string
   ) => {
-    if (!route || !signer) return;
-    await this.Lifi.executeRoute(signer, route, { ...switchChainHook });
+    const RpcProvider = new ethers.providers.JsonRpcProvider(rpcUrl);
+
+    const Wallet = RpcProvider.getSigner(data.address);
+
+    this.crossChainMessenger = new mantle.CrossChainMessenger({
+      l1ChainId:
+        data.fromToken.chainId === 5001
+          ? data.toToken.chainId
+          : data.fromToken.chainId,
+      l2ChainId: 5001,
+      l1SignerOrProvider: data.fromToken.chainId === 5001 ? Wallet : signer,
+      l2SignerOrProvider: data.fromToken.chainId === 5001 ? signer : Wallet,
+    });
   };
 
-  public executeSymbiosisSwap = async (
-    signer: any,
-    route: ISwapExactInSymbiosis
-  ) => {
-    if (!route || !signer) return;
-    await route.execute(signer);
+  private depositBIT = async (data: IRouteRequest) => {
+    const allowanceResponse = await this.crossChainMessenger?.approveERC20(
+      data.fromToken.address,
+      data.toToken.address,
+      data.amount
+    );
+    await allowanceResponse?.wait();
+    const response = await this.crossChainMessenger?.depositERC20(
+      data.fromToken.address,
+      data.toToken.address,
+      data.amount
+    );
+    await response?.wait();
+
+    await this.crossChainMessenger?.waitForMessageStatus(
+      response?.hash!,
+      mantle.MessageStatus.RELAYED
+    );
   };
 
-  public executeRangoSwap = async (signer: any, data: IRouteRequest) => {
-    if (!data || !newAllCustomChains) return;
+  private withdrawBIT = async (
+    data: IRouteRequest,
+    switchChainHook: (requiredChainId: number) => Promise<Signer | undefined>
+  ) => {
+    // const response = await this.crossChainMessenger?.withdrawERC20(
+    //   data.toToken.address,
+    //   data.fromToken.address,
+    //   data.amount
+    // );
+    // await response?.wait();
 
-    const { amount, fromToken, toToken, address, slippage } = data;
+    // console.log(response);
 
-    const sourceToken = newAllCustomChains.find(
-      (chain) => chain.id === fromToken.chainId
-    );
-    const destinationToken = newAllCustomChains.find(
-      (chain) => chain.id === toToken.chainId
-    );
+    // await this.crossChainMessenger?.waitForMessageStatus(
+    //   response?.hash!,
+    //   mantle.MessageStatus.IN_CHALLENGE_PERIOD
+    // );
 
-    if (!sourceToken || !destinationToken) return null;
+    // console.log(response);
 
-    const swapResponse = await this.Rango.swap({
-      from: {
-        blockchain: sourceToken.name.toUpperCase(),
-        symbol: fromToken.symbol.toUpperCase(),
-        address: fromToken.address.toLowerCase(),
-      },
-      to: {
-        blockchain: destinationToken.name.toUpperCase(),
-        symbol: toToken.symbol.toUpperCase(),
-        address: toToken.address.toLowerCase(),
-      },
-      amount: amount,
-      fromAddress: address,
-      toAddress: address,
-      slippage: String(slippage / 100),
-      disableEstimate: false,
-      referrerAddress: null,
-      referrerFee: null,
-    });
+    // await this.crossChainMessenger?.waitForMessageStatus(
+    //   response?.hash!,
+    //   mantle.MessageStatus.READY_FOR_RELAY
+    // );
+    const l1Signer = await switchChainHook(data.toToken.chainId);
 
-    const evmTransaction = swapResponse.tx as EvmTransaction;
+    console.log(l1Signer);
 
-    if (!!evmTransaction.approveData) {
-      const finalTx = prepareEvmTransaction(evmTransaction, true);
-      const txHash = (await signer.sendTransaction(finalTx)).hash;
-      await checkApprovalSync(swapResponse.requestId, txHash, this.Rango);
-    }
-    const finalTx = prepareEvmTransaction(evmTransaction, false);
-    await signer.sendTransaction(finalTx);
+    // console.log(response);
+
+    // const resolved = await this.crossChainMessenger?.toCrossChainMessage(
+    //   response!
+    // );
+    // console.log(resolved);
+    // if (resolved?.direction === interfaces_1.MessageDirection.L1_TO_L2) {
+    //   throw new Error(`cannot finalize L1 to L2 message`);
+    // }
+    // console.log(resolved);
+    // const proof = await this.crossChainMessenger?.getMessageProof(resolved!);
+    // console.log(proof);
+
+    // const legacyL1XDM = new ethers.Contract(
+    //   this.crossChainMessenger?.contracts.l1.L1CrossDomainMessenger.address!,
+    //   contracts_1.getContractInterface('L1CrossDomainMessenger'),
+    //   this.crossChainMessenger?.l1SignerOrProvider
+    // );
+
+    // //@ts-ignore
+    // await legacyL1XDM.populateTransaction.relayMessage(
+    //   resolved?.target,
+    //   resolved?.sender,
+    //   resolved?.message,
+    //   resolved?.messageNonce,
+    //   proof,
+    //   {}
+    // );
+
+    // if (!l1Signer) return;
+
+    // await this.crossChainMessenger?.finalizeMessage(response!, {
+    //   signer: l1Signer,
+    //   overrides: { gasLimit: 3000000000 },
+    // });
+    // console.log(response);
+
+    // await this.crossChainMessenger?.waitForMessageStatus(
+    //   response!,
+    //   mantle.MessageStatus.RELAYED
+    // );
+    // console.log(response);
   };
 }

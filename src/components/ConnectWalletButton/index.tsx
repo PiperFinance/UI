@@ -1,26 +1,17 @@
-import ConnectWalletModal from '@components/ConnectWalletModal';
-import { Modal } from '@components/Modal/Modal';
 import { Button } from '@ui/Button/Button';
-import React, { useState } from 'react';
+import { useConnect } from 'wagmi';
 
 const ConnectWallet = () => {
-  const [open, setOpen] = useState(false);
+
+  const { connect, connectors } = useConnect();
 
   return (
-    <>
-      <Button
-        onClick={() => {
-          setOpen(true);
-        }}
-        width="sm"
-      >
-        Connect Wallet
-      </Button>
-
-      <Modal isOpen={open} closeOnOverlayClick onDismiss={() => setOpen(false)}>
-        <ConnectWalletModal onDismiss={() => setOpen(false)} />
-      </Modal>
-    </>
+    <Button
+      onClick={() => connectors.map((connector) => connect({ connector }))}
+      width="sm"
+    >
+      Connect Wallet
+    </Button>
   );
 };
 

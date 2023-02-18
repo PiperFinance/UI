@@ -1,11 +1,11 @@
-import { newAllCustomChains } from '@constants/networkList';
+import { Chains } from '@constants/networkList';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
 export const baseURL = 'https://nt.piper.finance';
 
 const handleSaveNFTs = async (wallet: string | undefined) => {
-  const chainList: number[] = newAllCustomChains.map((chain) => chain.id);
+  const chainList: number[] = Chains.map((chain) => chain.id);
   await axios.post(`${baseURL}/save_users_nfts`, {
     userAddresses: [wallet],
     chainIds: chainList,
@@ -28,7 +28,7 @@ const getNftList = async (
   pageSize: number,
   pageNumber: number
 ) => {
-  const chainList = newAllCustomChains.map((chain) => `&chainId=${chain.id}`);
+  const chainList = Chains.map((chain) => `&chainId=${chain.id}`);
   const { data, status } = await axios.get(
     `${baseURL}/get_users_nfts?userAddress=${wallet}${chainList.join(
       ''
