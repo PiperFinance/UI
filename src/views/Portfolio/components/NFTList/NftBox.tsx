@@ -1,4 +1,4 @@
-import { newAllCustomChains } from '@constants/networkList';
+import { Chains } from '@constants/networkList';
 import ChainIcon from '@components/ChainIcon';
 import Flex from '@ui/Flex/Flex';
 import { handleSliceHashString } from '@utils/sliceHashString';
@@ -9,7 +9,7 @@ import { ArrowRightIcon } from '@heroicons/react/20/solid';
 export function NftBox(nft: INft) {
   const { detail, balance, totalSupply, userAddress } = nft;
 
-  const currentChain = newAllCustomChains.find(
+  const currentChain = Chains.find(
     (chain) => chain.id === detail.chainId && chain
   );
 
