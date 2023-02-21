@@ -20,19 +20,4 @@ const Token = z.object({
   related: z.any().array().optional(),
 });
 
-export const swapRouter = router({
-  routes: publicProcedure
-    .input(
-      z.object({
-        fromToken: Token,
-        toToken: Token,
-        amount: z.string(),
-        address: z.string(),
-        slippage: z.number(),
-      })
-    )
-    .mutation(async ({ input }): Promise<IRouteInfo[]> => {
-      const routes = await handleSwap.getRoutes(input);
-      return routes;
-    }),
-});
+export const swapRouter = router({});
