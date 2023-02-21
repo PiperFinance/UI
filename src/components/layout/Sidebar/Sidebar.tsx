@@ -32,6 +32,14 @@ export default function Sidebar() {
       disable: false,
       disableText: '',
     },
+    {
+      id: 2,
+      name: 'Approval',
+      link: '/approval',
+      icon: <CreditCardIcon className={iconClass} />,
+      disable: false,
+      disableText: '',
+    },
   ];
 
   return (

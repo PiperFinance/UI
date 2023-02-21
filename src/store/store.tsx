@@ -3,7 +3,6 @@ import { atomWithStorage } from 'jotai/utils';
 import { atomsWithQuery } from 'jotai-tanstack-query';
 import { IChain, Chains } from '@constants/networkList';
 import { sortData } from '@utils/customSort';
-import * as testTokens from '@constants/tokenList.json';
 
 export const baseURL = 'https://piper.finance/api/';
 
@@ -61,7 +60,7 @@ export const [getAllTokens] = atomsWithQuery<ITokenResponse[]>(() => ({
   queryKey: ['allTokens'],
   queryFn: async () => {
     const res = await fetch(
-      `https://raw.githubusercontent.com/PiperFinance/CD/main/tokens/outVerified/all_tokens.json`
+      `https://raw.githubusercontent.com/PiperFinance/CD/testnet/main/tokens/outVerified/all_tokens.json`
     );
     return res.json();
   },
@@ -94,7 +93,7 @@ export const tokenAtom = atom((get) => {
 });
 
 export const updateTokenListAtom = atom((get): IToken[] => {
-  const tokens: ITokenResponse[] = testTokens as unknown as ITokenResponse[];
+  const tokens: ITokenResponse[] = get(getAllTokens)
   const balances: IChainResponse[] = get(balancesList);
 
   const tokensList = Object.values(

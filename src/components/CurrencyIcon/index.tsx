@@ -41,9 +41,9 @@ export function CurrencyIcon({ chainId, size, borderRadius, ...props }: Props) {
             chain.id === chainId && (
               <div
                 key={chain.id}
-                className="absolute left-4 -top-2 h-5 w-5 rounded-md border border-gray-600 bg-gray-1000"
+                className="absolute left-5 -top-2 h-5 w-5 rounded-md border border-gray-600 bg-gray-1000"
               >
-                <Image src={chain.icon ?? ""} alt={chain.name} fill />
+                <Image src={chain.icon ?? ""} alt={chain.name} fill className="rounded-md"/>
               </div>
             )
         )}

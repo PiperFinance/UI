@@ -17,6 +17,7 @@ const buttonStyles = cva(
         disablePrimary: "bg-primary-700 text-gray-100 hover:text-gray-50",
       },
       width: {
+        xs: "w-24",
         sm: "w-40",
         80: "w-4/5",
         half: "w-1/2",
