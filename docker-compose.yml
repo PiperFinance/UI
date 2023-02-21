@@ -2,8 +2,8 @@ version: "3.9"
 services:
   ui:
     platform: "linux/amd64"
-    container_name: ui_container
-    hostname: UI
+    container_name: testnet_ui_container
+    hostname: testnet_UI
     build:
       context: .
       dockerfile: Dockerfile
@@ -11,8 +11,8 @@ services:
         NEXT_PUBLIC_CLIENTVAR: "clientvar"
     working_dir: /app
     ports:
-      - "4000:4000"
-    image: t3-app
+      - "4001:4001"
+    image: testnet_t3-app
     environment:
       - DATABASE_URL=file:./db.sqlite
-      - PORT=4000
+      - PORT=4001
