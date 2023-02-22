@@ -112,9 +112,9 @@ export default function Portfolio() {
             <Tab.Panel>
               <PairTokenTable />
             </Tab.Panel>
-            <Tab.Panel>
+            {/* <Tab.Panel>
               <NFTList />
-            </Tab.Panel>
+            </Tab.Panel> */}
             <Tab.Panel>
               <TransactionHistory />
             </Tab.Panel>
