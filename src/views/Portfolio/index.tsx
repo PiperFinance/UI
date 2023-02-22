@@ -59,7 +59,7 @@ export default function Portfolio() {
   const router = useRouter();
   const hasMounted = useHasMounted();
   const addParams = useAddParams();
-  const tabs: string[] = ['Tokens', 'Liquidities', 'NFTs', 'Transactions'];
+  const tabs: string[] = ['Tokens', 'Liquidities', 'Transactions'];
 
   useEffect(() => {
     tabs.find(
