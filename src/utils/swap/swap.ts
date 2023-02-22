@@ -11,16 +11,11 @@ export default class swap {
     this.crossChainMessenger = undefined;
   }
 
-  async getRoutes(
-    data: IRouteRequest,
-    signer: Signer,
-    rpcUrl: string,
-    switchChainHook: (requiredChainId: number) => Promise<Signer | undefined>
-  ) {
+  async getRoutes(data: IRouteRequest, signer: Signer, rpcUrl: string) {
     await this.setup(data, signer, rpcUrl);
 
     if (data.fromToken.chainId === 5001) {
-      await this.withdrawBIT(data, switchChainHook);
+      await this.withdrawBIT(data);
     } else {
       await this.depositBIT(data);
     }
@@ -66,75 +61,21 @@ export default class swap {
     );
   };
 
-  private withdrawBIT = async (
-    data: IRouteRequest,
-    switchChainHook: (requiredChainId: number) => Promise<Signer | undefined>
-  ) => {
-    // const response = await this.crossChainMessenger?.withdrawERC20(
-    //   data.toToken.address,
-    //   data.fromToken.address,
-    //   data.amount
-    // );
-    // await response?.wait();
+  private withdrawBIT = async (data: IRouteRequest) => {
+    const response = await this.crossChainMessenger?.withdrawERC20(
+      data.toToken.address,
+      data.fromToken.address,
+      data.amount
+    );
+    await response?.wait();
 
-    // console.log(response);
-
-    // await this.crossChainMessenger?.waitForMessageStatus(
-    //   response?.hash!,
-    //   mantle.MessageStatus.IN_CHALLENGE_PERIOD
-    // );
-
-    // console.log(response);
-
-    // await this.crossChainMessenger?.waitForMessageStatus(
-    //   response?.hash!,
-    //   mantle.MessageStatus.READY_FOR_RELAY
-    // );
-    const l1Signer = await switchChainHook(data.toToken.chainId);
-
-    console.log(l1Signer);
-
-    // console.log(response);
-
-    // const resolved = await this.crossChainMessenger?.toCrossChainMessage(
-    //   response!
-    // );
-    // console.log(resolved);
-    // if (resolved?.direction === interfaces_1.MessageDirection.L1_TO_L2) {
-    //   throw new Error(`cannot finalize L1 to L2 message`);
-    // }
-    // console.log(resolved);
-    // const proof = await this.crossChainMessenger?.getMessageProof(resolved!);
-    // console.log(proof);
-
-    // const legacyL1XDM = new ethers.Contract(
-    //   this.crossChainMessenger?.contracts.l1.L1CrossDomainMessenger.address!,
-    //   contracts_1.getContractInterface('L1CrossDomainMessenger'),
-    //   this.crossChainMessenger?.l1SignerOrProvider
-    // );
-
-    // //@ts-ignore
-    // await legacyL1XDM.populateTransaction.relayMessage(
-    //   resolved?.target,
-    //   resolved?.sender,
-    //   resolved?.message,
-    //   resolved?.messageNonce,
-    //   proof,
-    //   {}
-    // );
-
-    // if (!l1Signer) return;
-
-    // await this.crossChainMessenger?.finalizeMessage(response!, {
-    //   signer: l1Signer,
-    //   overrides: { gasLimit: 3000000000 },
-    // });
-    // console.log(response);
-
-    // await this.crossChainMessenger?.waitForMessageStatus(
-    //   response!,
-    //   mantle.MessageStatus.RELAYED
-    // );
-    // console.log(response);
+    await this.crossChainMessenger?.waitForMessageStatus(
+      response?.hash!,
+      mantle.MessageStatus.IN_CHALLENGE_PERIOD
+    );
+    await this.crossChainMessenger?.waitForMessageStatus(
+      response?.hash!,
+      mantle.MessageStatus.READY_FOR_RELAY
+    );
   };
 }

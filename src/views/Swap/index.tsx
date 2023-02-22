@@ -32,6 +32,8 @@ import SwapSetting from './components/SwapSetting';
 import ConnectWallet from '@components/ConnectWalletButton';
 import { Chains } from '@constants/networkList';
 
+import * as mantle from '@mantleio/sdk';
+
 interface ISwap {
   amountIn: string;
   fromToken: IToken;
@@ -50,12 +52,8 @@ export default function Swap() {
 
   const { address, isConnected } = useAccount();
   const { chain } = useNetwork();
-  const {
-    switchNetworkAsync,
-    isSuccess,
-    data,
-    pendingChainId
-  } = useSwitchNetwork();
+  const { switchNetworkAsync, isSuccess, data, pendingChainId } =
+    useSwitchNetwork();
   const { data: fromTokenBalance } = useBalance({
     address: address,
     token:
@@ -81,7 +79,6 @@ export default function Swap() {
     chainId: !data ? chain?.id : data.id,
   });
 
-
   useEffect(() => setIsUserConnected(isConnected), [isConnected]);
 
   const handleSwap = useMemo(() => new swap(), []);
@@ -92,7 +89,6 @@ export default function Swap() {
     await switchNetworkAsync?.(requiredChainId);
 
     if (isSuccess && isFetched) {
-    console.log(data,chain,pendingChainId,isSuccess, isFetched);
       return signer as unknown as Promise<Signer | undefined>;
     }
   };
@@ -114,8 +110,7 @@ export default function Swap() {
           address,
         },
         signer,
-        rpc?.rpcUrls.default.http[0]!,
-        switchChainHook
+        rpc?.rpcUrls.default.http[0]!
       )
       .then((res) => {
         setIsLoading(false);
