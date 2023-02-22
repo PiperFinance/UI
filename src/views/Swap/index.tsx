@@ -81,7 +81,6 @@ export default function Swap() {
     chainId: !data ? chain?.id : data.id,
   });
 
-  console.log(signer)
 
   useEffect(() => setIsUserConnected(isConnected), [isConnected]);
 
@@ -119,11 +118,9 @@ export default function Swap() {
         switchChainHook
       )
       .then((res) => {
-        console.log(res);
         setIsLoading(false);
       })
       .catch((e) => {
-        console.log(e);
         setIsLoading(false);
       });
   };

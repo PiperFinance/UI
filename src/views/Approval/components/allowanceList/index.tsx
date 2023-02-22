@@ -1,25 +1,20 @@
-
 import { useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import { Skeleton } from '@ui/Skeleton';
 import Flex from '@ui/Flex/Flex';
-import type { IAllowance } from './types';
 import { AllowanceRow } from './allowanceRow';
 import { useUserAllowanceList } from '@views/Approval/hooks/useUserAllowanceList';
-import allowanceList from "./allowance.json"
 import { updateBalance } from '@store/store';
 
 export default function AllowanceList() {
   const { address } = useAccount();
 
-
-  const balances: any[] = Object.values(updateBalance<any, Text>(allowanceList as unknown as any))
-
-  console.log(balances)
-
-
   const { data, isLoading, isFetched, isRefetching, error } =
     useUserAllowanceList(address ? address.toString() : undefined);
+
+  const allowanceItem: any[] = Object.entries(
+    updateBalance<any, Text>(data as unknown as any)
+  );
 
   if (isLoading) {
     return (
@@ -43,7 +38,7 @@ export default function AllowanceList() {
     );
   }
 
-  if (data?.length === 0) {
+  if (!data || data?.length === 0) {
     return (
       <Flex
         customStyle="h-40 text-gray-100"
@@ -57,11 +52,8 @@ export default function AllowanceList() {
 
   return (
     <Flex direction="column" customStyle="p-2 h-full" overflow="yAuto">
-      {balances?.map((transaction: IAllowance) => (
-        <AllowanceRow
-          key={transaction.contract + transaction.token.address}
-          {...transaction}
-        />
+      {allowanceItem?.map((allowance) => (
+        <AllowanceRow {...allowance} />
       ))}
     </Flex>
   );
