@@ -9,18 +9,18 @@ import type { INft } from './types';
 export default function NFTList() {
   const { address } = useAccount();
 
-  const { mutate, isSuccess } = useSaveNFTs(
-    address ? address.toString().toLowerCase() : undefined
-  );
+  // const { mutate, isSuccess } = useSaveNFTs(
+  //   address ? address.toString().toLowerCase() : undefined
+  // );
 
-  useEffect(() => {
-    if (!address) return;
-    mutate();
-  }, [address]);
+  // useEffect(() => {
+  //   if (!address) return;
+  //   mutate();
+  // }, [address]);
 
   const { data, isLoading, error } = useNftList(
     address ? address.toString().toLowerCase() : undefined,
-    isSuccess,
+    // isSuccess,
     10,
     1
   );

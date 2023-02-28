@@ -12,18 +12,18 @@ import { TransactionRow } from './TransactionRow';
 export default function TransactionHistory() {
   const { address } = useAccount();
 
-  const { mutate, isSuccess } = useSaveTransactions(
-    address ? String(address).toLowerCase() : undefined
-  );
+  // const { mutate, isSuccess } = useSaveTransactions(
+  //   address ? String(address).toLowerCase() : undefined
+  // );
 
-  useEffect(() => {
-    if (!address) return;
-    mutate();
-  }, [address]);
+  // useEffect(() => {
+  //   if (!address) return;
+  //   mutate();
+  // }, [address]);
 
   const { data, isLoading, error } = useTransactions(
     address ? String(address) : undefined,
-    isSuccess,
+    // isSuccess,
     10000,
     1
   );

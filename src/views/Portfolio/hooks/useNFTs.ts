@@ -39,16 +39,19 @@ const getNftList = async (
 
 const useNftList = (
   wallet: string | undefined,
-  saveSucceeded: boolean,
+  // saveSucceeded: boolean,
   pageSize = 10,
   pageNumber = 1
 ) => {
   return useQuery({
     queryKey: ['userNFTs', wallet, pageSize, pageNumber],
     queryFn: () => getNftList(wallet, pageSize, pageNumber),
-    enabled: saveSucceeded,
+    // enabled: saveSucceeded,
     staleTime: 60000,
     refetchInterval: 60000,
+    onSuccess: () => {
+      handleSaveNFTs(wallet)
+    },
   });
 };
 
