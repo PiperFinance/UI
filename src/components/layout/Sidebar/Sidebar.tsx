@@ -22,7 +22,7 @@ export default function Sidebar() {
       link: '/',
       icon: <ChartBarIcon className={iconClass} />,
       disable: false,
-      disableText: '',
+      versionInfo: '',
     },
     {
       id: 1,
@@ -30,23 +30,23 @@ export default function Sidebar() {
       link: '/swap',
       icon: <ArrowsRightLeftIcon className={iconClass} />,
       disable: false,
-      disableText: '',
+      versionInfo: '',
     },
     {
       id: 2,
-      name: 'Yield Optimizer',
-      link: '/yield',
-      icon: <BeakerIcon className={iconClass} />,
-      disable: true,
-      disableText: 'Soon',
-    },
-    {
-      id: 3,
       name: 'Token Approval',
       link: '/approval',
       icon: <CreditCardIcon className={iconClass} />,
       disable: true,
-      disableText: 'Soon',
+      versionInfo: 'Soon',
+    },
+    {
+      id: 3,
+      name: 'Yield Optimizer',
+      link: '/yield',
+      icon: <BeakerIcon className={iconClass} />,
+      disable: true,
+      versionInfo: 'Soon',
     },
   ];
 
@@ -70,8 +70,12 @@ export default function Sidebar() {
               >
                 {nav.icon}
                 <span className="">{nav.name}</span>
-                {nav.disable && (
-                  <span className="text-xs">{nav.disableText}</span>
+                {nav.versionInfo && (
+                  <span
+                    className={`text-xs ${nav.disable ? '' : 'text-wheat-800'}`}
+                  >
+                    {nav.versionInfo}
+                  </span>
                 )}
               </Link>
             </li>

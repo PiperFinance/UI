@@ -1,4 +1,4 @@
-import { newAllCustomChains } from "@constants/networkList";
+import { Chains } from "@constants/networkList";
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 import Image from "next/image";
@@ -36,7 +36,7 @@ export function CurrencyIcon({ chainId, size, borderRadius, ...props }: Props) {
   return (
     <div className={iconStyles({ size, borderRadius })}>
       {chainId &&
-        newAllCustomChains.map(
+        Chains.map(
           (chain) =>
             chain.id === chainId && (
               <div

@@ -1,4 +1,4 @@
-import { newAllCustomChains } from "@constants/networkList";
+import { Chains } from "@constants/networkList";
 import { configureChains, createClient } from "wagmi";
 import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 import { InjectedConnector } from "wagmi/connectors/injected";
@@ -6,7 +6,7 @@ import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { publicProvider } from "wagmi/providers/public";
 
-export const { provider, chains } = configureChains(newAllCustomChains, [
+export const { provider, chains } = configureChains(Chains, [
   publicProvider(),
 ]);
 

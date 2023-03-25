@@ -1,5 +1,5 @@
 import Tooltip from '@components/TooltipContainer';
-import { IChain, newAllCustomChains } from '@constants/networkList';
+import { IChain, Chains } from '@constants/networkList';
 import useTooltip from '@hooks/useToolTip/useToolTip';
 import Image from 'next/image';
 import React from 'react';
@@ -33,7 +33,7 @@ function ChainIconComponent(chain: IChain) {
 const ChainIcon = ({ chainId }: IChainIcon) => {
   return (
     <>
-      {newAllCustomChains.map(
+      {Chains.map(
         (chain) => chain.id === chainId && <ChainIconComponent key={chain.id} {...chain} />
       )}
     </>

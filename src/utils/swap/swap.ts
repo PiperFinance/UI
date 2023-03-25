@@ -1,4 +1,4 @@
-import { newAllCustomChains } from '@constants/networkList';
+import { Chains } from '@constants/networkList';
 import LIFI, { Route as lifiRoute, SwitchChainHook } from '@lifi/sdk';
 import { sortData } from '@utils/customSort';
 
@@ -143,10 +143,10 @@ export default class swap {
     try {
       const { fromToken, toToken } = data;
 
-      const sourceToken = newAllCustomChains.find(
+      const sourceToken = Chains.find(
         (chain) => chain.id === fromToken.chainId
       );
-      const destinationToken = newAllCustomChains.find(
+      const destinationToken = Chains.find(
         (chain) => chain.id === toToken.chainId
       );
 
@@ -237,14 +237,14 @@ export default class swap {
   };
 
   public executeRangoSwap = async (signer: any, data: IRouteRequest) => {
-    if (!data || !newAllCustomChains) return;
+    if (!data || !Chains) return;
 
     const { amount, fromToken, toToken, address, slippage } = data;
 
-    const sourceToken = newAllCustomChains.find(
+    const sourceToken = Chains.find(
       (chain) => chain.id === fromToken.chainId
     );
-    const destinationToken = newAllCustomChains.find(
+    const destinationToken = Chains.find(
       (chain) => chain.id === toToken.chainId
     );
 
