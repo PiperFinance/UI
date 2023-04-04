@@ -1,8 +1,6 @@
-import Tooltip from '@components/TooltipContainer';
 import { IChain, Chains } from '@constants/networkList';
 import useTooltip from '@hooks/useToolTip/useToolTip';
 import Image from 'next/image';
-import React from 'react';
 
 interface IChainIcon {
   chainId: number;

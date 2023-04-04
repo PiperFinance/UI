@@ -44,7 +44,7 @@ export default function CurrencyInputPanel({
     <Flex
       direction="column"
       width="full"
-      customStyle="bg-gray-122 rounded-xl p-4 my-2 h-42 border border-gray-700 space-y-1"
+      customStyle="bg-gray-128 rounded-xl p-4 my-2 h-42 space-y-1"
     >
       <Flex
         customStyle="text-gray-300 px-2 text-xs font-semibold"

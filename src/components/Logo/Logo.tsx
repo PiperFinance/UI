@@ -4,10 +4,9 @@ const Logo = () => {
   return (
     <Link href="/">
       <span
-        className={`my-6 inline-flex cursor-pointer items-center text-2xl font-semibold text-wheat-500`}
+        className={`mb-5 px-3 py-1  rounded-lg inline-flex cursor-pointer font-bold items-center text-2xl font-semibold text-wheat-500 bg-primary-600`}
       >
-        PIPER
-        <span className="text-primary-600">&nbsp;FINANCE</span>
+        P
       </span>
     </Link>
   );

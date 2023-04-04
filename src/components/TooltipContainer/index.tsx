@@ -28,7 +28,7 @@ const Tooltip = ({ children, tooltip, position }: ITooltip) => {
         ? createPortal(
             <span
               ref={tooltipRef}
-              className={`z-50 transition bg-gray-500 text-white px-3 py-2 text-sm rounded-xl absolute -translate-x-1/2 ${position}-full whitespace-nowrap w-fit mt-2 max-w-[320px]`}
+              className={`z-50 transition bg-gray-500 text-white px-2 py-1 text-2xl rounded-xl absolute -translate-x-1/2 ${position}-full whitespace-nowrap w-fit mt-2 max-w-[320px]`}
             >
               {tooltip}
             </span>,

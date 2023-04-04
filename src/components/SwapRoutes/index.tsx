@@ -33,7 +33,7 @@ export default function SwapRoute({
         justifyContent="between"
         alignItems="center"
         width="full"
-        customStyle="my-4 bg-gray-122 rounded-xl p-4 h-14 text-gray-300 border border-gray-700 cursor-pointer space-x-3"
+        customStyle="my-4 bg-gray-128 rounded-xl p-4 h-14 text-gray-300 cursor-pointer space-x-3"
         onClick={() => setOpen(routes.length > 0)}
       >
         <Flex alignItems="center" customStyle="space-x-3">

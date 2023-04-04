@@ -6,7 +6,10 @@ import { handleSliceHashString } from '@utils/sliceHashString';
 import { formatNumber } from '@utils/bignumber';
 import { ReceiveAmountSkeleton } from '../UI/Skeleton';
 import { Menu, Transition } from '@headlessui/react';
-import { ArrowRightOnRectangleIcon } from '@heroicons/react/24/solid';
+import {
+  ArrowRightOnRectangleIcon,
+  WalletIcon,
+} from '@heroicons/react/24/solid';
 import useTooltip from '@hooks/useToolTip/useToolTip';
 import ConnectWallet from '@components/ConnectWalletButton';
 
@@ -53,7 +56,7 @@ export function WalletInfo() {
       &nbsp;
       {data?.symbol}
     </Flex>,
-    { placement: 'bottom' }
+    { placement: 'bottom-start' }
   );
 
   const {
@@ -61,7 +64,7 @@ export function WalletInfo() {
     tooltip: addressTooltip,
     tooltipVisible: addressVisible,
   } = useTooltip(address, {
-    placement: 'auto',
+    placement: 'bottom',
   });
 
   const {
@@ -69,62 +72,13 @@ export function WalletInfo() {
     tooltip: disconnectTooltip,
     tooltipVisible: disconnectVisible,
   } = useTooltip('Disconnect', {
-    placement: 'bottom',
+    placement: 'left-end',
   });
 
   return (
     <Menu as="div" className="relative my-5">
       <Menu.Button>
-        <Flex
-          alignItems="center"
-          customStyle="p-2 bg-wheat-200 rounded-2xl text-base space-x-3"
-        >
-          {connectorVisible && connectorTooltip}
-          <div className="relative h-8 w-8" ref={connectorTarget}>
-            <Image
-              src={`/assets/wallets/${activeConnector?.name.toLowerCase()}.svg`}
-              alt={activeConnector?.name!}
-              fill
-            />
-          </div>
-          {networkVisible && networkTooltip}
-          {chain &&
-          //@ts-ignore
-          chain.icon ? (
-            <>
-              <div className="relative h-8 w-8" ref={networkTarget}>
-                <Image
-                  //@ts-ignore
-                  src={chain?.icon.src}
-                  alt={chain?.network!}
-                  fill
-                  className="rounded-lg bg-gray-800"
-                />
-              </div>
-              {balanceVisible && balanceTooltip}
-            </>
-          ) : (
-            <></>
-          )}
-          {!data ? (
-            <ReceiveAmountSkeleton />
-          ) : (
-            <div ref={balanceTarget}>
-              <Flex customStyle="text-sm lg:text-lg" width="fit">
-                {formatNumber(data?.formatted.toString(), 6)}
-                &nbsp;
-                {data?.symbol}
-              </Flex>
-            </div>
-          )}
-          {addressVisible && addressTooltip}
-          <span
-            ref={addressTarget}
-            className="rounded-lg bg-primary-800 px-3 max-[420px]:hidden sm:text-base lg:text-lg text-gray-200"
-          >
-            {address && handleSliceHashString(address!)}
-          </span>
-        </Flex>
+        <WalletIcon className="w-9 h-9 bg-gray-128 rounded-full p-2 text-gray-500 hover:text-gray-100 transition-all" />
       </Menu.Button>
       <Transition
         as={Fragment}
@@ -135,30 +89,50 @@ export function WalletInfo() {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 mt-2 origin-top-right rounded-2xl border border-gray-700 bg-gray-122 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items className="absolute right-0 mt-2 origin-top-right rounded-2xl border border-gray-800 bg-gray-1000 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <Menu.Item>
             <Flex
               customStyle="p-2 text-gray-500 rounded-2xl w-72 sm:w-96 text-sm"
               alignItems="center"
             >
               <Flex alignItems="center" customStyle="space-x-3 w-1/2">
-                <Image
-                  src={`/assets/wallets/${activeConnector?.name.toLowerCase()}.svg`}
-                  alt={activeConnector?.name!}
-                  width={40}
-                  height={40}
-                />
+                <div ref={networkTarget}>
+                  <Image
+                    //@ts-ignore
+                    src={chain?.icon.src}
+                    alt={chain?.network!}
+                    width={50}
+                    height={50}
+                    className="rounded-lg bg--800"
+                  />
+                </div>
+                {networkVisible && networkTooltip}
+                <div ref={connectorTarget}>
+                  <Image
+                    src={`/assets/wallets/${activeConnector?.name.toLowerCase()}.svg`}
+                    alt={activeConnector?.name!}
+                    width={45}
+                    height={45}
+                    className="rounded-lg"
+                  />
+                </div>
+                {connectorVisible && connectorTooltip}
                 {!data ? (
                   <ReceiveAmountSkeleton />
                 ) : (
                   <Flex direction="column" customStyle=" ">
-                    <span className="rounded-lg text-base font-semibold text-gray-200">
+                    <span
+                      ref={addressTarget}
+                      className="rounded-lg text-base font-semibold text-gray-200"
+                    >
                       {address && handleSliceHashString(address!)}
                     </span>
-                    <div className="text-sm">
+                    {addressVisible && addressTooltip}
+                    <div ref={balanceTarget} className="text-sm">
                       {formatNumber(String(data?.formatted), 6)}
                       {data?.symbol}
                     </div>
+                    {balanceVisible && balanceTooltip}
                   </Flex>
                 )}
               </Flex>
