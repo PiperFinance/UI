@@ -87,7 +87,7 @@ export function AllowanceRow(allowance: any) {
           <Flex alignItems="center">&nbsp;{allowance.allowance}</Flex>
         </Flex>
 
-        <Button onClick={() => setOpen(true)} width="xs" height="sm">
+        <Button onClick={() => setOpen(true)} width="sm" height="sm">
           Change
         </Button>
       </Flex>
