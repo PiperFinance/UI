@@ -1,14 +1,26 @@
 import { ChevronRightIcon } from '@heroicons/react/20/solid';
 import Flex from '@ui/Flex/Flex';
-import React, { memo } from 'react';
+import { Fragment, memo } from 'react';
 import { formatNumber, calculateMultiplyNumbers } from '@utils/bignumber';
 import ChainIcon from '@components/ChainIcon';
 import { useCoingecko } from '@hooks/useCoingecko';
 import type { TTokenBalanceRow } from './types';
-import Tooltip from '@components/TooltipContainer';
 import useTooltip from '@hooks/useToolTip/useToolTip';
+import {
+  ArrowsRightLeftIcon,
+  ChartBarIcon,
+  EllipsisVerticalIcon,
+  InformationCircleIcon,
+} from '@heroicons/react/24/solid';
+import { Menu, Transition } from '@headlessui/react';
+import Link from 'next/link';
+import { useAtom } from 'jotai';
+import { IToken, destinationToken, originToken } from '@store/store';
 
 export function TokenBalanceRow(token: TTokenBalanceRow) {
+  const [, setFormToken] = useAtom(originToken);
+  const [, setToToken] = useAtom(destinationToken);
+
   const { detail, balance } = token[1];
   const { data: tokenPrice, status } = useCoingecko(detail?.symbol);
 
@@ -21,10 +33,15 @@ export function TokenBalanceRow(token: TTokenBalanceRow) {
       ? calculateMultiplyNumbers(balance!, tokenPrice ?? 0)
       : 0;
 
+  function handleSwapToken(token: IToken) {
+    setFormToken(token);
+    setToToken(undefined);
+  }
+
   return (
     <tr
       key={detail?.address}
-      className="group cursor-pointer border-b last:border-b-0 border-gray-500 hover:bg-gray-600"
+      className="border-b last:border-b-0 border-gray-500 transition"
     >
       <td className="p-4">
         <Flex>
@@ -63,7 +80,69 @@ export function TokenBalanceRow(token: TTokenBalanceRow) {
         </div>
       </td>
       <td>
-        <ChevronRightIcon className="invisible h-5 w-5 group-hover:visible group-hover:text-gray-50" />
+        <Menu as="div" className="relative inline-block text-left">
+          <div>
+            <Menu.Button>
+              <EllipsisVerticalIcon className="h-5 w-5" />
+            </Menu.Button>
+          </div>
+          <Transition
+            as={Fragment}
+            enter="transition ease-out duration-100"
+            enterFrom="transform opacity-0 scale-95"
+            enterTo="transform opacity-100 scale-100"
+            leave="transition ease-in duration-75"
+            leaveFrom="transform opacity-100 scale-100"
+            leaveTo="transform opacity-0 scale-95"
+          >
+            <Menu.Items className="z-20 absolute right-0 mt-2 w-24 origin-top-right divide-y divide-gray-600 rounded-md bg-gray-700 border border-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <div>
+                <Menu.Item>
+                  {({ active }) => (
+                    <Link
+                      onClick={() => handleSwapToken(token[1])}
+                      href="/swap"
+                      className={`${
+                        active ? 'bg-primary-700' : ''
+                      }  flex justify-around w-full items-center text-gray-100 px-2 py-2 text-sm rounded-md`}
+                    >
+                      Swap
+                      <ArrowsRightLeftIcon className="w-4 h-4" />
+                    </Link>
+                  )}
+                </Menu.Item>
+              </div>
+              <div>
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      className={`${
+                        active ? 'bg-primary-700' : ''
+                      }  flex justify-around w-full items-center px-2 py-2 text-sm rounded-md`}
+                    >
+                      Chart
+                      <ChartBarIcon className="w-4 h-4" />
+                    </button>
+                  )}
+                </Menu.Item>
+              </div>
+              <div>
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      className={`${
+                        active ? 'bg-primary-700' : ''
+                      } flex justify-around w-full items-center px-2 py-2 text-sm rounded-md`}
+                    >
+                      Info
+                      <InformationCircleIcon className="w-4 h-4" />
+                    </button>
+                  )}
+                </Menu.Item>
+              </div>
+            </Menu.Items>
+          </Transition>
+        </Menu>
       </td>
     </tr>
   );

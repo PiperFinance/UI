@@ -15,7 +15,7 @@ export interface IChain extends Chain {
   icon?: StaticImageData;
 }
 
-export const newAllCustomChains: IChain[] = [
+export const Chains: IChain[] = [
   {
     nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
     id: 1,

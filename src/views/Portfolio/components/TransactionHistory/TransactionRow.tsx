@@ -1,4 +1,4 @@
-import { newAllCustomChains } from '@constants/networkList';
+import { Chains } from '@constants/networkList';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 import Flex from '@ui/Flex/Flex';
 import React from 'react';
@@ -32,7 +32,7 @@ export function TransactionRow(transaction: ITransaction) {
     placement: 'bottom-start',
   });
 
-  const currentChain = newAllCustomChains.find(
+  const currentChain = Chains.find(
     (chain) => chain.id === transaction.chainId && chain
   );
 

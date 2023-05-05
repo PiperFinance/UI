@@ -43,7 +43,7 @@ export default function Table({
 
   return (
     <>
-      <table className="text-md my-7 w-full text-left text-gray-300">
+      <table className="text-md w-full text-left text-gray-300">
         {children}
       </table>
       <TableFooter

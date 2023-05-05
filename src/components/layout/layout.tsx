@@ -19,7 +19,7 @@ const RootLayout: FC<{ children: ReactNode; pageName: string }> = ({
   return (
     <Flex
       overflow="hidden"
-      customStyle="h-screen bg-gray-1000"
+      customStyle="h-screen bg-gray-123"
       onClick={(e) => setSidebar(false)}
     >
       <Head>
@@ -41,7 +41,7 @@ const RootLayout: FC<{ children: ReactNode; pageName: string }> = ({
             <WalletConnect />
           </Flex>
         </Container>
-        <Flex customStyle="lg:px-10 py-5" overflow="yAuto">
+        <Flex overflow="yAuto">
           {children}
         </Flex>
       </Flex>

@@ -1,67 +1,61 @@
-import {
-  ArrowsRightLeftIcon,
-  BeakerIcon,
-  ChartBarIcon,
-  CreditCardIcon,
-  DocumentTextIcon,
-} from '@heroicons/react/24/solid';
 import { sidebar } from '@store/store';
 import { useAtom } from 'jotai';
 import Link from 'next/link';
 import Logo from '../../Logo/Logo';
+import { CiRainbow } from 'react-icons/ci';
+import { MdInsertChartOutlined } from 'react-icons/md';
+import { HiDocumentText, HiBeaker } from 'react-icons/hi';
 
 export default function Sidebar() {
   const [isSidebarOpen] = useAtom(sidebar);
 
-  const iconClass = 'w-5 h-5 text-gray-500 duration-75 text-gray-400';
-
   const navs = [
     {
       id: 0,
-      name: 'Portfolio',
+      name: '',
       link: '/',
-      icon: <ChartBarIcon className={iconClass} />,
+      icon: <MdInsertChartOutlined size="2rem" />,
       disable: false,
-      disableText: '',
+      versionInfo: '',
     },
     {
       id: 1,
-      name: 'Swap & Bridge',
+      name: '',
       link: '/swap',
-      icon: <ArrowsRightLeftIcon className={iconClass} />,
+      icon: <CiRainbow size="2rem" />,
       disable: false,
-      disableText: '',
+      versionInfo: '',
     },
+    // {
+    //   id: 2,
+    //   name: '',
+    //   link: '/approval',
+    //   icon: <CreditCardIcon className={iconClass} />,
+    //   disable: true,
+    //   versionInfo: '',
+    // },
     {
       id: 2,
-      name: 'Yield Optimizer',
+      name: '',
       link: '/yield',
-      icon: <BeakerIcon className={iconClass} />,
+      icon: <HiBeaker size="2rem" />,
       disable: true,
-      disableText: 'Soon',
-    },
-    {
-      id: 3,
-      name: 'Token Approval',
-      link: '/approval',
-      icon: <CreditCardIcon className={iconClass} />,
-      disable: true,
-      disableText: 'Soon',
+      versionInfo: '',
     },
   ];
 
   return (
     <aside
-      className={`h-screen w-fit bg-gray-122 ${
+      className={`h-screen w-fit bg-gray-128 ${
         !isSidebarOpen ? 'hidden' : 'block absolute bg-gray-800 z-10'
       } lg:block`}
       aria-label="Sidebar"
     >
-      <div className="h-full overflow-y-auto p-3">
-        <Logo />
+      <div className="h-full overflow-y-auto p-3 mt-20">
+        {/* <Logo /> */}
         <ul className="space-y-6">
           {navs.map((nav) => (
-            <li key={nav.id} className="w-52">
+            <li key={nav.id} className="">
               <Link
                 href={nav.link}
                 className={`${
@@ -69,15 +63,19 @@ export default function Sidebar() {
                 } flex space-x-2 items-center rounded-lg p-2 font-normal text-gray-100 hover:bg-gray-700 transition duration-75`}
               >
                 {nav.icon}
-                <span className="">{nav.name}</span>
-                {nav.disable && (
-                  <span className="text-xs">{nav.disableText}</span>
+                {nav.name && <span className="">{nav.name}</span>}
+                {nav.versionInfo && (
+                  <span
+                    className={`text-xs ${nav.disable ? '' : 'text-wheat-800'}`}
+                  >
+                    {nav.versionInfo}
+                  </span>
                 )}
               </Link>
             </li>
           ))}
         </ul>
-        <ul className="mt-4 space-y-6 border-t pt-4 border-gray-700">
+        <ul className="mt-4 space-y-6 border-t pt-4 border-gray-500">
           <li>
             <Link
               href="https://docs.piper.finance"
@@ -85,8 +83,7 @@ export default function Sidebar() {
               rel="noreferrer"
               className="group flex items-center rounded-lg p-2 text-base font-normal text-gray-100 transition duration-75 hover:bg-gray-700"
             >
-              <DocumentTextIcon className={iconClass} />
-              <span className="ml-3">Docs</span>
+              <HiDocumentText size="2rem" />
             </Link>
           </li>
         </ul>

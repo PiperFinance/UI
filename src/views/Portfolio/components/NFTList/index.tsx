@@ -6,7 +6,11 @@ import { useAccount } from 'wagmi';
 import { NftBox } from './NftBox';
 import type { INft } from './types';
 
-export default function NFTList() {
+interface INFTList {
+  isRow?: boolean;
+}
+
+export default function NFTList(props: INFTList) {
   const { address } = useAccount();
 
   // const { mutate, isSuccess } = useSaveNFTs(
@@ -60,10 +64,10 @@ export default function NFTList() {
   }
   return (
     <Flex
-      customStyle="p-2 h-full"
+      customStyle={`p-2 h-full ${props.isRow ? 'space-x-5' : ''}`}
       overflow="yAuto"
-      wrap={true}
-      justifyContent="evenly"
+      wrap={props.isRow ? false : true}
+      justifyContent={props.isRow ? 'start' : 'evenly'}
     >
       {data.nfts.map((nft: INft) => (
         <NftBox key={nft.detail.id} {...nft} />

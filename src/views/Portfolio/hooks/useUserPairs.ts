@@ -1,4 +1,4 @@
-import { newAllCustomChains } from '@constants/networkList';
+import { Chains } from '@constants/networkList';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -6,7 +6,7 @@ export const baseURL = 'https://ps.piper.finance/pairs/balance';
 
 const fetchUserPairBalances = async (wallet: string | undefined) => {
   if (!wallet) return;
-  const chainList = newAllCustomChains.map((chain) => `&chainId=${chain.id}`);
+  const chainList = Chains.map((chain) => `&chainId=${chain.id}`);
   const { data, status } = await axios.get(
     `${baseURL}?wallet=${wallet}${chainList.join('')}`
   );

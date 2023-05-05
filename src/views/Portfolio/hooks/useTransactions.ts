@@ -1,4 +1,4 @@
-import { newAllCustomChains } from '@constants/networkList';
+import { Chains } from '@constants/networkList';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { sortData } from '@utils/customSort';
 import axios from 'axios';
@@ -6,7 +6,7 @@ import axios from 'axios';
 export const baseURL = 'https://th.piper.finance';
 
 const handleSaveTransactions = async (wallet: string | undefined) => {
-  const chainList: number[] = newAllCustomChains.map((chain) => chain.id);
+  const chainList: number[] = Chains.map((chain) => chain.id);
   await axios.post(`${baseURL}/save_users_trxs`, {
     userAddresses: [wallet],
     chainIds: chainList,
@@ -30,7 +30,7 @@ const getTransactions = async (
   pageSize: number,
   pageNumber: number
 ) => {
-  const chainList = newAllCustomChains.map((chain) => `&chainId=${chain.id}`);
+  const chainList = Chains.map((chain) => `&chainId=${chain.id}`);
   const { data, status } = await axios.get(
     `${baseURL}/get_users_trxs?userAddress=${wallet}${chainList.join(
       ''

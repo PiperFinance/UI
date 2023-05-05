@@ -1,6 +1,4 @@
 import { cva, VariantProps } from 'class-variance-authority';
-import { DetailedHTMLProps, DOMElement, ReactElement, ReactNode } from 'react';
-import { HTMLAttributes } from 'react';
 
 const flexStyle = cva('flex', {
   variants: {

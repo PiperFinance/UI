@@ -232,8 +232,7 @@ export default function Swap() {
   return (
     <Container customStyle="h-full flex items-center justify-center">
       <Flex customStyle="max-w-lg" alignItems="center" direction="column">
-        <h1 className=" text-4xl font-bold text-wheat-500">SWAP & BRIDGE</h1>
-        <SwapSetting setRefreshRoute={() => setRefreshRoute(!refreshRoute)} />
+        <h1 className="mb-5 text-4xl font-bold text-wheat-500">SWAP & BRIDGE</h1>
         <CurrencyInputPanel
           tokenList={tokenList}
           selectedCurrency={fromToken}
@@ -242,7 +241,9 @@ export default function Swap() {
           setAmount={setAmount}
           amount={amount}
         />
-        <SwitchCurrencyInput />
+        <SwitchCurrencyInput
+          setRefreshRoute={() => setRefreshRoute(!refreshRoute)}
+        />
         <CurrencyInputPanel
           tokenList={tokenList}
           setAmount={() => {}}
