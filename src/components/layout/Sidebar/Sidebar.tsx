@@ -1,28 +1,20 @@
-import {
-  ArrowsRightLeftIcon,
-  BeakerIcon,
-  ChartBarIcon,
-  CreditCardIcon,
-  DocumentTextIcon,
-} from '@heroicons/react/24/solid';
 import { sidebar } from '@store/store';
 import { useAtom } from 'jotai';
 import Link from 'next/link';
 import Logo from '../../Logo/Logo';
 import { CiRainbow } from 'react-icons/ci';
 import { MdInsertChartOutlined } from 'react-icons/md';
+import { HiDocumentText, HiBeaker } from 'react-icons/hi';
 
 export default function Sidebar() {
   const [isSidebarOpen] = useAtom(sidebar);
-
-  const iconClass = 'w-6 h-6 text-gray-500 duration-75 text-white';
 
   const navs = [
     {
       id: 0,
       name: '',
       link: '/',
-      icon: <MdInsertChartOutlined size="2rem"/>,
+      icon: <MdInsertChartOutlined size="2rem" />,
       disable: false,
       versionInfo: '',
     },
@@ -34,19 +26,19 @@ export default function Sidebar() {
       disable: false,
       versionInfo: '',
     },
+    // {
+    //   id: 2,
+    //   name: '',
+    //   link: '/approval',
+    //   icon: <CreditCardIcon className={iconClass} />,
+    //   disable: true,
+    //   versionInfo: '',
+    // },
     {
       id: 2,
       name: '',
-      link: '/approval',
-      icon: <CreditCardIcon className={iconClass} />,
-      disable: true,
-      versionInfo: '',
-    },
-    {
-      id: 3,
-      name: '',
       link: '/yield',
-      icon: <BeakerIcon className={iconClass} />,
+      icon: <HiBeaker size="2rem" />,
       disable: true,
       versionInfo: '',
     },
@@ -91,8 +83,7 @@ export default function Sidebar() {
               rel="noreferrer"
               className="group flex items-center rounded-lg p-2 text-base font-normal text-gray-100 transition duration-75 hover:bg-gray-700"
             >
-              <DocumentTextIcon className={iconClass} />
-              {/* <span className="ml-3">Docs</span> */}
+              <HiDocumentText size="2rem" />
             </Link>
           </li>
         </ul>

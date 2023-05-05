@@ -99,7 +99,7 @@ export function WalletInfo() {
                 <div ref={networkTarget}>
                   <Image
                     //@ts-ignore
-                    src={chain?.icon.src}
+                    src={chain?.icon ? chain?.icon.src : ''}
                     alt={chain?.network!}
                     width={50}
                     height={50}

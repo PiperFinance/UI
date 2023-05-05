@@ -1,4 +1,4 @@
-import TotalValue from '@components/TotalValue';
+import ConnectWallet from '@components/ConnectWalletButton';
 import { Tab } from '@headlessui/react';
 import useAddParams from '@hooks/useAddParams';
 import useHasMounted from '@hooks/useHasMounted';
@@ -10,6 +10,7 @@ import { classNames } from '@utils/classNames';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useAccount } from 'wagmi';
 
 const TokenBalance = dynamic(() => import('./components/TokenBalance'), {
   loading: () => (
@@ -56,8 +57,10 @@ const NFTList = dynamic(() => import('./components/NFTList'), {
 
 export default function Portfolio() {
   const [tab, setTab] = useState<number>();
+  const [isUserConnected, setIsUserConnected] = useState<boolean>();
   const router = useRouter();
   const hasMounted = useHasMounted();
+  const { isConnected } = useAccount();
   const addParams = useAddParams();
   const tabs: string[] = [
     'Overview',
@@ -66,6 +69,8 @@ export default function Portfolio() {
     'NFTs',
     'Transactions',
   ];
+
+  useEffect(() => setIsUserConnected(isConnected), [isConnected]);
 
   useEffect(() => {
     tabs.find(
@@ -110,18 +115,31 @@ export default function Portfolio() {
         </Tab.List>
         <Tab.Panels>
           <Tab.Panel>
-            <div className="pt-4 mx-7 my-3 p-3 rounded-2xl">
-              <h1 className="text-gray-100 font-bold text-xl">NFTs</h1>
-              <NFTList isRow={true} />
-            </div>
-            <div className="pt-4 bg-gray-128 mx-7 my-3 p-3 rounded-2xl">
-              <h1 className="text-gray-100 font-bold text-xl">Tokens</h1>
-              <TokenBalance />
-            </div>
-            <div className="pt-4 bg-gray-128 mx-7 my-3 p-3 rounded-2xl">
-              <h1 className="text-gray-100 font-bold text-xl">Pairs</h1>
-              <PairTokenTable />
-            </div>
+            {!isUserConnected ? (
+              <Flex
+                customStyle="h-[30vh] text-gray-100"
+                justifyContent="center"
+                alignItems="center"
+                width="full"
+              >
+                <ConnectWallet />
+              </Flex>
+            ) : (
+              <>
+                <div className="pt-4 mx-7 my-3 p-3 rounded-2xl">
+                  <h1 className="text-gray-100 font-bold text-xl">NFTs</h1>
+                  <NFTList isRow={true} />
+                </div>
+                <div className="pt-4 bg-gray-128 mx-7 my-3 p-3 rounded-2xl">
+                  <h1 className="text-gray-100 font-bold text-xl">Tokens</h1>
+                  <TokenBalance />
+                </div>
+                <div className="pt-4 bg-gray-128 mx-7 my-3 p-3 rounded-2xl">
+                  <h1 className="text-gray-100 font-bold text-xl">Pairs</h1>
+                  <PairTokenTable />
+                </div>
+              </>
+            )}
           </Tab.Panel>
           <Tab.Panel className="bg-gray-128 mx-7 my-3 p-3 rounded-2xl">
             <TokenBalance />
