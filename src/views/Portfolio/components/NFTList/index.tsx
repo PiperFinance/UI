@@ -13,18 +13,8 @@ interface INFTList {
 export default function NFTList(props: INFTList) {
   const { address } = useAccount();
 
-  // const { mutate, isSuccess } = useSaveNFTs(
-  //   address ? address.toString().toLowerCase() : undefined
-  // );
-
-  // useEffect(() => {
-  //   if (!address) return;
-  //   mutate();
-  // }, [address]);
-
   const { data, isLoading, error } = useNftList(
     address ? address.toString().toLowerCase() : undefined,
-    // isSuccess,
     10,
     1
   );
