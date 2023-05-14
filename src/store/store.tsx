@@ -37,9 +37,21 @@ export interface ITokenDetail extends ITokenDetailDefault {
   related?: IToken[];
 }
 
+export interface IUserToken {
+  accessToken: string;
+  refreshToken: string;
+}
+
+
 export const sidebar = atom<boolean>(false);
 
 export const toast = atom<JSX.Element>(<></>);
+
+export const userToken = atomWithStorage<IUserToken | undefined>(
+  'userToken',
+  undefined
+);
+
 export const originToken = atomWithStorage<IToken | undefined>(
   'originToken',
   undefined
