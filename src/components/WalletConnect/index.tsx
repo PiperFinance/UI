@@ -67,13 +67,13 @@ export function WalletInfo() {
     placement: 'bottom',
   });
 
-  const {
-    targetRef: disconnectRef,
-    tooltip: disconnectTooltip,
-    tooltipVisible: disconnectVisible,
-  } = useTooltip('Disconnect', {
-    placement: 'left-end',
-  });
+  // const {
+  //   targetRef: disconnectRef,
+  //   tooltip: disconnectTooltip,
+  //   tooltipVisible: disconnectVisible,
+  // } = useTooltip('Disconnect', {
+  //   placement: 'left-end',
+  // });
 
   return (
     <Menu as="div" className="relative my-5">
@@ -137,11 +137,11 @@ export function WalletInfo() {
                 )}
               </Flex>
               <ArrowRightOnRectangleIcon
-                ref={disconnectRef}
+                // ref={disconnectRef}
                 onClick={() => disconnect()}
                 className="h-8 w-8 cursor-pointer transition hover:text-wheat-400"
               />
-              {disconnectVisible && disconnectTooltip}
+              {/* {disconnectVisible && disconnectTooltip} */}
             </Flex>
           </Menu.Item>
         </Menu.Items>
