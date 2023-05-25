@@ -1,48 +1,22 @@
+import { useCedeProvider } from '@hooks/useCede';
+import { vaults } from '@store/store';
+import { useAtom } from 'jotai';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
 import cedeImg from './cede-store.png';
 
-import { detectCedeProvider } from '@cedelabs/providers';
-import useHasMounted from '@hooks/useHasMounted';
-import { useAtom } from 'jotai';
-import { cexBalancesList } from '@store/store';
-
 const ConnectCEDE = () => {
-  const [open, setOpen] = useState(false);
-  const [cedeProvider, setCedeProvider] = useState<any>();
-  const [vault, setVault] = useState<any>();
-
-  const [, setCexBalanceToken] = useAtom(cexBalancesList);
-
-  const hasMount = useHasMounted();
-
-  const getProvider = async () => {
-    const provider = await detectCedeProvider();
-
-    setCedeProvider(provider);
-  };
-
-  useEffect(() => {
-    getProvider();
-  }, [hasMount]);
+  const [, setVault] = useAtom(vaults);
+  const { cedeProvider } = useCedeProvider();
 
   const handleConnectCEDE = async () => {
     if (!cedeProvider) return;
-    await cedeProvider.request({ method: 'connect' });
-
-    const vaultPreview = cedeProvider.getVaultPreviews();
-    setVault(vaultPreview[0]);
-
-    const vaultId = vaultPreview[0].id;
-    const balances = await cedeProvider.request({
-      method: 'balances',
-      params: {
-        vaultId,
-        accountNames: ['Kucoin 1'],
-      },
-    });
-
-    setCexBalanceToken(balances.data);
+    try {
+      await cedeProvider.request({ method: 'connect' });
+      const vaultPreview = await cedeProvider.getVaultPreviews();
+      setVault(vaultPreview[0]);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -60,12 +34,8 @@ const ConnectCEDE = () => {
           width={30}
           height={30}
         />
-        {vault && vault.isActive ? '' : 'Connect to CEDE'}
+        Connect to CEDE
       </button>
-
-      {/* <Modal isOpen={open} closeOnOverlayClick onDismiss={() => setOpen(false)}>
-        <ConnectWalletModal onDismiss={() => setOpen(false)} />
-      </Modal> */}
     </>
   );
 };

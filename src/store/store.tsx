@@ -3,6 +3,7 @@ import { atomWithStorage } from 'jotai/utils';
 import { atomsWithQuery } from 'jotai-tanstack-query';
 import { IChain, Chains } from '@constants/networkList';
 import { sortData } from '@utils/customSort';
+import type { ICEXBalanceList, ICedeVaults } from './types';
 export const baseURL = 'https://piper.finance/api/';
 
 export interface IChainResponse {
@@ -137,12 +138,8 @@ export const updateBalance = <T, R>(balances: T[]): R[] => {
 
 /// CEDE
 
-export interface ICEXBalanceList {
-  accounts: string[];
-  cexNames: string[];
-  freeBalance: number;
-  ticker: string;
-  totalBalance: number;
-}
-
 export const cexBalancesList = atom<ICEXBalanceList[]>([]);
+export const vaults = atomWithStorage<ICedeVaults | undefined>(
+  'cede.store',
+  undefined
+);

@@ -1,11 +1,11 @@
 import Table from '@components/Table/Table';
 import TableBody from '@components/Table/TableBody';
 import TableHeader from '@components/Table/TableHeader';
-import { ICEXBalanceList } from '@store/store';
 import useTable from '@views/Portfolio/hooks/useTable';
 import { memo, useState } from 'react';
 import { CexTokenBalanceRow } from './CexBalanceRow';
 import type { ICexTokenBalanceTable } from './types';
+import { ICEXBalanceList } from '@store/types';
 
 function CexTokenBalanceTable({ balances }: ICexTokenBalanceTable) {
   const [page, setPage] = useState<number>(1);
