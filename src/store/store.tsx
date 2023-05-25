@@ -42,7 +42,6 @@ export interface IUserToken {
   refreshToken: string;
 }
 
-
 export const sidebar = atom<boolean>(false);
 
 export const toast = atom<JSX.Element>(<></>);
@@ -135,3 +134,15 @@ export const updateBalance = <T, R>(balances: T[]): R[] => {
   } catch (e) {}
   return flatBalances;
 };
+
+/// CEDE
+
+export interface ICEXBalanceList {
+  accounts: string[];
+  cexNames: string[];
+  freeBalance: number;
+  ticker: string;
+  totalBalance: number;
+}
+
+export const cexBalancesList = atom<ICEXBalanceList[]>([]);

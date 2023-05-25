@@ -29,18 +29,6 @@ export default function Table({
 
   useEffect(() => setIsUserConnected(isConnected), [isConnected]);
 
-  if (!isUserConnected)
-    return (
-      <Flex
-        customStyle="h-[30vh] text-gray-100"
-        justifyContent="center"
-        alignItems="center"
-        width="full"
-      >
-        <ConnectWallet />
-      </Flex>
-    );
-
   return (
     <>
       <table className="text-md w-full text-left text-gray-300">

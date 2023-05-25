@@ -11,6 +11,7 @@ import { sidebar, userToken } from '@store/store';
 import { useAccount, useSignMessage } from 'wagmi';
 import WalletConnect from '@components/WalletConnect';
 import { useSingUp } from '@hooks/useSingup';
+import ConnectCEDE from '@components/ConnectCEDE';
 
 const RootLayout: FC<{ children: ReactNode; pageName: string }> = ({
   children,
@@ -49,7 +50,7 @@ const RootLayout: FC<{ children: ReactNode; pageName: string }> = ({
       <Sidebar />
       <Flex direction="column" customStyle="h-screen" overflow="hidden">
         <Container>
-          <Flex justifyContent="mdBetween">
+          <Flex justifyContent="mdBetween" alignItems={'center'}>
             <Bars3Icon
               className="w-8 text-wheat-300 cursor-pointer block lg:hidden"
               onClick={(e) => {
@@ -57,6 +58,7 @@ const RootLayout: FC<{ children: ReactNode; pageName: string }> = ({
                 setSidebar(true);
               }}
             />
+            <ConnectCEDE />
             <WalletConnect />
           </Flex>
         </Container>
