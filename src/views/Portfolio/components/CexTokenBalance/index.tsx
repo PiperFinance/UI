@@ -1,12 +1,23 @@
-import { cexBalancesList } from '@store/store';
-import { useAtom } from 'jotai';
+import { useVaultBalances } from '@hooks/useCede';
 import { memo } from 'react';
 import CexTokenBalanceTable from './CexBalanceTable';
+import Flex from '@ui/Flex/Flex';
+import { TableRowSkeleton } from '@ui/Skeleton';
 
 function CexTokenBalance() {
-  const [cexBalanceToken] = useAtom(cexBalancesList);
+  const { balances, loading } = useVaultBalances();
 
-  return <CexTokenBalanceTable balances={cexBalanceToken} />;
+  if (loading) {
+    return (
+      <Flex direction="column">
+        <TableRowSkeleton />
+        <TableRowSkeleton />
+        <TableRowSkeleton />
+      </Flex>
+    );
+  }
+
+  return <CexTokenBalanceTable balances={balances} />;
 }
 
 export default memo(CexTokenBalance);

@@ -12,6 +12,8 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 import CexTokenBalance from './components/CexTokenBalance';
+import ConnectCEDE from '@components/ConnectCEDE';
+import { useVault } from '@hooks/useCede';
 
 const TokenBalance = dynamic(() => import('./components/TokenBalance'), {
   loading: () => (
@@ -69,9 +71,10 @@ export default function Portfolio() {
     'Liquidities',
     'NFTs',
     'Transactions',
-    'CEDE',
+    'CEX assets',
   ];
 
+  const { isActive, id } = useVault();
   useEffect(() => setIsUserConnected(isConnected), [isConnected]);
 
   useEffect(() => {
@@ -200,7 +203,18 @@ export default function Portfolio() {
             )}
           </Tab.Panel>
           <Tab.Panel className="bg-gray-128 mx-7 my-3 p-3 rounded-2xl">
-            <CexTokenBalance />
+            {!id || !isActive ? (
+              <Flex
+                customStyle="h-[30vh] text-gray-100"
+                justifyContent="center"
+                alignItems="center"
+                width="full"
+              >
+                <ConnectCEDE />
+              </Flex>
+            ) : (
+              <CexTokenBalance />
+            )}
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>

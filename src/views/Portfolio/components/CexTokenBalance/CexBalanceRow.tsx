@@ -1,25 +1,15 @@
-import ChainIcon from '@components/ChainIcon';
-import { Menu, Transition } from '@headlessui/react';
-import {
-  ArrowsRightLeftIcon,
-  ChartBarIcon,
-  EllipsisVerticalIcon,
-  InformationCircleIcon,
-} from '@heroicons/react/24/solid';
 import { useCoingecko } from '@hooks/useCoingecko';
 import useTooltip from '@hooks/useToolTip/useToolTip';
-import { ICEXBalanceList } from '@store/store';
+import type { ICEXBalanceList } from '@store/types';
 import Flex from '@ui/Flex/Flex';
 import { calculateMultiplyNumbers, formatNumber } from '@utils/bignumber';
 import Image from 'next/image';
-import Link from 'next/link';
-import { Fragment, memo } from 'react';
+import { memo } from 'react';
 
 export function CexTokenBalanceRow(token: ICEXBalanceList) {
   const { cexNames, freeBalance, ticker, totalBalance, accounts } = token;
-  const { data: tokenPrice, status } = useCoingecko(ticker);
 
-  console.log(token);
+  const { data: tokenPrice, status } = useCoingecko(ticker);
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip('$' + tokenPrice, {
     placement: 'bottom-start',

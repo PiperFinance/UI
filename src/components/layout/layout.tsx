@@ -58,7 +58,6 @@ const RootLayout: FC<{ children: ReactNode; pageName: string }> = ({
                 setSidebar(true);
               }}
             />
-            <ConnectCEDE />
             <WalletConnect />
           </Flex>
         </Container>
