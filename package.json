@@ -10,6 +10,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@cedelabs/providers": "^0.0.7",
     "@ethersproject/bytes": "^5.7.0",
     "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^2.0.17",

@@ -11,6 +11,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
+import CexTokenBalance from './components/CexTokenBalance';
 
 const TokenBalance = dynamic(() => import('./components/TokenBalance'), {
   loading: () => (
@@ -68,6 +69,7 @@ export default function Portfolio() {
     'Liquidities',
     'NFTs',
     'Transactions',
+    'CEDE',
   ];
 
   useEffect(() => setIsUserConnected(isConnected), [isConnected]);
@@ -142,16 +144,63 @@ export default function Portfolio() {
             )}
           </Tab.Panel>
           <Tab.Panel className="bg-gray-128 mx-7 my-3 p-3 rounded-2xl">
-            <TokenBalance />
+            {!isUserConnected ? (
+              <Flex
+                customStyle="h-[30vh] text-gray-100"
+                justifyContent="center"
+                alignItems="center"
+                width="full"
+              >
+                <ConnectWallet />
+              </Flex>
+            ) : (
+              <TokenBalance />
+            )}
           </Tab.Panel>
           <Tab.Panel className="bg-gray-128 mx-7 my-3 p-3 rounded-2xl">
-            <PairTokenTable />
+            {!isUserConnected ? (
+              <Flex
+                customStyle="h-[30vh] text-gray-100"
+                justifyContent="center"
+                alignItems="center"
+                width="full"
+              >
+                <ConnectWallet />
+              </Flex>
+            ) : (
+              <PairTokenTable />
+            )}
           </Tab.Panel>
           <Tab.Panel className="bg-gray-128 mx-7 my-3 p-3 rounded-2xl">
-            <NFTList />
+            {!isUserConnected ? (
+              <Flex
+                customStyle="h-[30vh] text-gray-100"
+                justifyContent="center"
+                alignItems="center"
+                width="full"
+              >
+                <ConnectWallet />
+              </Flex>
+            ) : (
+              <NFTList />
+            )}
           </Tab.Panel>
           <Tab.Panel className="bg-gray-128 mx-7 my-3 p-3 rounded-2xl">
-            <TransactionHistory />
+            {!isUserConnected ? (
+              <Flex
+                customStyle="h-[30vh] text-gray-100"
+                justifyContent="center"
+                alignItems="center"
+                width="full"
+              >
+                <ConnectWallet />
+              </Flex>
+            ) : (
+              <TransactionHistory />
+            )}
+          </Tab.Panel>
+          <Tab.Panel className="bg-gray-128 mx-7 my-3 p-3 rounded-2xl">
+            <CexTokenBalance />
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
