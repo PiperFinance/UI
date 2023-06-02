@@ -1,6 +1,6 @@
 import { detectCedeProvider } from '@cedelabs/providers';
 import { vaults } from '@store/store';
-import { ICedeAccounts, ICedeVaults } from '@store/types';
+import { ICedeVaults } from '@store/types';
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import useHasMounted from './useHasMounted';
@@ -40,10 +40,7 @@ export const useVaultBalances = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   const { cedeProvider } = useCedeProvider();
-
   const { isActive, accounts, id } = useVault();
-
-  const [vault] = useAtom(vaults);
 
   const getBalances = async () => {
     try {
@@ -66,7 +63,7 @@ export const useVaultBalances = () => {
   };
 
   useEffect(() => {
-    if (!cedeProvider) return;
+    if (!accounts || !isActive || !cedeProvider || !id) return;
 
     setLoading(true);
     getBalances();
