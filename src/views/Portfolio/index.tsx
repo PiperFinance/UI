@@ -14,6 +14,8 @@ import { useAccount } from 'wagmi';
 import CexTokenBalance from './components/CexTokenBalance';
 import ConnectCEDE from '@components/ConnectCEDE';
 import { useVault } from '@hooks/useCede';
+import { useAtom } from 'jotai';
+import { vaults } from '@store/store';
 
 const TokenBalance = dynamic(() => import('./components/TokenBalance'), {
   loading: () => (
@@ -74,7 +76,8 @@ export default function Portfolio() {
     'CEX assets',
   ];
 
-  const { isActive, id } = useVault();
+  const [vault] = useAtom(vaults);
+
   useEffect(() => setIsUserConnected(isConnected), [isConnected]);
 
   useEffect(() => {
@@ -203,7 +206,7 @@ export default function Portfolio() {
             )}
           </Tab.Panel>
           <Tab.Panel className="bg-gray-128 mx-7 my-3 p-3 rounded-2xl">
-            {!id || !isActive ? (
+            {!vault || !vault.id ? (
               <Flex
                 customStyle="h-[30vh] text-gray-100"
                 justifyContent="center"

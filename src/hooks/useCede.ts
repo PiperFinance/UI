@@ -24,7 +24,6 @@ export const useCedeProvider = () => {
 
 export const useVault = () => {
   const [vault] = useAtom(vaults);
-
   const [currentVault, setCurrentVault] = useState<ICedeVaults>();
 
   useEffect(() => {
@@ -38,9 +37,9 @@ export const useVault = () => {
 export const useVaultBalances = () => {
   const [balances, setBalances] = useState<any>();
   const [loading, setLoading] = useState<boolean>(true);
+  const { isActive, accounts, id } = useVault();
 
   const { cedeProvider } = useCedeProvider();
-  const { isActive, accounts, id } = useVault();
 
   const getBalances = async () => {
     try {
@@ -57,13 +56,11 @@ export const useVaultBalances = () => {
 
       setBalances(data.data);
       setLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
-    if (!accounts || !isActive || !cedeProvider || !id) return;
+    if (!accounts || !cedeProvider || !id) return;
 
     setLoading(true);
     getBalances();
