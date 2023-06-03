@@ -15,7 +15,6 @@ const ConnectCEDE = () => {
       const vaultPreview = await cedeProvider.getVaultPreviews();
       setVault(vaultPreview[0]);
     } catch (e) {
-      console.log(e);
     }
   };
 

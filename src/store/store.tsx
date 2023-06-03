@@ -139,7 +139,4 @@ export const updateBalance = <T, R>(balances: T[]): R[] => {
 /// CEDE
 
 export const cexBalancesList = atom<ICEXBalanceList[]>([]);
-export const vaults = atomWithStorage<ICedeVaults | undefined>(
-  'cede.store',
-  undefined
-);
+export const vaults = atom<ICedeVaults | undefined>(undefined);
