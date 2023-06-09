@@ -16,6 +16,7 @@ import { Menu, Transition } from '@headlessui/react';
 import Link from 'next/link';
 import { useAtom } from 'jotai';
 import { IToken, destinationToken, originToken } from '@store/store';
+import TokenLogo from '@components/TokenLogo';
 
 export function TokenBalanceRow(token: TTokenBalanceRow) {
   const [, setFormToken] = useAtom(originToken);
@@ -45,13 +46,7 @@ export function TokenBalanceRow(token: TTokenBalanceRow) {
     >
       <td className="p-4">
         <Flex>
-          <img
-            src={
-              detail.logoURI ? detail.logoURI : '/assets/token-not-found.png'
-            }
-            alt={detail.symbol}
-            className="h-7 w-7 sm:h-10 sm:w-10"
-          />
+          <TokenLogo detail={detail} style={'h-7 w-7 sm:h-10 sm:w-10'} />
           <Flex direction="column" justifyContent="center" customStyle="ml-3">
             <h6 className="font-bold uppercase max-sm:text-xs">
               {detail?.symbol}

@@ -86,12 +86,7 @@ export default function CurrencyInputPanel({
             <Flex justifyContent="evenly" alignItems="center">
               <CurrencyIcon
                 size="lg"
-                src={
-                  selectedCurrency.detail?.logoURI
-                    ? selectedCurrency.detail?.logoURI
-                    : '/assets/token-not-found.png'
-                }
-                alt={selectedCurrency.detail?.name}
+                detail={selectedCurrency.detail}
                 chainId={selectedCurrency.detail?.chainId}
               />
               <h3>{selectedCurrency.detail?.symbol}</h3>
