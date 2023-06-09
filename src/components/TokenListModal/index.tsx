@@ -1,5 +1,5 @@
 import Flex from '@ui/Flex/Flex';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import type { ListChildComponentProps } from 'react-window';
 import { FixedSizeList } from 'react-window';
 import type { IToken } from '@store/store';
@@ -13,6 +13,7 @@ import { useAccount, useBalance } from 'wagmi';
 import type { IChain } from '@constants/networkList';
 import { Chains } from '@constants/networkList';
 import ModalHeader from '../ModalHeader';
+import TokenLogo from '@components/TokenLogo';
 
 interface ITokenListModal {
   onDismiss: () => void;
@@ -81,14 +82,9 @@ export default function TokenListModal({
           }  cursor-pointer hover:text-wheat-400 transition`}
           alignItems="center"
         >
-          <img
-            src={
-              currency.detail.logoURI
-                ? currency.detail.logoURI
-                : '/assets/token-not-found.png'
-            }
-            alt={currency.detail.name}
-            className="h-11 w-11 rounded-full"
+          <TokenLogo
+            detail={currency.detail}
+            style={'h-11 w-11 rounded-full'}
           />
           <Flex justifyContent="center" direction="column" customStyle="ml-3">
             <h3 className="text-sm font-bold">{currency.detail.symbol}</h3>
