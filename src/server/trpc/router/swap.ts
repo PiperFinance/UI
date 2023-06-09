@@ -11,7 +11,7 @@ const Token = z.object({
   decimals: z.number(),
   name: z.string(),
   chainId: z.number(),
-  logoURI: z.string().optional(),
+  logoURI: z.nullable(z.string().optional()),
   coingeckoId: z.nullable(z.string()).optional(),
   tags: z.string().array().optional(),
   lifiId: z.nullable(z.string()).optional(),

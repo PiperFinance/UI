@@ -75,8 +75,7 @@ export default class swap {
       });
 
       return lifiResult.routes;
-    } catch (err) {
-    }
+    } catch (err) {}
   }
 
   private async getSymbiosisRoutes(
@@ -133,8 +132,7 @@ export default class swap {
       );
 
       return routes;
-    } catch (err) {
-    }
+    } catch (err) {}
   }
 
   private async getRangoRoutes(
@@ -166,8 +164,7 @@ export default class swap {
       });
 
       return routes.route;
-    } catch (err) {
-    }
+    } catch (err) {}
   }
 
   private handleConvertRoutes(
@@ -241,9 +238,7 @@ export default class swap {
 
     const { amount, fromToken, toToken, address, slippage } = data;
 
-    const sourceToken = Chains.find(
-      (chain) => chain.id === fromToken.chainId
-    );
+    const sourceToken = Chains.find((chain) => chain.id === fromToken.chainId);
     const destinationToken = Chains.find(
       (chain) => chain.id === toToken.chainId
     );
