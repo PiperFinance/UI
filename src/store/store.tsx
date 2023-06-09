@@ -26,7 +26,7 @@ export interface ITokenDetailDefault {
   decimals: number;
   name: string;
   chainId: number;
-  logoURI?: string;
+  logoURI?: string | null;
 }
 
 export interface ITokenDetail extends ITokenDetailDefault {
