@@ -6,6 +6,7 @@ import { TableRowSkeleton } from '@ui/Skeleton';
 
 function CexTokenBalance() {
   const { balances, loading } = useVaultBalances();
+  console.log(balances)
 
   if (loading) {
     return (

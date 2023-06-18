@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { memo } from 'react';
 
 export function CexTokenBalanceRow(token: ICEXBalanceList) {
-  const { cexNames, freeBalance, ticker, totalBalance, accounts } = token;
+  const { cexNames, token: ticker, totalBalance } = token;
 
   const { data: tokenPrice, status } = useCoingecko(ticker);
 
@@ -35,7 +35,7 @@ export function CexTokenBalanceRow(token: ICEXBalanceList) {
           </Flex>
         </Flex>
       </td>
-      <td className="px-4 max-sm:hidden">
+      {/* <td className="px-4 max-sm:hidden">
         <Flex>
           <Image
             src={`/assets/cexs/${cexNames[0]}.svg`}
@@ -44,7 +44,7 @@ export function CexTokenBalanceRow(token: ICEXBalanceList) {
             height={30}
           />
         </Flex>
-      </td>
+      </td> */}
       <td className="px-4 max-sm:hidden">
         <div ref={targetRef}>${tokenPrice?.toFixed(2)}</div>
         {tooltipVisible && tooltip}

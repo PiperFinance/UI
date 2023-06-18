@@ -51,12 +51,17 @@ export const useVaultBalances = () => {
         params: {
           vaultId: id,
           accountNames: accountsName ? accountsName : [],
+          version: 1,
         },
       });
 
-      setBalances(data.data);
+      console.log(data[0].balances);
+
+      setBalances(data[0].balances);
       setLoading(false);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -67,4 +72,40 @@ export const useVaultBalances = () => {
   }, [accounts, isActive, cedeProvider, id]);
 
   return { balances, loading };
+};
+
+export const useVaultTransaction = () => {
+  const [transactions, setTransactions] = useState<any>();
+  const [loading, setLoading] = useState<boolean>(true);
+  const { isActive, accounts, id } = useVault();
+
+  const { cedeProvider } = useCedeProvider();
+
+  const getTransactions = async () => {
+    try {
+      const accountsName: string[] | undefined = accounts?.map(
+        (account) => account.accountName
+      );
+      const data = await cedeProvider.request({
+        method: 'transactions',
+        params: {
+          vaultId: id,
+          accountNames: accountsName ? accountsName : [],
+          version: 1,
+        },
+      });
+
+      setTransactions(data);
+      setLoading(false);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    if (!accounts || !cedeProvider || !id) return;
+
+    setLoading(true);
+    getTransactions();
+  }, [accounts, isActive, cedeProvider, id]);
+
+  return { transactions, loading };
 };
