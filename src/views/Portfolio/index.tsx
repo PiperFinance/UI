@@ -16,6 +16,7 @@ import ConnectCEDE from '@components/ConnectCEDE';
 import { useVault } from '@hooks/useCede';
 import { useAtom } from 'jotai';
 import { vaults } from '@store/store';
+import CexTransactionHistory from './components/CexTransactionHistory';
 
 const TokenBalance = dynamic(() => import('./components/TokenBalance'), {
   loading: () => (
@@ -73,7 +74,8 @@ export default function Portfolio() {
     'Liquidities',
     'NFTs',
     'Transactions',
-    'CEX assets',
+    'CEX Assets',
+    'CEX Transactions',
   ];
 
   const [vault] = useAtom(vaults);
@@ -217,6 +219,20 @@ export default function Portfolio() {
               </Flex>
             ) : (
               <CexTokenBalance />
+            )}
+          </Tab.Panel>
+          <Tab.Panel className="bg-gray-128 mx-7 my-3 p-3 rounded-2xl">
+            {!vault || !vault.id ? (
+              <Flex
+                customStyle="h-[30vh] text-gray-100"
+                justifyContent="center"
+                alignItems="center"
+                width="full"
+              >
+                <ConnectCEDE />
+              </Flex>
+            ) : (
+              <CexTransactionHistory />
             )}
           </Tab.Panel>
         </Tab.Panels>

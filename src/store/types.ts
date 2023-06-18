@@ -2,7 +2,7 @@ export interface ICEXBalanceList {
   accounts: string[];
   cexNames: string[];
   freeBalance: number;
-  ticker: string;
+  token: string;
   totalBalance: number;
 }
 
@@ -19,4 +19,57 @@ export interface ICedeAccounts {
   cexName: string;
   permissions: string[];
   status: boolean;
+}
+
+// CEDE Transaction Schema
+
+export type TCexTransactionFrom = {
+  account: {
+    cexName: string;
+    cexId: string;
+    accountName: string;
+  };
+  wallet: {
+    depositAddress: string;
+    walletType: string;
+  };
+  transaction: {
+    timestamp: number;
+    amount: number;
+    token: string;
+    fee: {
+      amount: number;
+      token: string;
+    };
+    status: string;
+  };
+};
+
+export type TCexTransactionTo = {
+  account: {
+    name: string;
+    network: string;
+    address: string;
+  };
+  transaction: {
+    timestamp: number;
+    fee: {
+      amount: number;
+      token: string;
+    };
+    status: string;
+    tokens: [
+      {
+        amount: number;
+        label: string;
+        address: string;
+      }
+    ];
+  };
+};
+
+export interface ICEXTransaction {
+  from: TCexTransactionFrom;
+  to: TCexTransactionTo;
+  type: string;
 }
