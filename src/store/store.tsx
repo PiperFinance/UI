@@ -129,7 +129,7 @@ export const updateBalance = <T, R>(balances: T[]): R[] => {
   try {
     Object.values(balances).forEach((chainBalance: any) => {
       Object.entries(chainBalance).forEach(([key, value]: any) => {
-        flatBalances[Number(key)] = value;
+        flatBalances[key] = value;
       });
     });
   } catch (e) {}
