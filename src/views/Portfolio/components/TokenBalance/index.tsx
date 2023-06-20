@@ -13,6 +13,8 @@ function TokenBalance() {
     address ? address.toString() : undefined
   );
 
+  console.log(data)
+
   const balances: TTokenBalanceRow[] = useMemo(
     () =>
       sortData(
@@ -22,6 +24,8 @@ function TokenBalance() {
       ) as unknown as TTokenBalanceRow[],
     [data, isRefetching]
   );
+
+  console.log(balances)
 
   return <TokenBalanceTable {...{ balances, isLoading, isFetched }} />;
 }
