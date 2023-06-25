@@ -33,7 +33,7 @@ const useSingUp = () => {
       handleSingUp(data),
     retry: 10,
     onSuccess: (data) => {
-      localStorage.setItem('userToken', JSON.stringify(data));
+      sessionStorage.setItem('userToken', JSON.stringify(data));
     },
   });
 };

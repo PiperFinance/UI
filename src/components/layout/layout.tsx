@@ -1,26 +1,22 @@
-import { FC, ReactNode, useEffect } from 'react';
-import Head from 'next/head';
-import Flex from '@ui/Flex/Flex';
-import Container from '@ui/Container/Container';
-import dynamic from 'next/dynamic';
 import ToastContainer from '@components/ToastContainer';
-import Sidebar from './Sidebar/Sidebar';
-import { Bars3Icon } from '@heroicons/react/24/solid';
-import { useAtom } from 'jotai';
-import { sidebar, userToken } from '@store/store';
-import { useAccount, useSignMessage } from 'wagmi';
 import WalletConnect from '@components/WalletConnect';
 import { useSingUp } from '@hooks/useSingup';
-import ConnectCEDE from '@components/ConnectCEDE';
+import { sidebar } from '@store/store';
+import Container from '@ui/Container/Container';
+import Flex from '@ui/Flex/Flex';
+import { useAtom } from 'jotai';
+import Head from 'next/head';
+import { FC, ReactNode, useEffect } from 'react';
+import { useAccount, useSignMessage } from 'wagmi';
+import Sidebar from './Sidebar/Sidebar';
 
 const RootLayout: FC<{ children: ReactNode; pageName: string }> = ({
   children,
   pageName,
 }) => {
   const [, setSidebar] = useAtom(sidebar);
-  const [currentUserToken] = useAtom(userToken);
 
-  const { address, connector, isConnected } = useAccount();
+  const { address, isConnected, status } = useAccount();
 
   const { mutate } = useSingUp();
 
@@ -32,9 +28,11 @@ const RootLayout: FC<{ children: ReactNode; pageName: string }> = ({
   });
 
   useEffect(() => {
-    if (!address || !isConnected || !connector || currentUserToken) return;
+    const currentUserToken = sessionStorage.getItem('userToken');
+    console.log(status);
+    if (!address || !isConnected || currentUserToken) return;
     signMessage();
-  }, [address, connector]);
+  }, [status]);
 
   return (
     <Flex
@@ -51,13 +49,13 @@ const RootLayout: FC<{ children: ReactNode; pageName: string }> = ({
       <Flex direction="column" customStyle="h-screen" overflow="hidden">
         <Container>
           <Flex justifyContent="mdBetween" alignItems={'center'}>
-            <Bars3Icon
+            {/* <Bars3Icon
               className="w-8 text-wheat-300 cursor-pointer block lg:hidden"
               onClick={(e) => {
                 e.stopPropagation();
                 setSidebar(true);
               }}
-            />
+            /> */}
             <WalletConnect />
           </Flex>
         </Container>

@@ -1,19 +1,19 @@
-import Flex from '@ui/Flex/Flex';
-import React, { useCallback, useState } from 'react';
-import type { ListChildComponentProps } from 'react-window';
-import { FixedSizeList } from 'react-window';
-import type { IToken } from '@store/store';
-import { selectedChains } from '@store/store';
-import type { SetStateAction } from 'jotai';
-import { useAtom } from 'jotai';
-import { formatNumber } from '@utils/bignumber';
-import Input from '@ui/Input/Input';
-import Image from 'next/image';
-import { useAccount, useBalance } from 'wagmi';
+import TokenLogo from '@components/TokenLogo';
 import type { IChain } from '@constants/networkList';
 import { Chains } from '@constants/networkList';
+import type { IToken } from '@store/store';
+import { selectedChains } from '@store/store';
+import Flex from '@ui/Flex/Flex';
+import Input from '@ui/Input/Input';
+import { formatNumber } from '@utils/bignumber';
+import type { SetStateAction } from 'jotai';
+import { useAtom } from 'jotai';
+import Image from 'next/image';
+import { useCallback } from 'react';
+import type { ListChildComponentProps } from 'react-window';
+import { FixedSizeList } from 'react-window';
+import { useAccount, useBalance } from 'wagmi';
 import ModalHeader from '../ModalHeader';
-import TokenLogo from '@components/TokenLogo';
 
 interface ITokenListModal {
   onDismiss: () => void;
