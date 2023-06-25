@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { atomWithStorage } from 'jotai/utils';
+import { atomWithStorage, createJSONStorage } from 'jotai/utils';
 import { atomsWithQuery } from 'jotai-tanstack-query';
 import { IChain, Chains } from '@constants/networkList';
 import { sortData } from '@utils/customSort';
@@ -47,11 +47,6 @@ export const sidebar = atom<boolean>(false);
 
 export const toast = atom<JSX.Element>(<></>);
 
-export const userToken = atomWithStorage<IUserToken | undefined>(
-  'userToken',
-  undefined
-);
-
 export const originToken = atomWithStorage<IToken | undefined>(
   'originToken',
   undefined
@@ -66,6 +61,16 @@ export const slippage = atom<number>(0.5);
 export const selectedChains = atom<IChain[]>(Chains);
 export const allTokens = atom<IToken[]>([]);
 export const balancesList = atom<IChainResponse[]>([]);
+
+export const [getImportedAddresses] = atomsWithQuery<string[]>(() => ({
+  queryKey: ['importedAddresses'],
+  queryFn: async () => {
+    const res = await fetch(
+      `https://raw.githubusercontent.com/PiperFinance/CD/main/tokens/outVerified/all_tokens.json`
+    );
+    return res.json();
+  },
+}));
 
 export const [getAllTokens] = atomsWithQuery<ITokenResponse[]>(() => ({
   queryKey: ['allTokens'],
