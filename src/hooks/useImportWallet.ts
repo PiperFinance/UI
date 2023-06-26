@@ -26,4 +26,11 @@ const useImportWallet = () => {
   });
 };
 
-export { importWallet, useImportWallet };
+const useImportedWallets = () => {
+  const importedWallets: string[] = JSON.parse(
+    localStorage.getItem("userWallets") || "[]"
+  );
+  return { importedWallets };
+};
+
+export { importWallet, useImportWallet, useImportedWallets };
