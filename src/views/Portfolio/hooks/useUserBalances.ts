@@ -2,13 +2,18 @@ import { Chains } from "@constants/networkList";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-export const baseURL = "https://ps.piper.finance/tokens/balance";
+export const baseURL = `${
+  process.env.PS_URL ? process.env.PS_URL : "https://ps.piper.finance"
+}/tokens/balance`;
 
 const fetchUserBalances = async (wallet: string | undefined) => {
   if (!wallet) return;
   const chainList = Chains.map((chain) => `&chainId=${chain.id}`);
+  var wallets = JSON.parse(localStorage.getItem("userWallets") || "[]").map(
+    (add: string) => `&wallet=${add}`
+  );
   const { data, status } = await axios.get(
-    `${baseURL}?wallet=${wallet}${chainList.join("")}`
+    `${baseURL}?${chainList.join("")}${wallets.join("")} `
   );
   return status === 200 ? data : [];
 };

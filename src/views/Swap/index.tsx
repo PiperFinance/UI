@@ -4,6 +4,7 @@ import {
   originToken,
   slippage,
   tokenAtom,
+  userToken,
 } from '@store/store';
 import { Button } from '@ui/Button/Button';
 import Container from '@ui/Container/Container';
@@ -44,6 +45,9 @@ interface ISwap {
 }
 
 export default function Swap() {
+
+  const [currentUserToken, setUserToken] = useAtom(userToken);
+  
   const tokenList = useAtomValue(tokenAtom);
   const [fromToken, setFormToken] = useAtom(originToken);
   const [toToken, setToToken] = useAtom(destinationToken);
@@ -145,7 +149,8 @@ export default function Swap() {
       !amount ||
       !fromToken ||
       !toToken ||
-      !address
+      !address ||
+      !currentUserToken
     )
       return;
     setIsLoading(true);
@@ -154,65 +159,74 @@ export default function Swap() {
       fromToken.detail.decimals!
     );
     const { type, response } = selectedRoute;
-    switch (type) {
-      case 'QuoteSimulationResult':
-        handleSwap
-          .executeRangoSwap(signer, {
-            fromToken: fromToken.detail!,
-            toToken: toToken.detail!,
-            amount: convertedAmountIn,
-            address: address,
-            slippage: currentSlippage,
-          })
-          .then((res) => {
-            setIsLoading(false);
-          })
-          .catch((e) => {
-            setIsLoading(false);
-          });
-        break;
-      case 'lifiRoute':
-        handleSwap
-          .executeLifiSwap(signer, response as lifiRoute, switchChainHook)
-          .then((res) => {
-            setIsLoading(false);
-          })
-          .catch((e) => {
-            // if (
-            //   e.includes("500") ||
-            //   e.toLowerCase().includes("network error")
-            // ) {
-            //   toast.custom((t) => (
-            //     <ToastWarning
-            //       title="Try Again"
-            //       dismiss={() => toast.dismiss(t.id)}
-            //     />
-            //   ));
-            // }
 
-            // if (e.includes("exchange rate")) {
-            //   toast.custom((t) => (
-            //     <ToastWarning
-            //       title="The price has been change please press the 'Refresh' button"
-            //       dismiss={() => toast.dismiss(t.id)}
-            //     />
-            //   ));
-            // }
+      console.log(JSON.stringify(selectedRoute))
+      setIsLoading(false);
 
-            setIsLoading(false);
-          });
-        break;
-      case 'ISwapExactInSymbiosis':
-        handleSwap
-          .executeSymbiosisSwap(signer, response as ISwapExactInSymbiosis)
-          .then((res) => {
-            setIsLoading(false);
-          })
-          .catch((e) => {
-            setIsLoading(false);
-          });
-        break;
-    }
+
+    // switch (type) {
+    //   case 'QuoteSimulationResult':
+    //     handleSwap
+    //       .executeRangoSwap(signer, {
+    //         fromToken: fromToken.detail!,
+    //         toToken: toToken.detail!,
+    //         amount: convertedAmountIn,
+    //         address: address,
+    //         slippage: currentSlippage,
+    //       })
+    //       .then((res) => {
+    //         setIsLoading(false);
+    //       })
+    //       .catch((e) => {
+    //         setIsLoading(false);
+    //       });
+    //     break;
+    //   case 'lifiRoute':
+    //     handleSwap
+    //       .executeLifiSwap(signer, response as lifiRoute, switchChainHook, currentUserToken)
+    //       .then((res) => {
+    //         setIsLoading(false);
+    //       })
+    //       .catch((e) => {
+    //         // if (
+    //         //   e.includes("500") ||
+    //         //   e.toLowerCase().includes("network error")
+    //         // ) {
+    //         //   toast.custom((t) => (
+    //         //     <ToastWarning
+    //         //       title="Try Again"
+    //         //       dismiss={() => toast.dismiss(t.id)}
+    //         //     />
+    //         //   ));
+    //         // }
+
+    //         // if (e.includes("exchange rate")) {
+    //         //   toast.custom((t) => (
+    //         //     <ToastWarning
+    //         //       title="The price has been change please press the 'Refresh' button"
+    //         //       dismiss={() => toast.dismiss(t.id)}
+    //         //     />
+    //         //   ));
+    //         // }
+
+    //         setIsLoading(false);
+    //       });
+    //     break;
+    //   case 'ISwapExactInSymbiosis':
+    //     handleSwap
+    //       .executeSymbiosisSwap(signer, response as ISwapExactInSymbiosis)
+    //       .then((res) => {
+    //         setIsLoading(false);
+    //       })
+    //       .catch((e) => {
+    //         setIsLoading(false);
+    //       });
+    //     break;
+    // }
+
+
+
+
   };
 
   const handleSwitchNetwork = () => {
@@ -225,9 +239,10 @@ export default function Swap() {
     switchNetwork?.(fromToken?.detail.chainId);
   };
 
-  const insufficientBalance = Boolean(
-    Number(fromTokenBalance?.formatted) < Number(amount)
-  );
+  // const insufficientBalance = Boolean(
+  //   Number(fromTokenBalance?.formatted) < Number(amount)
+  // );
+  const insufficientBalance = false;
 
   return (
     <Container customStyle="h-full flex items-center justify-center">

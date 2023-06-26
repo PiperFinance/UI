@@ -29,6 +29,15 @@ export interface ITokenDetailDefault {
   logoURI?: string | null;
 }
 
+
+
+export interface IAddressReq{
+  userToken: IUserToken,
+  address:string
+}
+
+
+
 export interface ITokenDetail extends ITokenDetailDefault {
   coingeckoId?: string | null;
   tags?: string[];
@@ -46,6 +55,12 @@ export interface IUserToken {
 export const sidebar = atom<boolean>(false);
 
 export const toast = atom<JSX.Element>(<></>);
+
+
+export const userToken = atomWithStorage<IUserToken | undefined>(
+  'userToken',
+  undefined
+);
 
 export const originToken = atomWithStorage<IToken | undefined>(
   'originToken',

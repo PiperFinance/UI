@@ -15,4 +15,8 @@ services:
     image: t3-app
     environment:
       - DATABASE_URL=file:./db.sqlite
+      - UA_URL=
+      - PS_URL=
+      - TP_URL=
+      - TH_URL=
       - PORT=4000

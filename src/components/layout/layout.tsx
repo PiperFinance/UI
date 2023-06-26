@@ -1,7 +1,7 @@
 import ToastContainer from '@components/ToastContainer';
 import WalletConnect from '@components/WalletConnect';
 import { useSingUp } from '@hooks/useSingup';
-import { sidebar } from '@store/store';
+import { sidebar, userToken } from '@store/store';
 import Container from '@ui/Container/Container';
 import Flex from '@ui/Flex/Flex';
 import { useAtom } from 'jotai';
@@ -15,6 +15,8 @@ const RootLayout: FC<{ children: ReactNode; pageName: string }> = ({
   pageName,
 }) => {
   const [, setSidebar] = useAtom(sidebar);
+  
+  const [currentUserTokenFromAtom, setUserToken] = useAtom(userToken);
 
   const { address, isConnected, status } = useAccount();
 
@@ -28,8 +30,8 @@ const RootLayout: FC<{ children: ReactNode; pageName: string }> = ({
   });
 
   useEffect(() => {
-    const currentUserToken = sessionStorage.getItem('userToken');
-    console.log(status);
+    const currentUserToken = localStorage.getItem('userToken');
+    console.log(currentUserTokenFromAtom);
     if (!address || !isConnected || currentUserToken) return;
     signMessage();
   }, [status]);

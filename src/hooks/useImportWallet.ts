@@ -1,24 +1,29 @@
-import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
+import { IAddressReq } from "@store/store";
+import { useMutation } from "@tanstack/react-query";
+import { axiosWithJWT } from "../axios-interceptor";
 
-export const baseURL = 'https://ua.piper.finance';
+export const baseURL = process.env.UA_URL
+  ? process.env.UA_URL
+  : "https://ua.piper.finance";
 
-const importWallet = async (addresses: string[]) => {
-  // const addresses = addresses.map((chain) => `&chainId=${chain.id}`);
-
-
-  const { data, status } = await axios.post(`${baseURL}/user/address`, {
-    addresses,
+const importWallet = async (req: string) => {
+  await axiosWithJWT.post(`${baseURL}/user/address`, {
+    addresses: [{ Hash: req }],
   });
+  const { data, status } = await axiosWithJWT.get(
+    `${baseURL}/user/address`,
+    {}
+  );
+  const wallets: string[] = data.addresses.map((addObj: any) => addObj.Hash);
+  localStorage.setItem("userWallets", JSON.stringify(wallets));
   return status === 200 ? data : [];
 };
 
 const useImportWallet = () => {
   return useMutation({
-    mutationFn: (addresses: string[]) => importWallet(addresses),
-    retry: 10,
+    mutationFn: (req: string) => importWallet(req),
+    retry: 5,
   });
 };
 
 export { importWallet, useImportWallet };
-
