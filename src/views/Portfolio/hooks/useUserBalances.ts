@@ -6,16 +6,18 @@ import axios from "axios";
 //   process.env.PS_URL ? process.env.PS_URL : "https://ps.piper.finance"
 // }/v2/tokens/balance/flat`;
 
-const fetchUserBalances = async () => {
-  // if (!wallet) return;
+const fetchUserBalances = async (wallet: string | undefined | null) => {
+  let wallets = [];
 
-  const walletsInStorage = localStorage.getItem("userWallets");
-  console.log({ walletsInStorage });
+  if (!wallet) {
+    wallets = JSON.parse(localStorage.getItem("userWallets") || "[]").map(
+      (add: string) => `&wallet=${add}`
+    );
+  } else {
+    wallets = [wallet];
+  }
 
   const chainList = Chains.map((chain) => `&chainId=${chain.id}`);
-  const wallets = JSON.parse(localStorage.getItem("userWallets") || "[]").map(
-    (add: string) => `&wallet=${add}`
-  );
   const { data, status } = await axios.get(
     `https://ps.piper.finance/v2/tokens/balance/flat?${chainList.join(
       ""
@@ -24,10 +26,10 @@ const fetchUserBalances = async () => {
   return status === 200 ? data : [];
 };
 
-const useUserBalances = () => {
+const useUserBalances = (wallet: string | undefined | null) => {
   return useQuery({
     queryKey: ["balances"],
-    queryFn: () => fetchUserBalances(),
+    queryFn: () => fetchUserBalances(wallet),
     staleTime: 60000,
     refetchInterval: 60000,
   });

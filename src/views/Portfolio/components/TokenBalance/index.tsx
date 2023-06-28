@@ -7,9 +7,8 @@ import TokenBalanceTable from "./TokenBalanceTable";
 import { sortData } from "@utils/customSort";
 
 function TokenBalance() {
-  const { data, isLoading, isFetched, isRefetching } = useUserBalances();
-
-  console.log({ data, isLoading, isFetched, isRefetching });
+  const { data, isLoading, isFetched, isRefetching } =
+    useUserBalances(undefined);
 
   const balances: IToken[] = useMemo(
     () => sortData(data as any, "value", "balance") as unknown as IToken[],
