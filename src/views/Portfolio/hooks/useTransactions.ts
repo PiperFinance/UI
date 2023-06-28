@@ -53,9 +53,9 @@ const useTransactions = (
     // enabled: saveSucceeded,
     staleTime: 60000,
     refetchInterval: 60000,
-    onSuccess() {
-      handleSaveTransactions(wallet);
-    },
+    // onSuccess() {
+    //   handleSaveTransactions(wallet);
+    // },
   });
 };
 

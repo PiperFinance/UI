@@ -51,9 +51,9 @@ const useNftList = (
     // enabled: saveSucceeded,
     staleTime: 60000,
     refetchInterval: 60000,
-    onSuccess: () => {
-      handleSaveNFTs(wallet);
-    },
+    // onSuccess: () => {
+    //   handleSaveNFTs(wallet);
+    // },
   });
 };
 
