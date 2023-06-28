@@ -1,21 +1,21 @@
-import ToastContainer from '@components/ToastContainer';
-import WalletConnect from '@components/WalletConnect';
-import { useSingUp } from '@hooks/useSingup';
-import { sidebar, userToken } from '@store/store';
-import Container from '@ui/Container/Container';
-import Flex from '@ui/Flex/Flex';
-import { useAtom } from 'jotai';
-import Head from 'next/head';
-import { FC, ReactNode, useEffect } from 'react';
-import { useAccount, useSignMessage } from 'wagmi';
-import Sidebar from './Sidebar/Sidebar';
+import ToastContainer from "@components/ToastContainer";
+import WalletConnect from "@components/WalletConnect";
+import { useSingUp } from "@hooks/useSingup";
+import { sidebar, userToken } from "@store/store";
+import Container from "@ui/Container/Container";
+import Flex from "@ui/Flex/Flex";
+import { useAtom } from "jotai";
+import Head from "next/head";
+import { FC, ReactNode, useEffect } from "react";
+import { useAccount, useSignMessage } from "wagmi";
+import Sidebar from "./Sidebar/Sidebar";
 
 const RootLayout: FC<{ children: ReactNode; pageName: string }> = ({
   children,
   pageName,
 }) => {
   const [, setSidebar] = useAtom(sidebar);
-  
+
   const [currentUserTokenFromAtom, setUserToken] = useAtom(userToken);
 
   const { address, isConnected, status } = useAccount();
@@ -30,8 +30,7 @@ const RootLayout: FC<{ children: ReactNode; pageName: string }> = ({
   });
 
   useEffect(() => {
-    const currentUserToken = localStorage.getItem('userToken');
-    console.log(currentUserTokenFromAtom);
+    const currentUserToken = localStorage.getItem("accessToken");
     if (!address || !isConnected || currentUserToken) return;
     signMessage();
   }, [status]);
@@ -50,7 +49,7 @@ const RootLayout: FC<{ children: ReactNode; pageName: string }> = ({
       <Sidebar />
       <Flex direction="column" customStyle="h-screen" overflow="hidden">
         <Container>
-          <Flex justifyContent="mdBetween" alignItems={'center'}>
+          <Flex justifyContent="mdBetween" alignItems={"center"}>
             {/* <Bars3Icon
               className="w-8 text-wheat-300 cursor-pointer block lg:hidden"
               onClick={(e) => {

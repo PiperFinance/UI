@@ -26,6 +26,8 @@ const handleSingUp = async (params: {
     signedMsg: params.signedMsg,
   });
 
+  localStorage.setItem("userWallets", JSON.stringify([params.wallet]));
+
   return status === 200 ? data : [];
 };
 

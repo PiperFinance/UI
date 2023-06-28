@@ -162,7 +162,7 @@ export function WalletInfo() {
                 customStyle="p-3 text-gray-500 w-72 sm:w-96 text-sm border-t border-gray-800 hover:bg-gray-800"
                 alignItems="center"
               >
-                Imported Wallet
+                Imported Wallets
               </Flex>
             </Menu.Item>
 
