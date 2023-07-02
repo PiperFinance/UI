@@ -1,10 +1,10 @@
-import { QuotePath, QuoteSimulationResult, SwapFee } from 'rango-sdk-basic/lib';
-import { Route as lifiRoute, LifiStep, Step } from '@lifi/sdk';
-import { ITokenDetail, ITokenDetailDefault } from '@store/store';
-import { Execute, Percent, Token, TokenAmount } from 'symbiosis-js-sdk';
-import { Signer } from 'ethers';
-import { calculateNumberDecimal } from '@utils/bignumber';
-import { formatNumber } from '@utils/bignumber';
+import { QuotePath, QuoteSimulationResult, SwapFee } from "rango-sdk-basic/lib";
+import { Route as lifiRoute, LifiStep, Step } from "@lifi/sdk";
+import { ITokenDetail, ITokenDetailDefault } from "@store/store";
+import { Execute, Percent, Token, TokenAmount } from "symbiosis-js-sdk";
+import { Signer } from "ethers";
+import { calculateNumberDecimal } from "@utils/bignumber";
+import { formatNumber } from "@utils/bignumber";
 
 export type TSelectedRoute =
   | lifiRoute
@@ -72,7 +72,7 @@ export class ConvertLifiRoute {
       estimateTime: Number(steps[0]?.estimate.executionDuration),
       response: route,
       path: this.getPath(route),
-      type: 'lifiRoute',
+      type: "lifiRoute",
     };
   }
 
@@ -86,7 +86,7 @@ export class ConvertLifiRoute {
           logo: step.toolDetails.logoURI,
         },
         type:
-          step.type === 'cross' ? 'bridge' : step.type === 'swap' ? 'swap' : '',
+          step.type === "cross" ? "bridge" : step.type === "swap" ? "swap" : "",
       };
     });
   }
@@ -103,7 +103,7 @@ export class ConvertSymbiosisRoute {
       estimateTime: 0,
       response: route,
       path: this.getPath(swapData),
-      type: 'ISwapExactInSymbiosis',
+      type: "ISwapExactInSymbiosis",
     };
   }
 
@@ -113,10 +113,10 @@ export class ConvertSymbiosisRoute {
         fromToken: swapData.fromToken as unknown as ITokenDetailDefault,
         toToken: swapData.toToken as unknown as ITokenDetailDefault,
         tool: {
-          title: 'Symbiosis',
-          logo: 'https://app.symbiosis.finance/9cde72ed4852592a6aec.png',
+          title: "Symbiosis",
+          logo: "https://app.symbiosis.finance/9cde72ed4852592a6aec.png",
         },
-        type: 'swap',
+        type: "swap",
       },
     ];
   }
@@ -139,7 +139,7 @@ export class ConvertRangoRoute {
       estimateTime: route.estimatedTimeInSeconds,
       response: route,
       path: this.getPath(route, swapData),
-      type: 'QuoteSimulationResult',
+      type: "QuoteSimulationResult",
     };
   }
 
@@ -157,7 +157,7 @@ export class ConvertRangoRoute {
               title: route.swapper.title,
               logo: route.swapper.logo,
             },
-            type: 'rangoStep',
+            type: "rangoStep",
           },
         ];
       }
@@ -184,7 +184,7 @@ export class ConvertRangoRoute {
             title: step.swapper.title,
             logo: step.swapper.logo,
           },
-          type: 'rangoStep',
+          type: "rangoStep",
         };
       });
     } catch (e) {}

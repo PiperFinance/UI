@@ -1,6 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-export const baseURL = "https://tp.piper.finance/";
+
+export const baseURL = process.env.TP_URL
+  ? process.env.TP_URL
+  : "https://tp.piper.finance";
 
 const fetchTokenPrice = async (chainId: number, tokenId: string) => {
   const { data } = await axios.get(

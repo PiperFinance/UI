@@ -1,10 +1,10 @@
-import { atom } from 'jotai';
-import { atomWithStorage, createJSONStorage } from 'jotai/utils';
-import { atomsWithQuery } from 'jotai-tanstack-query';
-import { IChain, Chains } from '@constants/networkList';
-import { sortData } from '@utils/customSort';
-import type { ICEXBalanceList, ICedeVaults } from './types';
-export const baseURL = 'https://piper.finance/api/';
+import { atom } from "jotai";
+import { atomWithStorage, createJSONStorage } from "jotai/utils";
+import { atomsWithQuery } from "jotai-tanstack-query";
+import { IChain, Chains } from "@constants/networkList";
+import { sortData } from "@utils/customSort";
+import type { ICEXBalanceList, ICedeVaults } from "./types";
+export const baseURL = "https://piper.finance/api/";
 
 export interface IChainResponse {
   [key: string]: ITokenResponse;
@@ -29,6 +29,11 @@ export interface ITokenDetailDefault {
   logoURI?: string | null;
 }
 
+export interface IAddressReq {
+  userToken: IUserToken;
+  address: string;
+}
+
 export interface ITokenDetail extends ITokenDetailDefault {
   coingeckoId?: string | null;
   tags?: string[];
@@ -47,12 +52,17 @@ export const sidebar = atom<boolean>(false);
 
 export const toast = atom<JSX.Element>(<></>);
 
+export const userToken = atomWithStorage<IUserToken | undefined>(
+  "userToken",
+  undefined
+);
+
 export const originToken = atomWithStorage<IToken | undefined>(
-  'originToken',
+  "originToken",
   undefined
 );
 export const destinationToken = atomWithStorage<IToken | undefined>(
-  'destinationToken',
+  "destinationToken",
   undefined
 );
 
@@ -63,7 +73,7 @@ export const allTokens = atom<IToken[]>([]);
 export const balancesList = atom<IChainResponse[]>([]);
 
 export const [getImportedAddresses] = atomsWithQuery<string[]>(() => ({
-  queryKey: ['importedAddresses'],
+  queryKey: ["importedAddresses"],
   queryFn: async () => {
     const res = await fetch(
       `https://raw.githubusercontent.com/PiperFinance/CD/main/tokens/outVerified/all_tokens.json`
@@ -73,7 +83,7 @@ export const [getImportedAddresses] = atomsWithQuery<string[]>(() => ({
 }));
 
 export const [getAllTokens] = atomsWithQuery<ITokenResponse[]>(() => ({
-  queryKey: ['allTokens'],
+  queryKey: ["allTokens"],
   queryFn: async () => {
     const res = await fetch(
       `https://raw.githubusercontent.com/PiperFinance/CD/main/tokens/outVerified/all_tokens.json`
@@ -82,7 +92,7 @@ export const [getAllTokens] = atomsWithQuery<ITokenResponse[]>(() => ({
   },
 }));
 
-export const searchAtom = atom<string>('');
+export const searchAtom = atom<string>("");
 
 export const chainFilterAtom = atom((get) => {
   const tokens: IToken[] = get(allTokens);
@@ -103,8 +113,8 @@ export const tokenAtom = atom((get) => {
         token.detail?.symbol.toLowerCase().includes(search) ||
         token.detail?.address.toLowerCase() === search.toLowerCase()
     ),
-    'balance',
-    'value'
+    "balance",
+    "value"
   );
 });
 
