@@ -1,13 +1,13 @@
-import Table from "@components/Table/Table";
-import TableBody from "@components/Table/TableBody";
-import TableHeader from "@components/Table/TableHeader";
-import Flex from "@ui/Flex/Flex";
-import { TableRowSkeleton } from "@ui/Skeleton";
-import { useState, memo } from "react";
-import useTable from "@views/Portfolio/hooks/useTable";
-import { TokenBalanceRow } from "./TokenBalanceRow";
-import type { ITokenBalanceTable, TTokenBalanceRow } from "./types";
-import { IToken } from "@store/store";
+import Table from '@components/Table/Table';
+import TableBody from '@components/Table/TableBody';
+import TableHeader from '@components/Table/TableHeader';
+import Flex from '@ui/Flex/Flex';
+import { TableRowSkeleton } from '@ui/Skeleton';
+import { useState, memo } from 'react';
+import useTable from '@views/Portfolio/hooks/useTable';
+import { TokenBalanceRow } from './TokenBalanceRow';
+import type { ITokenBalanceTable, TTokenBalanceRow } from './types';
+import { IToken } from '@store/store';
 
 function TokenBalanceTable({
   balances,
@@ -18,9 +18,10 @@ function TokenBalanceTable({
   const { slice, range } = useTable<IToken>({
     data: balances,
     page,
-    rowsPerPage: 7,
+    rowsPerPage: 10,
     isFetched,
   });
+
 
   if (isLoading) {
     return (
@@ -32,19 +33,20 @@ function TokenBalanceTable({
     );
   }
 
+  console.log(slice)
   return (
     <Table
       page={page}
       range={range}
       totalLength={!isLoading ? balances.length : 0}
-      rowsPerPage={7}
+      rowsPerPage={10}
       slice={slice}
       setPage={setPage}
     >
-      <TableHeader titleList={["Token", "Networks", "Price", "Balance", ""]} />
+      <TableHeader titleList={['Token', 'Networks', 'Price', 'Balance', '']} />
       <TableBody>
         {slice.map((token: IToken) => (
-          <TokenBalanceRow key={token.detail.address} {...token} />
+          <TokenBalanceRow key={token.balance} {...token} />
         ))}
       </TableBody>
     </Table>

@@ -1,24 +1,20 @@
-import AddNewAddress from "@components/AddNewAddress";
-import ConnectWallet from "@components/ConnectWalletButton";
-import { Dialog, Menu, Transition } from "@headlessui/react";
+import IImportAddress from '@components/AddNewAddress';
+import ConnectWallet from '@components/ConnectWalletButton';
+import { Dialog, Menu, Transition } from '@headlessui/react';
 import {
   ArrowRightOnRectangleIcon,
   WalletIcon,
-} from "@heroicons/react/24/solid";
-import useTooltip from "@hooks/useToolTip/useToolTip";
-import { useImportedWallets } from "@hooks/useImportWallet";
-import Flex from "@ui/Flex/Flex";
-import { formatNumber } from "@utils/bignumber";
-import { handleSliceHashString } from "@utils/sliceHashString";
-import Image from "next/image";
-import { Fragment, useEffect, useState } from "react";
-import {
-  IoIosArrowBack,
-  IoIosArrowForward,
-  IoMdAddCircleOutline,
-} from "react-icons/io";
-import { useAccount, useBalance, useDisconnect, useNetwork } from "wagmi";
-import { ReceiveAmountSkeleton } from "../UI/Skeleton";
+} from '@heroicons/react/24/solid';
+import { useImportedWallets } from '@hooks/useImportWallet';
+import useTooltip from '@hooks/useToolTip/useToolTip';
+import Flex from '@ui/Flex/Flex';
+import { formatNumber } from '@utils/bignumber';
+import { handleSliceHashString } from '@utils/sliceHashString';
+import Image from 'next/image';
+import { Fragment, useEffect, useState } from 'react';
+import { IoIosArrowForward, IoMdAddCircleOutline } from 'react-icons/io';
+import { useAccount, useBalance, useDisconnect, useNetwork } from 'wagmi';
+import { ReceiveAmountSkeleton } from '../UI/Skeleton';
 
 export default function WalletConnect() {
   const { isConnected } = useAccount();
@@ -48,14 +44,14 @@ export function WalletInfo() {
     targetRef: connectorTarget,
     tooltip: connectorTooltip,
     tooltipVisible: connectorVisible,
-  } = useTooltip(activeConnector?.name!, { placement: "bottom" });
+  } = useTooltip(activeConnector?.name!, { placement: 'bottom' });
 
   const {
     targetRef: networkTarget,
     tooltip: networkTooltip,
     tooltipVisible: networkVisible,
   } = useTooltip(chain?.network!, {
-    placement: "bottom",
+    placement: 'bottom',
   });
 
   const {
@@ -68,7 +64,7 @@ export function WalletInfo() {
       &nbsp;
       {data?.symbol}
     </Flex>,
-    { placement: "bottom-start" }
+    { placement: 'bottom-start' }
   );
 
   const {
@@ -76,7 +72,7 @@ export function WalletInfo() {
     tooltip: addressTooltip,
     tooltipVisible: addressVisible,
   } = useTooltip(address, {
-    placement: "bottom",
+    placement: 'bottom',
   });
 
   // const {
@@ -89,7 +85,7 @@ export function WalletInfo() {
 
   return (
     <>
-      <Menu as="div" className="relative my-5">
+      <Menu as="div" className="relative my-5  z-50">
         <Menu.Button>
           <WalletIcon className="w-9 h-9 bg-gray-128 rounded-full p-2 text-gray-500 hover:text-gray-100 transition-all" />
         </Menu.Button>
@@ -112,7 +108,7 @@ export function WalletInfo() {
                   <div ref={networkTarget}>
                     <Image
                       //@ts-ignore
-                      src={chain?.icon ? chain?.icon.src : ""}
+                      src={chain?.icon ? chain?.icon.src : ''}
                       alt={chain?.network!}
                       width={50}
                       height={50}
@@ -228,7 +224,7 @@ export function WalletInfo() {
                   >
                     Watch any wallet
                   </Dialog.Title>
-                  <AddNewAddress />
+                  <IImportAddress onClose={() => setIsOpen(false)} />
                 </Dialog.Panel>
               </Transition.Child>
             </div>

@@ -1,17 +1,20 @@
 import { useImportWallet } from '@hooks/useImportWallet';
-import { userToken, IAddressReq } from '@store/store';
+import { userToken } from '@store/store';
 import { Button } from '@ui/Button/Button';
 import Flex from '@ui/Flex/Flex';
 import Input from '@ui/Input/Input';
 import { useAtom } from 'jotai';
 import { useState } from 'react';
 
-const AddNewAddress = () => {
+interface IImportAddress {
+  onClose: () => void;
+}
+
+const IImportAddress = (props: IImportAddress) => {
   const [address, setAddress] = useState<string>();
   const { mutate } = useImportWallet();
 
   const [currentUserToken, setUserToken] = useAtom(userToken);
-  
 
   return (
     <Flex
@@ -26,11 +29,15 @@ const AddNewAddress = () => {
           border={'full'}
           fontSize={'sm'}
         />
-        <Button 
+        <Button
           width={`sm`}
-          height={'sm'} 
+          height={'sm'}
           fontSize={'sm'}
-          onClick={() => address ? mutate(address) : 0}>
+          onClick={() => {
+            address && mutate(address);
+            // props.onClose();
+          }}
+        >
           Import
         </Button>
       </Flex>
@@ -38,4 +45,4 @@ const AddNewAddress = () => {
   );
 };
 
-export default AddNewAddress;
+export default IImportAddress;
