@@ -1,17 +1,18 @@
-import { useAccount } from "wagmi";
-import { memo, useMemo } from "react";
-import { useUserBalancesFlat } from "@views/Portfolio/hooks/useUserBalances";
-import type { IChainResponse, IToken } from "@store/store";
-import type { TTokenBalanceRow } from "./types";
-import TokenBalanceTable from "./TokenBalanceTable";
-import { sortData } from "@utils/customSort";
+import { type IToken } from '@store/store';
+import { sortData } from '@utils/customSort';
+import { useUserBalancesFlat } from '@views/Portfolio/hooks/useUserBalances';
+import { memo, useMemo } from 'react';
+import { useAccount } from 'wagmi';
+import TokenBalanceTable from './TokenBalanceTable';
 
 function TokenBalance() {
+  const { address } = useAccount();
+
   const { data, isLoading, isFetched, isRefetching } =
-    useUserBalancesFlat(undefined);
+    useUserBalancesFlat(address!);
 
   const balances: IToken[] = useMemo(
-    () => sortData(data as any, "value", "balance") as unknown as IToken[],
+    () => sortData(data as any, 'value', 'balance') as unknown as IToken[],
     [data, isRefetching]
   );
 
