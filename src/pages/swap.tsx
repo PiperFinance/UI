@@ -1,12 +1,12 @@
-import RootLayout from '@components/layout/layout';
-import { allTokens, balancesList, updateTokenListAtom } from '@store/store';
-import { useUserBalances } from '@views/Portfolio/hooks/useUserBalances';
-import { useAtom, useAtomValue } from 'jotai';
-import dynamic from 'next/dynamic';
-import { useEffect } from 'react';
-import { useAccount } from 'wagmi';
+import RootLayout from "@components/layout/layout";
+import { allTokens, balancesList, updateTokenListAtom } from "@store/store";
+import { useUserBalances } from "@views/Portfolio/hooks/useUserBalances";
+import { useAtom, useAtomValue } from "jotai";
+import dynamic from "next/dynamic";
+import { useEffect } from "react";
+import { useAccount } from "wagmi";
 
-const Swap = dynamic(() => import('@views/Swap'));
+const Swap = dynamic(() => import("@views/Swap"));
 
 export default function SwapPage() {
   const [, setTokens] = useAtom(allTokens);

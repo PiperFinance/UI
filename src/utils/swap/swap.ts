@@ -1,18 +1,18 @@
-import { Chains } from '@constants/networkList';
-import LIFI, { Route as lifiRoute, SwitchChainHook } from '@lifi/sdk';
-import { sortData } from '@utils/customSort';
+import { Chains } from "@constants/networkList";
+import LIFI, { Route as lifiRoute, SwitchChainHook } from "@lifi/sdk";
+import { sortData } from "@utils/customSort";
 
 import {
   EvmTransaction,
   MetaResponse,
   QuoteSimulationResult,
   RangoClient,
-} from 'rango-sdk-basic';
-import { Symbiosis, Token, TokenAmount } from 'symbiosis-js-sdk';
+} from "rango-sdk-basic";
+import { Symbiosis, Token, TokenAmount } from "symbiosis-js-sdk";
 import {
   checkApprovalSync,
   prepareEvmTransaction,
-} from '../prepareEvmTransaction';
+} from "../prepareEvmTransaction";
 import {
   ConvertLifiRoute,
   ConvertRangoRoute,
@@ -22,7 +22,8 @@ import {
   IRouteRequest,
   ISwapExactInSymbiosis,
   TSelectedRoute,
-} from './types';
+} from "./types";
+import { IUserToken } from "@store/store";
 
 enum RouteType {
   Rango,
@@ -36,8 +37,8 @@ export default class swap {
   private symbiosis: Symbiosis;
   constructor() {
     this.Lifi = new LIFI();
-    this.Rango = new RangoClient('a43dfccc-bb38-48f7-9ac9-5b928df2ecc0');
-    this.symbiosis = new Symbiosis('mainnet', 'piper.finance');
+    this.Rango = new RangoClient("a43dfccc-bb38-48f7-9ac9-5b928df2ecc0");
+    this.symbiosis = new Symbiosis("mainnet", "piper.finance");
   }
 
   public getRoutes(data: IRouteRequest): Promise<IRouteInfo[]> {
@@ -70,7 +71,7 @@ export default class swap {
         fromAmount: amount,
         options: {
           slippage: slippage / 100,
-          order: 'RECOMMENDED',
+          order: "RECOMMENDED",
         },
       });
 
@@ -81,18 +82,20 @@ export default class swap {
   private async getSymbiosisRoutes(
     data: IRouteRequest
   ): Promise<ISwapExactInSymbiosis | undefined> {
+    // NOTE - Temporarily disable Symbiosis
+    return;
     const { address, amount, fromToken, toToken, slippage } = data;
     const tokenIn = new Token({
       chainId: fromToken.chainId,
       address:
         fromToken.address.toLowerCase() ===
-        '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'.toLowerCase()
-          ? ''
+        "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE".toLowerCase()
+          ? ""
           : fromToken.address,
       name: fromToken.name,
       isNative:
         fromToken.address.toLowerCase() ===
-        '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'.toLowerCase()
+        "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE".toLowerCase()
           ? true
           : false,
       symbol: fromToken.symbol,
@@ -105,13 +108,13 @@ export default class swap {
       chainId: toToken.chainId,
       address:
         toToken.address.toLowerCase() ===
-        '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'.toLowerCase()
-          ? ''
+        "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE".toLowerCase()
+          ? ""
           : toToken.address,
       name: toToken.name,
       isNative:
         toToken.address.toLowerCase() ===
-        '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'.toLowerCase()
+        "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE".toLowerCase()
           ? true
           : false,
       symbol: toToken.symbol,
@@ -119,7 +122,6 @@ export default class swap {
     });
 
     const swapping = this.symbiosis.newSwapping();
-
     try {
       const routes = await swapping.exactIn(
         tokenAmountIn,
@@ -190,10 +192,10 @@ export default class swap {
 
     return sortData(
       parsedRoutes,
-      'amountOut',
-      'amountOutValue',
-      'totalGasFee',
-      'estimateTime'
+      "amountOut",
+      "amountOutValue",
+      "totalGasFee",
+      "estimateTime"
     );
   }
 
@@ -219,9 +221,12 @@ export default class swap {
   public executeLifiSwap = async (
     signer: any,
     route: lifiRoute,
-    switchChainHook: SwitchChainHook
+    switchChainHook: SwitchChainHook,
+    currentUserToken: IUserToken
   ) => {
     if (!route || !signer) return;
+    // TODO - HERE !
+    console.log({ currentUserToken });
     await this.Lifi.executeRoute(signer, route, { ...switchChainHook });
   };
 

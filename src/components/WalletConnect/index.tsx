@@ -1,19 +1,24 @@
-import AddNewAddress from '@components/AddNewAddress';
-import ConnectWallet from '@components/ConnectWalletButton';
-import { Dialog, Menu, Transition } from '@headlessui/react';
+import AddNewAddress from "@components/AddNewAddress";
+import ConnectWallet from "@components/ConnectWalletButton";
+import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
   ArrowRightOnRectangleIcon,
   WalletIcon,
-} from '@heroicons/react/24/solid';
-import useTooltip from '@hooks/useToolTip/useToolTip';
-import Flex from '@ui/Flex/Flex';
-import { formatNumber } from '@utils/bignumber';
-import { handleSliceHashString } from '@utils/sliceHashString';
-import Image from 'next/image';
-import { Fragment, useEffect, useState } from 'react';
-import { IoMdAddCircleOutline } from 'react-icons/io';
-import { useAccount, useBalance, useDisconnect, useNetwork } from 'wagmi';
-import { ReceiveAmountSkeleton } from '../UI/Skeleton';
+} from "@heroicons/react/24/solid";
+import useTooltip from "@hooks/useToolTip/useToolTip";
+import { useImportedWallets } from "@hooks/useImportWallet";
+import Flex from "@ui/Flex/Flex";
+import { formatNumber } from "@utils/bignumber";
+import { handleSliceHashString } from "@utils/sliceHashString";
+import Image from "next/image";
+import { Fragment, useEffect, useState } from "react";
+import {
+  IoIosArrowBack,
+  IoIosArrowForward,
+  IoMdAddCircleOutline,
+} from "react-icons/io";
+import { useAccount, useBalance, useDisconnect, useNetwork } from "wagmi";
+import { ReceiveAmountSkeleton } from "../UI/Skeleton";
 
 export default function WalletConnect() {
   const { isConnected } = useAccount();
@@ -26,11 +31,12 @@ export default function WalletConnect() {
 export function WalletInfo() {
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log(isOpen);
+  // TODO - sry for this :( it was annoying
+  // console.log(isOpen);
 
   const { connector: activeConnector, address } = useAccount();
   const { disconnect } = useDisconnect();
-
+  const { importedWallets } = useImportedWallets();
   const { chain } = useNetwork();
   const { data } = useBalance({
     address: address,
@@ -42,14 +48,14 @@ export function WalletInfo() {
     targetRef: connectorTarget,
     tooltip: connectorTooltip,
     tooltipVisible: connectorVisible,
-  } = useTooltip(activeConnector?.name!, { placement: 'bottom' });
+  } = useTooltip(activeConnector?.name!, { placement: "bottom" });
 
   const {
     targetRef: networkTarget,
     tooltip: networkTooltip,
     tooltipVisible: networkVisible,
   } = useTooltip(chain?.network!, {
-    placement: 'bottom',
+    placement: "bottom",
   });
 
   const {
@@ -62,7 +68,7 @@ export function WalletInfo() {
       &nbsp;
       {data?.symbol}
     </Flex>,
-    { placement: 'bottom-start' }
+    { placement: "bottom-start" }
   );
 
   const {
@@ -70,7 +76,7 @@ export function WalletInfo() {
     tooltip: addressTooltip,
     tooltipVisible: addressVisible,
   } = useTooltip(address, {
-    placement: 'bottom',
+    placement: "bottom",
   });
 
   // const {
@@ -106,7 +112,7 @@ export function WalletInfo() {
                   <div ref={networkTarget}>
                     <Image
                       //@ts-ignore
-                      src={chain?.icon ? chain?.icon.src : ''}
+                      src={chain?.icon ? chain?.icon.src : ""}
                       alt={chain?.network!}
                       width={50}
                       height={50}
@@ -151,6 +157,28 @@ export function WalletInfo() {
                 {/* {disconnectVisible && disconnectTooltip} */}
               </Flex>
             </Menu.Item>
+            <Menu.Item>
+              <Flex
+                customStyle="p-3 text-gray-500 w-72 sm:w-96 text-sm border-t border-gray-800 hover:bg-gray-800"
+                alignItems="center"
+              >
+                Imported Wallets
+              </Flex>
+            </Menu.Item>
+
+            {importedWallets.map((wallet) => (
+              <Menu.Item>
+                <Flex
+                  customStyle="p-4 text-gray-500 w-72 sm:w-96 text-sm border-t border-gray-800 hover:bg-gray-800 "
+                  alignItems="center"
+                >
+                  <IoIosArrowForward className="w-4 h-4 mx-3" />
+                  {wallet.slice(0, 15)}...
+                  {wallet.slice(wallet.length - 10, wallet.length)}
+                </Flex>
+              </Menu.Item>
+            ))}
+
             <Menu.Item as="div">
               <Flex
                 onClick={() => setIsOpen(true)}

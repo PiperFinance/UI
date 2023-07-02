@@ -1,11 +1,13 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation } from "@tanstack/react-query";
 import {
   generateRandomEmail,
   generateRandomPassword,
-} from '@utils/generateEmail';
-import axios from 'axios';
+} from "@utils/generateEmail";
+import axios from "axios";
 
-export const baseURL = 'https://ua.piper.finance';
+export const baseURL = process.env.UA_URL
+  ? process.env.UA_URL
+  : "https://ua.piper.finance";
 
 const handleSingUp = async (params: {
   wallet: string | undefined;
@@ -24,6 +26,8 @@ const handleSingUp = async (params: {
     signedMsg: params.signedMsg,
   });
 
+  localStorage.setItem("userWallets", JSON.stringify([params.wallet]));
+
   return status === 200 ? data : [];
 };
 
@@ -33,7 +37,8 @@ const useSingUp = () => {
       handleSingUp(data),
     retry: 10,
     onSuccess: (data) => {
-      sessionStorage.setItem('userToken', JSON.stringify(data));
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
     },
   });
 };

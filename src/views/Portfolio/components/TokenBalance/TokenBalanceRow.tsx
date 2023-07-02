@@ -1,37 +1,40 @@
-import { ChevronRightIcon } from '@heroicons/react/20/solid';
-import Flex from '@ui/Flex/Flex';
-import { Fragment, memo } from 'react';
-import { formatNumber, calculateMultiplyNumbers } from '@utils/bignumber';
-import ChainIcon from '@components/ChainIcon';
-import { useCoingecko } from '@hooks/useCoingecko';
-import type { TTokenBalanceRow } from './types';
-import useTooltip from '@hooks/useToolTip/useToolTip';
+import { ChevronRightIcon } from "@heroicons/react/20/solid";
+import Flex from "@ui/Flex/Flex";
+import { Fragment, memo } from "react";
+import { formatNumber, calculateMultiplyNumbers } from "@utils/bignumber";
+import ChainIcon from "@components/ChainIcon";
+import { useCoingecko } from "@hooks/useCoingecko";
+import type { TTokenBalanceRow } from "./types";
+import useTooltip from "@hooks/useToolTip/useToolTip";
 import {
   ArrowsRightLeftIcon,
   ChartBarIcon,
   EllipsisVerticalIcon,
   InformationCircleIcon,
-} from '@heroicons/react/24/solid';
-import { Menu, Transition } from '@headlessui/react';
-import Link from 'next/link';
-import { useAtom } from 'jotai';
-import { IToken, destinationToken, originToken } from '@store/store';
-import TokenLogo from '@components/TokenLogo';
+} from "@heroicons/react/24/solid";
+import { Menu, Transition } from "@headlessui/react";
+import Link from "next/link";
+import { useAtom } from "jotai";
+import { IToken, destinationToken, originToken } from "@store/store";
+import TokenLogo from "@components/TokenLogo";
 
-export function TokenBalanceRow(token: TTokenBalanceRow) {
+export function TokenBalanceRow(token: IToken) {
   const [, setFormToken] = useAtom(originToken);
   const [, setToToken] = useAtom(destinationToken);
 
-  const { detail, balance } = token[1];
-  const { data: tokenPrice, status } = useCoingecko(detail?.symbol);
+  const { detail, balance } = token;
+  // const { data: tokenPrice, status } = useCoingecko(detail?.symbol);
 
-  const { targetRef, tooltip, tooltipVisible } = useTooltip('$' + tokenPrice, {
-    placement: 'bottom-start',
-  });
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    "$" + token.priceUSD,
+    {
+      placement: "bottom-start",
+    }
+  );
 
   const tokenValue =
-    status !== 'loading'
-      ? calculateMultiplyNumbers(balance!, tokenPrice ?? 0)
+    status !== "loading"
+      ? calculateMultiplyNumbers(balance!, token.priceUSD ?? 0)
       : 0;
 
   function handleSwapToken(token: IToken) {
@@ -46,7 +49,7 @@ export function TokenBalanceRow(token: TTokenBalanceRow) {
     >
       <td className="p-4">
         <Flex>
-          <TokenLogo detail={detail} style={'h-7 w-7 sm:h-10 sm:w-10'} />
+          <TokenLogo detail={detail} style={"h-7 w-7 sm:h-10 sm:w-10"} />
           <Flex direction="column" justifyContent="center" customStyle="ml-3">
             <h6 className="font-bold uppercase max-sm:text-xs">
               {detail?.symbol}
@@ -63,12 +66,12 @@ export function TokenBalanceRow(token: TTokenBalanceRow) {
         </Flex>
       </td>
       <td className="px-4 max-sm:hidden">
-        <div ref={targetRef}>${tokenPrice?.toFixed(2)}</div>
+        <div ref={targetRef}>${token.priceUSD?.toFixed(2)}</div>
         {tooltipVisible && tooltip}
       </td>
       <td className="px-4">
         <div>
-          <b className="max-sm:text-xs">${formatNumber(tokenValue, 3)}</b>
+          <b className="max-sm:text-xs">${formatNumber(token.value!, 3)}</b>
           <div className="text-sm text-gray-400 max-sm:text-xs">
             {formatNumber(balance!, 8)} <span>{detail?.symbol}</span>
           </div>
@@ -95,10 +98,10 @@ export function TokenBalanceRow(token: TTokenBalanceRow) {
                 <Menu.Item>
                   {({ active }) => (
                     <Link
-                      onClick={() => handleSwapToken(token[1])}
+                      onClick={() => handleSwapToken(token)}
                       href="/swap"
                       className={`${
-                        active ? 'bg-primary-700' : ''
+                        active ? "bg-primary-700" : ""
                       }  flex justify-around w-full items-center text-gray-100 px-2 py-2 text-sm rounded-md`}
                     >
                       Swap
@@ -112,7 +115,7 @@ export function TokenBalanceRow(token: TTokenBalanceRow) {
                   {({ active }) => (
                     <button
                       className={`${
-                        active ? 'bg-primary-700' : ''
+                        active ? "bg-primary-700" : ""
                       }  flex justify-around w-full items-center px-2 py-2 text-sm rounded-md`}
                     >
                       Chart
@@ -126,7 +129,7 @@ export function TokenBalanceRow(token: TTokenBalanceRow) {
                   {({ active }) => (
                     <button
                       className={`${
-                        active ? 'bg-primary-700' : ''
+                        active ? "bg-primary-700" : ""
                       } flex justify-around w-full items-center px-2 py-2 text-sm rounded-md`}
                     >
                       Info

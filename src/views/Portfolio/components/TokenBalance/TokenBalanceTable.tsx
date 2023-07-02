@@ -7,6 +7,7 @@ import { useState, memo } from "react";
 import useTable from "@views/Portfolio/hooks/useTable";
 import { TokenBalanceRow } from "./TokenBalanceRow";
 import type { ITokenBalanceTable, TTokenBalanceRow } from "./types";
+import { IToken } from "@store/store";
 
 function TokenBalanceTable({
   balances,
@@ -14,7 +15,7 @@ function TokenBalanceTable({
   isLoading,
 }: ITokenBalanceTable) {
   const [page, setPage] = useState<number>(1);
-  const { slice, range } = useTable<TTokenBalanceRow>({
+  const { slice, range } = useTable<IToken>({
     data: balances,
     page,
     rowsPerPage: 7,
@@ -42,8 +43,8 @@ function TokenBalanceTable({
     >
       <TableHeader titleList={["Token", "Networks", "Price", "Balance", ""]} />
       <TableBody>
-        {slice.map((token: TTokenBalanceRow) => (
-          <TokenBalanceRow key={token[0]} {...token} />
+        {slice.map((token: IToken) => (
+          <TokenBalanceRow key={token.detail.address} {...token} />
         ))}
       </TableBody>
     </Table>
