@@ -33,4 +33,14 @@ const useUserBalancesFlat = (wallet: string) => {
   });
 };
 
-export { fetchUserBalances, useUserBalancesFlat };
+// NOTE - for swap page you kinda need a chain separated result
+const useUserBalances = (wallet: string) => {
+  return useQuery({
+    queryKey: ['balances'],
+    queryFn: () => fetchUserBalances(wallet, false),
+    staleTime: 60000,
+    refetchInterval: 60000,
+  });
+};
+
+export { useUserBalances, fetchUserBalances, useUserBalancesFlat };
