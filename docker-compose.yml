@@ -15,6 +15,7 @@ services:
     image: t3-app
     restart: always
     environment:
+      - DATABASE_URL=file:./db.sqlite
       - UA_URL=https://ua.piper.finance
       - PS_URL=https://ps.piper.finance
       - TP_URL=https://tp.piper.finance
