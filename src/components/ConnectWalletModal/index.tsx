@@ -78,7 +78,7 @@ export default function ConnectWalletModal({ onDismiss }: IWalletConnectModal) {
           >
             <div className="relative h-12 w-12">
               <Image
-                className="rounded-full"
+                className=""
                 src={`/assets/wallets/${connector.name.toLowerCase()}.svg`}
                 alt={connector.name}
                 fill

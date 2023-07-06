@@ -1,18 +1,18 @@
-import '../styles/globals.css';
-import type { AppProps, AppType } from 'next/app';
-import { trpc } from '../utils/trpc';
-import { client } from '@utils/wagmi';
-import { WagmiConfig } from 'wagmi';
+import { useCedeProvider } from '@hooks/useCede';
+import { vaults } from '@store/store';
 import {
   Hydrate,
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { useCedeProvider } from '@hooks/useCede';
-import { vaults } from '@store/store';
+import { config } from '@utils/wagmi';
 import { useAtom } from 'jotai';
+import type { AppProps, AppType } from 'next/app';
+import { useEffect, useState } from 'react';
+import { WagmiConfig } from 'wagmi';
+import '../styles/globals.css';
+import { trpc } from '../utils/trpc';
 
 const App: AppType = ({ Component, pageProps }: AppProps) => {
   const [queryClient] = useState(() => new QueryClient());
@@ -28,7 +28,7 @@ const App: AppType = ({ Component, pageProps }: AppProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
-        <WagmiConfig client={client}>
+        <WagmiConfig config={config}>
           <Component {...pageProps} />
         </WagmiConfig>
       </Hydrate>
