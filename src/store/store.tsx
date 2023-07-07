@@ -84,7 +84,7 @@ export const [getImportedAddresses] = atomsWithQuery<string[]>(() => ({
   },
 }));
 
-export const [getAllTokens] = atomsWithQuery<ITokenResponse[]>(() => ({
+export const [getAllTokens] = atomsWithQuery(() => ({
   queryKey: ['allTokens'],
   queryFn: async () => {
     const res = await fetch(

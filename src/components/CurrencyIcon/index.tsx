@@ -42,6 +42,7 @@ export function CurrencyIcon({
   borderRadius,
   ...props
 }: Props) {
+  
   return (
     <div className={iconStyles({ size, borderRadius })}>
       {chainId &&
