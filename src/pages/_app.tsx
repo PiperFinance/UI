@@ -1,9 +1,8 @@
 import { useCedeProvider } from '@hooks/useCede';
 import { vaults } from '@store/store';
 import {
-  Hydrate,
   QueryClient,
-  QueryClientProvider,
+  QueryClientProvider
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { config } from '@utils/wagmi';
@@ -27,11 +26,9 @@ const App: AppType = ({ Component, pageProps }: AppProps) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Hydrate state={pageProps.dehydratedState}>
-        <WagmiConfig config={config}>
-          <Component {...pageProps} />
-        </WagmiConfig>
-      </Hydrate>
+      <WagmiConfig config={config}>
+        <Component {...pageProps} />
+      </WagmiConfig>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );

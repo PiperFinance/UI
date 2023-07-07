@@ -220,10 +220,9 @@ export default function Swap() {
     switchNetwork?.(fromToken?.detail.chainId);
   };
 
-  // const insufficientBalance = Boolean(
-  //   Number(fromTokenBalance?.formatted) < Number(amount)
-  // );
-  const insufficientBalance = false;
+  const insufficientBalance = Boolean(
+    Number(fromTokenBalance?.formatted) < Number(amount)
+  );
 
   return (
     <Container customStyle="h-full flex items-center justify-center">
