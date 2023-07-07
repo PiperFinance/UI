@@ -7,10 +7,11 @@ import { useState } from 'react';
 import {
   erc20ABI,
   useAccount,
-  useContract,
+  useContractWrite,
   useNetwork,
-  useSigner,
+  usePrepareContractWrite,
   useSwitchNetwork,
+  useWalletClient,
 } from 'wagmi';
 
 interface IChangeAllowanceModal {
@@ -25,16 +26,29 @@ const ChangeAllowanceModal = (props: IChangeAllowanceModal) => {
   const { switchNetwork } = useSwitchNetwork();
   const { chain } = useNetwork();
   const { address } = useAccount();
-  const { data: signer, isFetched } = useSigner({
-    chainId: props.chainId,
+
+  const { data: walletClient } = useWalletClient({
+    chainId: chain?.id,
   });
 
   const [allowance, setAllowance] = useState<string>(props.allowance);
 
-  const contract = useContract({
-    address: props.token,
+  const { config } = usePrepareContractWrite({
+    address: props.token as `0x${string}`,
     abi: erc20ABI,
-    signerOrProvider: signer,
+    functionName: 'approve',
+    chainId: chain?.id,
+    account: address,
+  });
+
+  const { data, isLoading, isSuccess, write } = useContractWrite({
+    address: props.token as `0x${string}`,
+    abi: erc20ABI,
+    functionName: 'approve',
+    chainId: chain?.id,
+    onSuccess(data) {
+      props.onDismiss();
+    },
   });
 
   const handleSwitchNetwork = () => {
@@ -42,13 +56,12 @@ const ChangeAllowanceModal = (props: IChangeAllowanceModal) => {
   };
 
   async function handleChangeApprove() {
-    if (!address || !contract) return;
+    if (!address || !write) return;
 
     const approveAmount = ethers.utils.parseEther(allowance);
-
-    await contract
-      ?.approve(props.spender, approveAmount, { from: address })
-      .then((res) => props.onDismiss());
+    await write({
+      args: [props.spender, approveAmount as any],
+    });
   }
 
   return (

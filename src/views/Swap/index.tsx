@@ -1,6 +1,13 @@
+import ConnectWallet from '@components/ConnectWalletButton';
+import CurrencyInputPanel from '@components/CurrencyInputPanel';
+import SwapRoute from '@components/SwapRoutes';
+import SwitchCurrencyInput from '@components/SwitchCurrencyInput';
+import { ToastError, ToastWarning } from '@components/Toast';
+import { useEthersSigner } from '@hooks/useEthersSigner';
+import { Route as lifiRoute } from '@lifi/sdk';
 import {
-  destinationToken,
   IToken,
+  destinationToken,
   originToken,
   slippage,
   tokenAtom,
@@ -9,33 +16,19 @@ import {
 import { Button } from '@ui/Button/Button';
 import Container from '@ui/Container/Container';
 import Flex from '@ui/Flex/Flex';
+import { Skeleton } from '@ui/Skeleton';
+import Spinner from '@ui/Spinner/Spinner';
 import { calculateNumberDecimalContract } from '@utils/bignumber';
 import swap from '@utils/swap/swap';
+import { IRouteInfo } from '@utils/swap/types';
+import { trpc } from '@utils/trpc';
+import { Signer } from 'ethers';
 import { useAtom, useAtomValue } from 'jotai';
-import { Route as lifiRoute } from '@lifi/sdk';
-import React, { useEffect, useMemo, useState } from 'react';
-import {
-  useAccount,
-  useBalance,
-  useNetwork,
-  useSigner,
-  useSwitchNetwork,
-} from 'wagmi';
-import Spinner from '@ui/Spinner/Spinner';
-import CurrencyInputPanel from '@components/CurrencyInputPanel';
-import SwitchCurrencyInput from '@components/SwitchCurrencyInput';
-import SwapRoute from '@components/SwapRoutes';
+import { useEffect, useMemo, useState } from 'react';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import { toast } from 'react-hot-toast';
-import { ToastError, ToastWarning } from '@components/Toast';
-import { trpc } from '@utils/trpc';
-import { Skeleton } from '@ui/Skeleton';
-import { IRouteInfo, ISwapExactInSymbiosis } from '@utils/swap/types';
-import { Signer } from 'ethers';
 import { useDebounce } from 'react-use';
-import { ArrowPathIcon, Cog6ToothIcon } from '@heroicons/react/24/solid';
-import SwapSetting from './components/SwapSetting';
-import ConnectWallet from '@components/ConnectWalletButton';
+import { useAccount, useBalance, useNetwork, useSwitchNetwork } from 'wagmi';
 
 interface ISwap {
   amountIn: string;
@@ -45,9 +38,8 @@ interface ISwap {
 }
 
 export default function Swap() {
-
   const [currentUserToken, setUserToken] = useAtom(userToken);
-  
+
   const tokenList = useAtomValue(tokenAtom);
   const [fromToken, setFormToken] = useAtom(originToken);
   const [toToken, setToToken] = useAtom(destinationToken);
@@ -85,9 +77,7 @@ export default function Swap() {
     watch: true,
   });
 
-  const { data: signer } = useSigner({
-    chainId: chain?.id,
-  });
+  const signer = useEthersSigner();
 
   useEffect(() => setIsUserConnected(isConnected), [isConnected]);
 
@@ -149,84 +139,75 @@ export default function Swap() {
       !amount ||
       !fromToken ||
       !toToken ||
-      !address ||
-      !currentUserToken
+      !address
     )
       return;
+
     setIsLoading(true);
     const convertedAmountIn = calculateNumberDecimalContract(
       amount,
       fromToken.detail.decimals!
     );
     const { type, response } = selectedRoute;
+    switch (type) {
+      case 'QuoteSimulationResult':
+        handleSwap
+          .executeRangoSwap(signer, {
+            fromToken: fromToken.detail!,
+            toToken: toToken.detail!,
+            amount: convertedAmountIn,
+            address: address,
+            slippage: currentSlippage,
+          })
+          .then((res) => {
+            setIsLoading(false);
+          })
+          .catch((e) => {
+            setIsLoading(false);
+          });
+        break;
+      case 'lifiRoute':
+        handleSwap
+          .executeLifiSwap(signer, response as lifiRoute)
+          .then((res) => {
+            setIsLoading(false);
+          })
+          .catch((e) => {
+            // if (
+            //   e.includes("500") ||
+            //   e.toLowerCase().includes("network error")
+            // ) {
+            //   toast.custom((t) => (
+            //     <ToastWarning
+            //       title="Try Again"
+            //       dismiss={() => toast.dismiss(t.id)}
+            //     />
+            //   ));
+            // }
 
-      console.log(JSON.stringify(selectedRoute))
-      setIsLoading(false);
+            // if (e.includes("exchange rate")) {
+            //   toast.custom((t) => (
+            //     <ToastWarning
+            //       title="The price has been change please press the 'Refresh' button"
+            //       dismiss={() => toast.dismiss(t.id)}
+            //     />
+            //   ));
+            // }
 
-
-    // switch (type) {
-    //   case 'QuoteSimulationResult':
-    //     handleSwap
-    //       .executeRangoSwap(signer, {
-    //         fromToken: fromToken.detail!,
-    //         toToken: toToken.detail!,
-    //         amount: convertedAmountIn,
-    //         address: address,
-    //         slippage: currentSlippage,
-    //       })
-    //       .then((res) => {
-    //         setIsLoading(false);
-    //       })
-    //       .catch((e) => {
-    //         setIsLoading(false);
-    //       });
-    //     break;
-    //   case 'lifiRoute':
-    //     handleSwap
-    //       .executeLifiSwap(signer, response as lifiRoute, switchChainHook, currentUserToken)
-    //       .then((res) => {
-    //         setIsLoading(false);
-    //       })
-    //       .catch((e) => {
-    //         // if (
-    //         //   e.includes("500") ||
-    //         //   e.toLowerCase().includes("network error")
-    //         // ) {
-    //         //   toast.custom((t) => (
-    //         //     <ToastWarning
-    //         //       title="Try Again"
-    //         //       dismiss={() => toast.dismiss(t.id)}
-    //         //     />
-    //         //   ));
-    //         // }
-
-    //         // if (e.includes("exchange rate")) {
-    //         //   toast.custom((t) => (
-    //         //     <ToastWarning
-    //         //       title="The price has been change please press the 'Refresh' button"
-    //         //       dismiss={() => toast.dismiss(t.id)}
-    //         //     />
-    //         //   ));
-    //         // }
-
-    //         setIsLoading(false);
-    //       });
-    //     break;
-    //   case 'ISwapExactInSymbiosis':
-    //     handleSwap
-    //       .executeSymbiosisSwap(signer, response as ISwapExactInSymbiosis)
-    //       .then((res) => {
-    //         setIsLoading(false);
-    //       })
-    //       .catch((e) => {
-    //         setIsLoading(false);
-    //       });
-    //     break;
-    // }
-
-
-
-
+            setIsLoading(false);
+          });
+        break;
+      // case 'ISwapExactInSymbiosis':
+      //   handleSwap
+      //     .executeSymbiosisSwap(signer, response as ISwapExactInSymbiosis)
+      //     .then((res) => {
+      //       setIsLoading(false);
+      //     })
+      //     .catch((e) => {
+      //       setIsLoading(false);
+      //     });
+      //   break;
+    }
   };
 
   const handleSwitchNetwork = () => {
@@ -247,11 +228,13 @@ export default function Swap() {
   return (
     <Container customStyle="h-full flex items-center justify-center">
       <Flex customStyle="max-w-lg" alignItems="center" direction="column">
-        <h1 className="mb-5 text-4xl font-bold text-wheat-500">SWAP & BRIDGE</h1>
+        <h1 className="mb-5 text-4xl font-bold text-wheat-500">
+          SWAP & BRIDGE
+        </h1>
         <CurrencyInputPanel
           tokenList={tokenList}
           selectedCurrency={fromToken}
-          setToken={setFormToken}
+          setToken={setFormToken as any}
           currencyBalance={fromTokenBalance?.formatted}
           setAmount={setAmount}
           amount={amount}
@@ -263,7 +246,7 @@ export default function Swap() {
           tokenList={tokenList}
           setAmount={() => {}}
           selectedCurrency={toToken}
-          setToken={setToToken}
+          setToken={setToToken as any}
           currencyBalance={toTokenBalance?.formatted}
           amount={selectedRoute ? selectedRoute.amountOut : ''}
           disabled

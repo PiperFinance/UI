@@ -1,3 +1,4 @@
+import { CurrencyIcon } from '@components/CurrencyIcon';
 import { Disclosure } from '@headlessui/react';
 import {
   ArrowsRightLeftIcon,
@@ -5,7 +6,6 @@ import {
 } from '@heroicons/react/20/solid';
 import { ChevronRightIcon, ClockIcon } from '@heroicons/react/24/solid';
 import { Badge } from '@ui/Badge/Badge';
-import { CurrencyIcon } from '@components/CurrencyIcon';
 import Flex from '@ui/Flex/Flex';
 import { formatNumber } from '@utils/bignumber';
 import type { IRouteInfo } from '@utils/swap/types';
@@ -117,6 +117,7 @@ export default function RouteRow({
                         }
                         alt={step.fromToken.name}
                         chainId={step.fromToken.chainId}
+                        detail={step.fromToken}
                       />
                     </Flex>
                     {step.type === 'bridge' ? (
@@ -145,6 +146,7 @@ export default function RouteRow({
                         }
                         alt={step.toToken.name}
                         chainId={step.toToken.chainId}
+                        detail={step.toToken}
                       />
                     </div>
                   </Flex>

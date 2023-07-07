@@ -8,7 +8,6 @@ interface ITokenLogo {
 
 const TokenLogo = ({ detail, style }: ITokenLogo) => {
   const [logo, setLogo] = useState(false);
-
   return (
     <img
       src={
