@@ -17,6 +17,7 @@ import { useVault } from '@hooks/useCede';
 import { useAtom } from 'jotai';
 import { vaults } from '@store/store';
 import CexTransactionHistory from './components/CexTransactionHistory';
+import TotalValue from '@components/TotalValue';
 
 const TokenBalance = dynamic(() => import('./components/TokenBalance'), {
   loading: () => (
@@ -101,7 +102,7 @@ export default function Portfolio() {
         customStyle="rounded-2xl p-1 sm:p-5 h-fit !p-0"
       > */}
       <Tab.Group selectedIndex={tab} onChange={setTab}>
-        <Tab.List className="flex items-start text-center text-sm font-medium text-gray-300  border-gray-800 border-b  px-7">
+        <Tab.List className="flex items-start text-center text-sm font-medium text-gray-300  border-gray-700 border-b  px-7">
           <div className="space-x-4">
             {tooltipVisible && tooltip}
             {tabs.map((tab: string) => (
@@ -137,21 +138,21 @@ export default function Portfolio() {
             ) : (
               <>
                 <div className="pt-4 mx-7 my-3 p-3 rounded-2xl">
-                  <h1 className="text-gray-100 font-bold text-xl">NFTs</h1>
+                  <h1 className="text-gray-50 font-bold text-xl mb-2">NFTs</h1>
                   <NFTList isRow={true} />
                 </div>
-                <div className="pt-4 bg-gray-128 mx-7 my-3 p-3 rounded-2xl">
-                  <h1 className="text-gray-100 font-bold text-xl">Tokens</h1>
+                <div className="bg-gray-800 mx-7 my-3 p-5 rounded-2xl shadow-3xl ">
+                  <h1 className="text-gray-50 font-bold text-xl mb-2">Tokens</h1>
                   <TokenBalance />
                 </div>
-                <div className="pt-4 bg-gray-128 mx-7 my-3 p-3 rounded-2xl">
-                  <h1 className="text-gray-100 font-bold text-xl">Pairs</h1>
+                <div className="bg-gray-800 mx-7 my-3 p-5 rounded-2xl shadow-3xl">
+                  <h1 className="text-gray-50 font-bold text-xl mb-2">Pairs</h1>
                   <PairTokenTable />
                 </div>
               </>
             )}
           </Tab.Panel>
-          <Tab.Panel className="bg-gray-128 mx-7 my-3 p-3 rounded-2xl">
+          <Tab.Panel className="shadow-3xl mx-7 my-3 p-3 rounded-2xl">
             {!isUserConnected ? (
               <Flex
                 customStyle="h-[30vh] text-gray-100"
@@ -165,7 +166,7 @@ export default function Portfolio() {
               <TokenBalance />
             )}
           </Tab.Panel>
-          <Tab.Panel className="bg-gray-128 mx-7 my-3 p-3 rounded-2xl">
+          <Tab.Panel className="shadow-3xl  mx-7 my-3 p-3 rounded-2xl">
             {!isUserConnected ? (
               <Flex
                 customStyle="h-[30vh] text-gray-100"
@@ -179,7 +180,7 @@ export default function Portfolio() {
               <PairTokenTable />
             )}
           </Tab.Panel>
-          <Tab.Panel className="bg-gray-128 mx-7 my-3 p-3 rounded-2xl">
+          <Tab.Panel className="shadow-3xl  mx-7 my-3 p-3 rounded-2xl">
             {!isUserConnected ? (
               <Flex
                 customStyle="h-[30vh] text-gray-100"
@@ -193,7 +194,7 @@ export default function Portfolio() {
               <NFTList />
             )}
           </Tab.Panel>
-          <Tab.Panel className="bg-gray-128 mx-7 my-3 p-3 rounded-2xl">
+          <Tab.Panel className="shadow-3xl  mx-7 my-3 p-3 rounded-2xl">
             {!isUserConnected ? (
               <Flex
                 customStyle="h-[30vh] text-gray-100"
@@ -207,7 +208,7 @@ export default function Portfolio() {
               <TransactionHistory />
             )}
           </Tab.Panel>
-          <Tab.Panel className="bg-gray-128 mx-7 my-3 p-3 rounded-2xl">
+          <Tab.Panel className="shadow-3xl  mx-7 my-3 p-3 rounded-2xl">
             {!vault || !vault.id ? (
               <Flex
                 customStyle="h-[30vh] text-gray-100"
@@ -221,7 +222,7 @@ export default function Portfolio() {
               <CexTokenBalance />
             )}
           </Tab.Panel>
-          <Tab.Panel className="bg-gray-128 mx-7 my-3 p-3 rounded-2xl">
+          <Tab.Panel className="shadow-3xl  mx-7 my-3 p-3 rounded-2xl">
             {!vault || !vault.id ? (
               <Flex
                 customStyle="h-[30vh] text-gray-100"
