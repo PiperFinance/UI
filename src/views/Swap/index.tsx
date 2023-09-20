@@ -227,7 +227,7 @@ export default function Swap() {
   return (
     <Container customStyle="h-full flex items-center justify-center">
       <Flex customStyle="max-w-lg" alignItems="center" direction="column">
-        <h1 className="mb-5 text-4xl font-bold text-wheat-500">
+        <h1 className="mb-5 text-4xl font-bold text-wheat-300">
           SWAP & BRIDGE
         </h1>
         <CurrencyInputPanel

@@ -38,7 +38,7 @@ const RootLayout: FC<{ children: ReactNode; pageName: string }> = ({
   return (
     <Flex
       overflow="hidden"
-      customStyle="h-screen bg-gray-123"
+      customStyle="h-screen bg-gray-800"
       onClick={(e) => setSidebar(false)}
     >
       <Head>
@@ -49,7 +49,7 @@ const RootLayout: FC<{ children: ReactNode; pageName: string }> = ({
       <Sidebar />
       <Flex direction="column" customStyle="h-screen" overflow="hidden">
         <Container>
-          <Flex justifyContent="mdBetween" alignItems={"center"}>
+          <Flex justifyContent="end" alignItems={"center"}>
             {/* <Bars3Icon
               className="w-8 text-wheat-300 cursor-pointer block lg:hidden"
               onClick={(e) => {

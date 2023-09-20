@@ -5,7 +5,7 @@ const buttonStyles = cva("flex items-center text-xs font-semibold rounded h-fit"
   variants: {
     intent: {
       primary: "bg-primary-300 text-primary-800",
-      secondary: " bg-gray-500  text-gray-200 ",
+      secondary: " bg-gray-500  text-gray-50",
       danger: " bg-red-100  text-red-800 ",
       wheat: "bg-wheat-200 text-wheat-900 ",
       green: "bg-green-100 text-green-800",

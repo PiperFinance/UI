@@ -17,7 +17,7 @@ const IImportAddress = (props: IImportAddress) => {
       customStyle="text-gray-500 rounded-2xl w-full sm:w-96 text-sm"
       alignItems="center"
     >
-      <Flex alignItems="center" customStyle="space-x-3">
+      <Flex alignItems="center" direction={'column'} customStyle="space-y-3 my-2">
         <Input
           value={address}
           onChange={(e) => setAddress(e.target.value)}
@@ -26,7 +26,7 @@ const IImportAddress = (props: IImportAddress) => {
           fontSize={'sm'}
         />
         <Button
-          width={`sm`}
+          width={`full`}
           height={'sm'}
           fontSize={'sm'}
           onClick={() => {

@@ -32,7 +32,7 @@ export default function RouteRow({
           direction="column"
           customStyle={`border ${
             selectedRoute.response === route.response
-              ? 'border-wheat-900 bg-wheat-122'
+              ? 'border-wheat-900'
               : 'border-gray-700 hover:border-wheat-900'
           } p-4 rounded-2xl cursor-pointer transition max-h-96`}
           onClick={() => {
@@ -42,10 +42,10 @@ export default function RouteRow({
         >
           <Flex justifyContent="between" alignItems="center">
             <Flex alignItems="center">
-              <h1 className="font-bold">
+              <h1 className="font-bold text-gray-50">
                 Receive: {formatNumber(amountOut, 6)}{' '}
               </h1>
-              <h4 className="text-sm">
+              <h4 className="text-sm text-gray-50">
                 &nbsp; &#8771; &nbsp;${amountOutValue}
               </h4>
             </Flex>

@@ -44,13 +44,13 @@ export default function CurrencyInputPanel({
     <Flex
       direction="column"
       width="full"
-      customStyle="bg-gray-128 rounded-xl p-4 my-2 h-42 space-y-1"
+      customStyle="bg-gray-800 shadow-3xl rounded-xl p-4 my-2 h-42 space-y-1"
     >
       <Flex
         customStyle="text-gray-300 px-2 text-xs font-semibold"
         justifyContent="between"
       >
-        <span>
+        <span className='text-gray-50'>
           Balance:{' '}
           {currencyBalance && Number(currencyBalance) > 0
             ? formatNumber(currencyBalance, 5)

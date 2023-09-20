@@ -12,7 +12,7 @@ import { formatNumber } from '@utils/bignumber';
 import { handleSliceHashString } from '@utils/sliceHashString';
 import Image from 'next/image';
 import { Fragment, useEffect, useState } from 'react';
-import { IoIosArrowForward, IoMdAddCircleOutline } from 'react-icons/io';
+import { IoIosArrowForward, IoIosClose, IoMdAddCircleOutline } from 'react-icons/io';
 import { useAccount, useBalance, useDisconnect, useNetwork } from 'wagmi';
 import { ReceiveAmountSkeleton } from '../UI/Skeleton';
 
@@ -98,7 +98,7 @@ export function WalletInfo() {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute right-0 mt-2 origin-top-right rounded-2xl border border-gray-800 bg-gray-1000 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <Menu.Items className="absolute right-0 mt-2 origin-top-right rounded-2xl border border-gray-400/60 bg-gray-1000">
             <Menu.Item>
               <Flex
                 customStyle="p-2 text-gray-500 rounded-2xl w-72 sm:w-96 text-sm"
@@ -155,7 +155,7 @@ export function WalletInfo() {
             </Menu.Item>
             <Menu.Item>
               <Flex
-                customStyle="p-3 text-gray-500 w-72 sm:w-96 text-sm border-t border-gray-800 hover:bg-gray-800"
+                customStyle="p-3 text-gray-200 w-72 sm:w-96 text-sm border-t border-gray-400/60"
                 alignItems="center"
               >
                 Imported Wallets
@@ -165,12 +165,14 @@ export function WalletInfo() {
             {importedWallets.map((wallet) => (
               <Menu.Item>
                 <Flex
-                  customStyle="p-4 text-gray-500 w-72 sm:w-96 text-sm border-t border-gray-800 hover:bg-gray-800 "
+                  customStyle="p-4 text-gray-200 w-72 sm:w-96 text-sm border-t border-gray-400/60"
                   alignItems="center"
+                  justifyContent={'around'}
                 >
-                  <IoIosArrowForward className="w-4 h-4 mx-3" />
+                  <IoIosArrowForward className="w-4 h-4" />
                   {wallet.slice(0, 15)}...
                   {wallet.slice(wallet.length - 10, wallet.length)}
+                  <IoIosClose className="w-7 h-7 text-red-500 hover:cursor-pointer hover:text-red-700"/>
                 </Flex>
               </Menu.Item>
             ))}
@@ -178,7 +180,7 @@ export function WalletInfo() {
             <Menu.Item as="div">
               <Flex
                 onClick={() => setIsOpen(true)}
-                customStyle="p-3 text-gray-500 w-72 sm:w-96 text-sm border-t border-gray-800 hover:bg-gray-800 rounded-b-2xl cursor-pointer"
+                customStyle="p-3 text-gray-200 w-72 sm:w-96 text-sm border-t border-gray-400/60 hover:bg-gray-800 rounded-b-2xl cursor-pointer"
                 alignItems="center"
               >
                 <IoMdAddCircleOutline className="w-4 h-4 mx-3" />

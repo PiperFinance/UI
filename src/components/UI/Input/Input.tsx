@@ -2,7 +2,7 @@ import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 
 const inputStyles = cva(
-  "h-10 w-full max-w-[400px] rounded-xl bg-transparent p-4  text-wheat-100 focus:outline-none  placeholder:text-wheat-100",
+  "h-10 w-full max-w-[400px] rounded-xl bg-transparent p-4  text-wheat-300 focus:outline-none  placeholder:text-wheat-100",
   {
     variants: {
       border: {
