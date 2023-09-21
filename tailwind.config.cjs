@@ -8,6 +8,7 @@ module.exports = {
         '3xl': 'inset 0px 0px 5px rgba(0, 0, 0, 0.75)',
         'hover': '0px 0px 5px rgba(0, 0, 0, 0.75)',
         'aside': '0px 0px 5px rgba(0, 0, 0, 0.30)',
+        'modal': '0px 8px 32px rgba(0, 0, 0, 0.32)'
       },
       colors: {
         wheat: {
@@ -20,7 +21,7 @@ module.exports = {
           700: '#FF951D',
           800: '#FF8700',
           900: '#d5a244',
-          122: 'hsla(39,63%,65%,.2)',
+          122: 'hsla(39,63%,65%,.1)',
           123: '#ffe599',
         },
         primary: {
@@ -50,9 +51,10 @@ module.exports = {
           1000: '#181818',
           128: "hsla(215,28%,17%,.25)",
           122: '#1c1c1c',
-          999: 'hsla(215,0%,10%,.2)',
+          999: 'hsla(215,0%,10%,.5)',
           123: '#081110',
           124: 'hsla(176, 29%, 10%, .25)',
+          'modalBorder': 'rgba(255, 255, 255, 0.08)'
         },
         cyan: {
           123: '#76A5AF',

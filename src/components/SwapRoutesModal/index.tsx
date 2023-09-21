@@ -21,7 +21,7 @@ export default function SwapRouteModal({
   return (
     <Flex
       direction="column"
-      customStyle="max-w-2xl bg-gray-800 rounded-2xl p-5 space-y-2 text-gray-300 max-h-[90%]"
+      customStyle="max-w-2xl bg-gray-800 rounded-2xl p-5 space-y-2 text-gray-300 max-h-[90%] shadow-modal border border-gray-modalBorder"
       overflow="yAuto"
     >
       <ModalHeader title="Select a Route" onClick={onDismiss} />

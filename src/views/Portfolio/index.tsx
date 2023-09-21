@@ -1,23 +1,21 @@
-import ConnectWallet from '@components/ConnectWalletButton';
+import ConnectCEDE from '@components/ConnectCEDE';
 import { Tab } from '@headlessui/react';
 import useAddParams from '@hooks/useAddParams';
 import useHasMounted from '@hooks/useHasMounted';
 import useTooltip from '@hooks/useToolTip/useToolTip';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { vaults } from '@store/store';
 import Container from '@ui/Container/Container';
 import Flex from '@ui/Flex/Flex';
 import { Skeleton, TableRowSkeleton } from '@ui/Skeleton';
 import { classNames } from '@utils/classNames';
+import { useAtom } from 'jotai';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 import CexTokenBalance from './components/CexTokenBalance';
-import ConnectCEDE from '@components/ConnectCEDE';
-import { useVault } from '@hooks/useCede';
-import { useAtom } from 'jotai';
-import { vaults } from '@store/store';
 import CexTransactionHistory from './components/CexTransactionHistory';
-import TotalValue from '@components/TotalValue';
 
 const TokenBalance = dynamic(() => import('./components/TokenBalance'), {
   loading: () => (
@@ -133,7 +131,7 @@ export default function Portfolio() {
                 alignItems="center"
                 width="full"
               >
-                <ConnectWallet />
+                <ConnectButton />
               </Flex>
             ) : (
               <>
@@ -142,7 +140,9 @@ export default function Portfolio() {
                   <NFTList isRow={true} />
                 </div>
                 <div className="bg-gray-800 mx-7 my-3 p-5 rounded-2xl shadow-3xl ">
-                  <h1 className="text-gray-50 font-bold text-xl mb-2">Tokens</h1>
+                  <h1 className="text-gray-50 font-bold text-xl mb-2">
+                    Tokens
+                  </h1>
                   <TokenBalance />
                 </div>
                 <div className="bg-gray-800 mx-7 my-3 p-5 rounded-2xl shadow-3xl">
@@ -152,7 +152,7 @@ export default function Portfolio() {
               </>
             )}
           </Tab.Panel>
-          <Tab.Panel className="shadow-3xl mx-7 my-3 p-3 rounded-2xl">
+          <Tab.Panel>
             {!isUserConnected ? (
               <Flex
                 customStyle="h-[30vh] text-gray-100"
@@ -160,13 +160,15 @@ export default function Portfolio() {
                 alignItems="center"
                 width="full"
               >
-                <ConnectWallet />
+                <ConnectButton />
               </Flex>
             ) : (
-              <TokenBalance />
+              <div className="bg-gray-800 mx-7 my-3 p-5 rounded-2xl shadow-3xl ">
+                <TokenBalance />
+              </div>
             )}
           </Tab.Panel>
-          <Tab.Panel className="shadow-3xl  mx-7 my-3 p-3 rounded-2xl">
+          <Tab.Panel>
             {!isUserConnected ? (
               <Flex
                 customStyle="h-[30vh] text-gray-100"
@@ -174,13 +176,15 @@ export default function Portfolio() {
                 alignItems="center"
                 width="full"
               >
-                <ConnectWallet />
+                <ConnectButton />
               </Flex>
             ) : (
-              <PairTokenTable />
+              <div className="bg-gray-800 mx-7 my-3 p-5 rounded-2xl shadow-3xl ">
+                <PairTokenTable />
+              </div>
             )}
           </Tab.Panel>
-          <Tab.Panel className="shadow-3xl  mx-7 my-3 p-3 rounded-2xl">
+          <Tab.Panel>
             {!isUserConnected ? (
               <Flex
                 customStyle="h-[30vh] text-gray-100"
@@ -188,13 +192,15 @@ export default function Portfolio() {
                 alignItems="center"
                 width="full"
               >
-                <ConnectWallet />
+                <ConnectButton />
               </Flex>
             ) : (
-              <NFTList />
+              <div className="bg-gray-800 mx-7 my-3 p-5 rounded-2xl shadow-3xl ">
+                <NFTList />
+              </div>
             )}
           </Tab.Panel>
-          <Tab.Panel className="shadow-3xl  mx-7 my-3 p-3 rounded-2xl">
+          <Tab.Panel>
             {!isUserConnected ? (
               <Flex
                 customStyle="h-[30vh] text-gray-100"
@@ -202,13 +208,15 @@ export default function Portfolio() {
                 alignItems="center"
                 width="full"
               >
-                <ConnectWallet />
+                <ConnectButton />
               </Flex>
             ) : (
-              <TransactionHistory />
+              <div className="bg-gray-800 mx-7 my-3 p-5 rounded-2xl shadow-3xl ">
+                <TransactionHistory />
+              </div>
             )}
           </Tab.Panel>
-          <Tab.Panel className="shadow-3xl  mx-7 my-3 p-3 rounded-2xl">
+          <Tab.Panel>
             {!vault || !vault.id ? (
               <Flex
                 customStyle="h-[30vh] text-gray-100"
@@ -219,10 +227,12 @@ export default function Portfolio() {
                 <ConnectCEDE />
               </Flex>
             ) : (
-              <CexTokenBalance />
+              <div className="bg-gray-800 mx-7 my-3 p-5 rounded-2xl shadow-3xl ">
+                <CexTokenBalance />
+              </div>
             )}
           </Tab.Panel>
-          <Tab.Panel className="shadow-3xl  mx-7 my-3 p-3 rounded-2xl">
+          <Tab.Panel>
             {!vault || !vault.id ? (
               <Flex
                 customStyle="h-[30vh] text-gray-100"
@@ -233,7 +243,9 @@ export default function Portfolio() {
                 <ConnectCEDE />
               </Flex>
             ) : (
-              <CexTransactionHistory />
+              <div className="bg-gray-800 mx-7 my-3 p-5 rounded-2xl shadow-3xl ">
+                <CexTransactionHistory />
+              </div>
             )}
           </Tab.Panel>
         </Tab.Panels>

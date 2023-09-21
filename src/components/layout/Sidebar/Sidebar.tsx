@@ -49,7 +49,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`h-screen w-fit bg-gray-800 shadow-aside ${
+      className={`h-screen w-fit bg-transparent border-r border-gray-700 ${
         !isSidebarOpen ? 'hidden' : 'block absolute bg-gray-800 z-10'
       } lg:block`}
       aria-label="Sidebar"

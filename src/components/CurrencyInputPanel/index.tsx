@@ -81,7 +81,7 @@ export default function CurrencyInputPanel({
           fontSize="xl"
           value={amount}
         />
-        <Button onClick={() => setOpen(true)} intent="secondary">
+        <Button onClick={() => setOpen(true)} intent="wheat">
           {selectedCurrency ? (
             <Flex justifyContent="evenly" alignItems="center">
               <CurrencyIcon

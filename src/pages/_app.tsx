@@ -1,11 +1,11 @@
+import { dezoneCustomTheme } from '@constants/rainbowkitTheme';
 import { useCedeProvider } from '@hooks/useCede';
+import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import '@rainbow-me/rainbowkit/styles.css';
 import { vaults } from '@store/store';
-import {
-  QueryClient,
-  QueryClientProvider
-} from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { config } from '@utils/wagmi';
+import { chains, config } from '@utils/wagmi';
 import { useAtom } from 'jotai';
 import type { AppProps, AppType } from 'next/app';
 import { useEffect, useState } from 'react';
@@ -27,7 +27,13 @@ const App: AppType = ({ Component, pageProps }: AppProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <WagmiConfig config={config}>
-        <Component {...pageProps} />
+        <RainbowKitProvider
+          chains={chains}
+          theme={dezoneCustomTheme()}
+          showRecentTransactions={true}
+        >
+          <Component {...pageProps} />
+        </RainbowKitProvider>
       </WagmiConfig>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
