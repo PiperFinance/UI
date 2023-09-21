@@ -85,7 +85,7 @@ export function WalletInfo() {
 
   return (
     <>
-      <Menu as="div" className="relative my-5  z-50">
+      <Menu as="div" className="relative my-5 z-50">
         <Menu.Button>
           <WalletIcon className="w-9 h-9 bg-gray-128 rounded-full p-2 text-gray-500 hover:text-gray-100 transition-all" />
         </Menu.Button>

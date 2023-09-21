@@ -1,6 +1,6 @@
 import { Chains } from '@constants/networkList';
+import { getDefaultWallets } from '@rainbow-me/rainbowkit';
 import { configureChains, createConfig } from 'wagmi';
-import { InjectedConnector } from 'wagmi/connectors/injected';
 import { LedgerConnector } from 'wagmi/connectors/ledger';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
@@ -31,14 +31,16 @@ const ledgerConnector = new LedgerConnector({
   },
 });
 
+const { connectors } = getDefaultWallets({
+  appName: 'Dezone.finance',
+  projectId: 'd5d08188a81a1d0e2ab92df6d3bb2d0b',
+  chains,
+});
+
 export const config = createConfig({
   autoConnect: true,
   publicClient,
-  connectors: [
-    metaMaskConnector,
-    walletConnectConnector,
-    ledgerConnector,
-  ],
+  connectors,
 });
 
 export const CHAIN_IDS = chains.map((c) => c.id);

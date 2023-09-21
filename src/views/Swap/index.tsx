@@ -1,10 +1,10 @@
-import ConnectWallet from '@components/ConnectWalletButton';
 import CurrencyInputPanel from '@components/CurrencyInputPanel';
 import SwapRoute from '@components/SwapRoutes';
 import SwitchCurrencyInput from '@components/SwitchCurrencyInput';
 import { ToastError, ToastWarning } from '@components/Toast';
 import { useEthersSigner } from '@hooks/useEthersSigner';
 import { Route as lifiRoute } from '@lifi/sdk';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import {
   IToken,
   destinationToken,
@@ -283,7 +283,9 @@ export default function Swap() {
         )}
 
         {!isUserConnected ? (
-          <ConnectWallet />
+          <div className="my-5">
+            <ConnectButton />
+          </div>
         ) : isLoading ? (
           <Button disable={true} width="half" intent="disablePrimary">
             <Flex width="auto" justifyContent="center" alignItems="center">
