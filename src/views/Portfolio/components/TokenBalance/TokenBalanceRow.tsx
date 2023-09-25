@@ -111,14 +111,15 @@ export function TokenBalanceRow(token: IToken) {
               <div>
                 <Menu.Item>
                   {({ active }) => (
-                    <button
+                    <Link
+                    href={`/${token.detail.chainId}/${token.detail.symbol}`}
                       className={`${
                         active ? 'bg-primary-700/60' : ''
                       }  flex justify-around w-full items-center text-gray-50 px-2 py-2 text-sm rounded-md`}
                     >
                       Chart
                       <ChartBarIcon className="w-4 h-4" />
-                    </button>
+                    </Link>
                   )}
                 </Menu.Item>
               </div>
