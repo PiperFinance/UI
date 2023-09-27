@@ -68,7 +68,10 @@ export const ChartComponent = (props: {
 
     const chart = createChart(chartContainerRef.current, {
       height: 500,
-      width: chartContainerRef.current.parentElement.clientWidth - 32,
+      width: chartContainerRef.current.parentElement.clientWidth,
+      autoSize: true,
+      handleScale: false,
+      handleScroll: false,
       layout: {
         background: {
           type: ColorType.Solid,
@@ -82,11 +85,32 @@ export const ChartComponent = (props: {
           top: 0.1,
           bottom: 0.1,
         },
-        ticksVisible: true,
-        borderVisible: true,
+        borderVisible: false,
       },
       timeScale: {
+        visible: true,
+        secondsVisible: true,
         borderVisible: false,
+        tickMarkFormatter: (timestamp: any) => {
+          const date = new Date(timestamp);
+          const year = date.getFullYear();
+          const month = date.toDateString().split(' ')[1];
+          const day = date.getDate().toString().padStart(2, '0');
+          const hours = date.getHours().toString().padStart(2, '0');
+          const minutes = date.getMinutes().toString().padStart(2, '0');
+
+          if (chartDays === 'max') {
+            return `${year} ${month}`;
+          } else if (chartDays === '30') {
+            return `${month} ${day}`;
+          } else if (chartDays === '14') {
+            return `${month} ${day}`;
+          } else if (chartDays === '1') {
+            return `${hours}:${minutes}`;
+          } else {
+            return '';
+          }
+        },
       },
       watermark: {
         color: 'rgba(0, 0, 0, 0)',
@@ -101,18 +125,16 @@ export const ChartComponent = (props: {
       },
       crosshair: {
         horzLine: {
-          visible: false,
-          style: 0,
-          width: 2,
-          color: '#505050',
-          labelVisible: false,
+          visible: true,
+          labelVisible: true,
         },
+        mode: 1,
         vertLine: {
           visible: true,
-          style: 0,
-          width: 2,
-          color: '#505050',
           labelVisible: false,
+          style: 3,
+          width: 1,
+          color: '#505050',
         },
       },
     });
@@ -135,11 +157,17 @@ export const ChartComponent = (props: {
     });
 
     chart.timeScale().fitContent();
+    chart.timeScale().scrollToRealTime();
 
     const newSeries = chart.addAreaSeries({
       lineColor,
       topColor: areaTopColor,
       bottomColor: areaBottomColor,
+      priceFormat: {
+        type: 'price',
+        precision: 4,
+        minMove: 0.0001,
+      },
     });
     newSeries.setData(data);
 
@@ -179,11 +207,11 @@ export const ChartComponent = (props: {
           </div>
 
           <div className="text-gray-200 text-sm">
-            {chartHeader
+            {!chartHeader && data.length === 0
+              ? '...'
+              : chartHeader
               ? String(new Date(chartHeader?.time).toDateString())
-              : data
-              ? String(new Date(data[data.length - 1]?.time).toDateString())
-              : ''}
+              : String(new Date(data[data.length - 1]?.time).toDateString())}
           </div>
         </div>
         <div className="flex space-x-2">
