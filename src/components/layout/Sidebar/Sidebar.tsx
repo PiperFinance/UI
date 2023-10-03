@@ -15,7 +15,7 @@ export default function Sidebar() {
   const navs = [
     {
       id: 0,
-      name: '',
+      name: 'Portfolio',
       link: '/',
       icon: <MdInsertChartOutlined size="2rem" />,
       disable: false,
@@ -23,7 +23,7 @@ export default function Sidebar() {
     },
     {
       id: 1,
-      name: '',
+      name: 'Swap',
       link: '/swap',
       icon: <CiRainbow size="2rem" />,
       disable: false,
@@ -37,61 +37,39 @@ export default function Sidebar() {
     //   disable: true,
     //   versionInfo: '',
     // },
-    {
-      id: 2,
-      name: '',
-      link: '/yield',
-      icon: <HiBeaker size="2rem" />,
-      disable: true,
-      versionInfo: '',
-    },
+    // {
+    //   id: 2,
+    //   name: 'Yield optimizer',
+    //   link: '/yield',
+    //   icon: <HiBeaker size="2rem" />,
+    //   disable: true,
+    //   versionInfo: '',
+    // },
   ];
 
   return (
     <aside
-      className={`h-screen w-fit bg-transparent border-r border-gray-700 ${
+      className={`h-screen w-72 bg-gray-800 ${
         !isSidebarOpen ? 'hidden' : 'block absolute bg-gray-800 z-10'
       } lg:block`}
       aria-label="Sidebar"
     >
+      <Logo />
       <div className="h-full overflow-y-auto p-3">
-        <Logo />
-        {/* <ul className="space-y-6">
-          {navs.map((nav) => (
-            <li key={nav.id} className="">
-              <Link
-                href={nav.link}
-                className={`${
-                  nav.disable ? 'pointer-events-none opacity-50' : ''
-                } flex space-x-2 items-center rounded-lg p-2 font-normal text-gray-100 hover:shadow-hover transition duration-75`}
-              >
-                {nav.icon}
-                {nav.name && <span className="">{nav.name}</span>}
-                {nav.versionInfo && (
-                  <span
-                    className={`text-xs ${nav.disable ? '' : 'text-wheat-800'}`}
-                  >
-                    {nav.versionInfo}
-                  </span>
-                )}
-              </Link>
-            </li>
-          ))}
-        </ul> */}
         <Tab.Group>
-          <Tab.List className={'flex flex-col space-y-6'}>
+          <Tab.List className={'flex flex-col space-y-4'}>
             {navs.map((nav) => (
               <Tab key={nav.id} className="">
                 <Link
                   href={nav.link}
                   className={`${
                     nav.disable ? 'pointer-events-none opacity-50' : ''
-                  } flex space-x-2 items-center rounded-lg p-2 font-normal text-wheat-100 hover:shadow-hover ${
+                  } flex space-x-5 items-center rounded-lg py-2 px-4 font-normal text-wheat-100 hover:shadow-hover ${
                     router.route === nav.link ? 'shadow-3xl text-wheat-600' : ''
-                  } transition duration-75`}
+                  } transition duration-75 `}
                 >
                   {nav.icon}
-                  {nav.name && <span className="">{nav.name}</span>}
+                  {nav.name && <span className="font-medium">{nav.name}</span>}
                   {nav.versionInfo && (
                     <span
                       className={`text-xs ${
@@ -107,7 +85,7 @@ export default function Sidebar() {
           </Tab.List>
         </Tab.Group>
 
-        <ul className="mt-4 space-y-6 border-t pt-4 border-gray-500">
+        {/* <ul className="mt-4 space-y-6 border-t pt-4 border-gray-500">
           <li>
             <Link
               href="https://docs.piper.finance"
@@ -118,7 +96,7 @@ export default function Sidebar() {
               <HiDocumentText size="2rem" />
             </Link>
           </li>
-        </ul>
+        </ul> */}
       </div>
     </aside>
   );
