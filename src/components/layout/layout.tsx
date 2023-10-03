@@ -38,7 +38,7 @@ const RootLayout: FC<{ children: ReactNode; pageName: string }> = ({
   return (
     <Flex
       overflow="hidden"
-      customStyle="h-screen bg-gray-800"
+      customStyle="h-screen bg-gray-900"
       onClick={(e) => setSidebar(false)}
     >
       <Head>
