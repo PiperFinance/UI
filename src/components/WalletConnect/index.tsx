@@ -12,7 +12,11 @@ import { formatNumber } from '@utils/bignumber';
 import { handleSliceHashString } from '@utils/sliceHashString';
 import Image from 'next/image';
 import { Fragment, useEffect, useState } from 'react';
-import { IoIosArrowForward, IoIosClose, IoMdAddCircleOutline } from 'react-icons/io';
+import {
+  IoIosArrowForward,
+  IoIosClose,
+  IoMdAddCircleOutline,
+} from 'react-icons/io';
 import { useAccount, useBalance, useDisconnect, useNetwork } from 'wagmi';
 import { ReceiveAmountSkeleton } from '../UI/Skeleton';
 
@@ -26,9 +30,6 @@ export default function WalletConnect() {
 
 export function WalletInfo() {
   const [isOpen, setIsOpen] = useState(false);
-
-  // TODO - sry for this :( it was annoying
-  // console.log(isOpen);
 
   const { connector: activeConnector, address } = useAccount();
   const { disconnect } = useDisconnect();
@@ -172,7 +173,7 @@ export function WalletInfo() {
                   <IoIosArrowForward className="w-4 h-4" />
                   {wallet.slice(0, 15)}...
                   {wallet.slice(wallet.length - 10, wallet.length)}
-                  <IoIosClose className="w-7 h-7 text-red-500 hover:cursor-pointer hover:text-red-700"/>
+                  <IoIosClose className="w-7 h-7 text-red-500 hover:cursor-pointer hover:text-red-700" />
                 </Flex>
               </Menu.Item>
             ))}

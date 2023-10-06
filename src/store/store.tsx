@@ -1,8 +1,8 @@
-import { atom } from 'jotai';
-import { atomWithStorage, createJSONStorage } from 'jotai/utils';
-import { atomsWithQuery } from 'jotai-tanstack-query';
-import { IChain, Chains } from '@constants/networkList';
+import { Chains, IChain } from '@constants/networkList';
 import { sortData } from '@utils/customSort';
+import { atom } from 'jotai';
+import { atomsWithQuery } from 'jotai-tanstack-query';
+import { atomWithStorage } from 'jotai/utils';
 import type { ICEXBalanceList, ICedeVaults } from './types';
 export const baseURL = 'https://piper.finance/api/';
 
@@ -74,22 +74,13 @@ export const selectedChains = atom<IChain[]>(Chains);
 export const allTokens = atom<IToken[]>([]);
 export const balancesList = atom<IChainResponse[]>([]);
 
-export const [getImportedAddresses] = atomsWithQuery<string[]>(() => ({
-  queryKey: ['importedAddresses'],
-  queryFn: async () => {
-    const res = await fetch(
-      `https://raw.githubusercontent.com/PiperFinance/CD/main/tokens/outVerified/all_tokens.json`
-    );
-    return res.json();
-  },
-}));
-
 export const [getAllTokens] = atomsWithQuery(() => ({
   queryKey: ['allTokens'],
   queryFn: async () => {
     const res = await fetch(
       `https://raw.githubusercontent.com/PiperFinance/CD/main/tokens/outVerified/all_tokens.json`
     );
+
     return res.json();
   },
 }));
@@ -126,8 +117,8 @@ export const updateTokenListAtom = atom((get): IToken[] => {
 
   const tokensList = Object.values(
     updateTokenList(
-      tokens,
-      updateBalance<IChainResponse, ITokenResponse>(balances)
+      Object.values(tokens),
+      updateBalance<any, any>(balances)
     )
   );
   return tokensList;

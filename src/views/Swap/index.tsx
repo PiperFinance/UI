@@ -11,7 +11,6 @@ import {
   originToken,
   slippage,
   tokenAtom,
-  userToken,
 } from '@store/store';
 import { Button } from '@ui/Button/Button';
 import Container from '@ui/Container/Container';
@@ -38,9 +37,8 @@ interface ISwap {
 }
 
 export default function Swap() {
-  const [currentUserToken, setUserToken] = useAtom(userToken);
-
   const tokenList = useAtomValue(tokenAtom);
+
   const [fromToken, setFormToken] = useAtom(originToken);
   const [toToken, setToToken] = useAtom(destinationToken);
   const [currentSlippage] = useAtom(slippage);
@@ -237,6 +235,7 @@ export default function Swap() {
           currencyBalance={fromTokenBalance?.formatted}
           setAmount={setAmount}
           amount={amount}
+          placeholder="Enter amount"
         />
         <SwitchCurrencyInput
           setRefreshRoute={() => setRefreshRoute(!refreshRoute)}
@@ -244,6 +243,7 @@ export default function Swap() {
         <CurrencyInputPanel
           tokenList={tokenList}
           setAmount={() => {}}
+          placeholder="0.0"
           selectedCurrency={toToken}
           setToken={setToToken as any}
           currencyBalance={toTokenBalance?.formatted}
@@ -295,7 +295,7 @@ export default function Swap() {
           </Button>
         ) : (
           <Button
-            disable={insufficientBalance || !selectedRoute ? true : false}
+            disable={!insufficientBalance || !selectedRoute ? true : false}
             onClick={() =>
               chain?.id !== fromToken?.detail.chainId
                 ? handleSwitchNetwork()
