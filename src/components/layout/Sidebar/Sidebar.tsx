@@ -88,7 +88,7 @@ export default function Sidebar() {
         <ul className="mt-4 space-y-6 border-t pt-4 border-gray-500">
           <li>
             <Link
-              href="https://docs.piper.finance"
+              href="https://docs.dezone.finance"
               target="_blank"
               className="flex space-x-5 items-center rounded-lg py-2 px-4 font-normal text-wheat-100 hover:shadow-hover  transition duration-75"
             >

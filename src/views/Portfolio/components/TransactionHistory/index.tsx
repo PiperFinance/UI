@@ -1,29 +1,14 @@
-import {
-  useSaveTransactions,
-  useTransactions,
-} from "@views/Portfolio/hooks/useTransactions";
-import { useEffect } from "react";
-import { useAccount } from "wagmi";
-import { Skeleton } from "@ui/Skeleton";
-import Flex from "@ui/Flex/Flex";
-import type { ITransaction } from "./types";
-import { TransactionRow } from "./TransactionRow";
+import Flex from '@ui/Flex/Flex';
+import { Skeleton } from '@ui/Skeleton';
+import { useTransactions } from '@views/Portfolio/hooks/useTransactions';
+import { useAccount } from 'wagmi';
+import { TransactionRow } from './TransactionRow';
+import type { ITransaction } from './types';
 
 export default function TransactionHistory() {
   const { address } = useAccount();
-
-  // const { mutate, isSuccess } = useSaveTransactions(
-  //   address ? String(address).toLowerCase() : undefined
-  // );
-
-  // useEffect(() => {
-  //   if (!address) return;
-  //   mutate();
-  // }, [address]);
-
   const { data, isLoading, error } = useTransactions(
     address ? String(address) : undefined,
-    // isSuccess,
     20,
     1
   );
