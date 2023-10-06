@@ -55,8 +55,6 @@ export const useVaultBalances = () => {
         },
       });
 
-      console.log(data[0].balances);
-
       setBalances(data[0].balances);
       setLoading(false);
     } catch (error) {

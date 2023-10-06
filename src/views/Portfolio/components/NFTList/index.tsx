@@ -1,7 +1,6 @@
 import Flex from '@ui/Flex/Flex';
 import { Skeleton } from '@ui/Skeleton';
-import { useNftList, useSaveNFTs } from '@views/Portfolio/hooks/useNFTs';
-import { useEffect } from 'react';
+import { useNftList } from '@views/Portfolio/hooks/useNFTs';
 import { useAccount } from 'wagmi';
 import { NftBox } from './NftBox';
 import type { INft } from './types';
@@ -18,6 +17,8 @@ export default function NFTList(props: INFTList) {
     10,
     1
   );
+
+  console.log(data?.res);
 
   if (isLoading) {
     return (
@@ -41,7 +42,7 @@ export default function NFTList(props: INFTList) {
     );
   }
 
-  if (data?.length === 0) {
+  if (data?.res.length === 0) {
     return (
       <Flex
         customStyle="h-40 text-gray-100"
@@ -59,8 +60,8 @@ export default function NFTList(props: INFTList) {
       wrap={props.isRow ? false : true}
       justifyContent={props.isRow ? 'start' : 'evenly'}
     >
-      {data.nfts.map((nft: INft) => (
-        <NftBox key={nft.detail.id} {...nft} />
+      {data.res.map((nft: INft) => (
+        <NftBox key={nft.nftID} {...nft} />
       ))}
     </Flex>
   );
