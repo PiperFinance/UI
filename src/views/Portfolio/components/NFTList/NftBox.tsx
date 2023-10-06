@@ -3,9 +3,11 @@ import { Chains } from '@constants/networkList';
 import Flex from '@ui/Flex/Flex';
 import { handleSliceHashString } from '@utils/sliceHashString';
 import type { INft } from './types';
+import imgNotFound from "./image-not-found.jpg"
 
 export function NftBox(nft: INft) {
-  const { chainId, logoURI, symbol, name, owner, totalSupply, meta } = nft;
+  const { chainId, logoURI, symbol, name, owner, totalSupply, meta, type } =
+    nft;
 
   const currentChain = Chains.find((chain) => chain.id === chainId && chain);
 
@@ -19,13 +21,13 @@ export function NftBox(nft: INft) {
         <div className="absolute right-0">
           <ChainIcon chainId={currentChain?.id!} />
         </div>
-        <span className="bg-primary-900 font-bold text-xs px-4 text-gray-300 rounded-2xl absolute left-2 top-2">
+        <span className="bg-primary-500 font-bold text-xs px-4 text-gray-800 rounded-2xl absolute left-2 top-2">
           {/* ERC{detail.type.toString()} */}
-          ERC 721
+          ERC {type}
         </span>
         <img
           className="rounded-lg object-cover h-60 w-full"
-          src={logoURI}
+          src={logoURI !== "" ? logoURI : imgNotFound.src }
           alt=""
         />
       </div>

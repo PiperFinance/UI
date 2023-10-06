@@ -112,7 +112,7 @@ export default function Portfolio() {
                   classNames(
                     'inline-block border-b-2  p-3 outline-none max-sm:text-xs max-sm:p-2',
                     selected
-                      ? ' border-primary-400 text-primary-700  dark:text-primary-300'
+                      ? ' border-wheat-700 text-wheat-700'
                       : 'border-transparent'
                   )
                 }

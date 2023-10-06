@@ -35,5 +35,5 @@ export interface INft {
   totalSupply: string;
   updatedAt: string;
   verify: boolean;
-  type: number;
+  type: string;
 }
