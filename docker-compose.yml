@@ -17,3 +17,8 @@ services:
     environment:
       - DATABASE_URL=file:./db.sqlite
       - PORT=4000
+
+networks:
+  ui_default:
+    name: ui_default 
+    driver: bridge
