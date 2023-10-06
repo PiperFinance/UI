@@ -1,8 +1,8 @@
 import { useVaultBalances } from '@hooks/useCede';
-import { memo } from 'react';
-import CexTokenBalanceTable from './CexBalanceTable';
 import Flex from '@ui/Flex/Flex';
 import { TableRowSkeleton } from '@ui/Skeleton';
+import { memo } from 'react';
+import CexTokenBalanceTable from './CexBalanceTable';
 
 function CexTokenBalance() {
   const { balances, loading } = useVaultBalances();

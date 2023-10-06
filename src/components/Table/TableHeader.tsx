@@ -6,8 +6,8 @@ interface ITableHeader {
 
 export default function TableHeader({ titleList }: ITableHeader) {
   return (
-    <thead className="text-xs uppercase text-gray-400 dark:border-gray-500">
-      <tr className="border-b py-3 dark:border-gray-500">
+    <thead className="text-xs uppercase">
+      <tr className="border-b py-3 border-gray-300">
         {titleList.map((title: string) => (
           <th
             key={title}

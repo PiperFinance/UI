@@ -135,7 +135,7 @@ export const Chains: IChain[] = [
   {
     nativeCurrency: { name: "Fantom", symbol: "FTM", decimals: 18 },
     id: 250,
-    name: "FTM",
+    name: "Fantom",
     network: "Fantom Opera",
     rpcUrls: {
       default: { http: ["https://rpc.ftm.tools"] },
@@ -178,7 +178,7 @@ export const Chains: IChain[] = [
   {
     nativeCurrency: { name: "Glimmer", symbol: "GLMR", decimals: 18 },
     id: 1284,
-    name: "MOON",
+    name: "Moonbeam",
     network: "Moonbeam",
     rpcUrls: {
       default: { http: ["https://rpc.api.moonbeam.network"] },
@@ -250,7 +250,7 @@ export const Chains: IChain[] = [
   {
     nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
     id: 1313161554,
-    name: "NEAR",
+    name: "Aurora",
     network: "Aurora Mainnet",
     rpcUrls: {
       default: {

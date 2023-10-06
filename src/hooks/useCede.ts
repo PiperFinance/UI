@@ -1,6 +1,6 @@
 import { detectCedeProvider } from '@cedelabs/providers';
 import { vaults } from '@store/store';
-import { ICedeAccounts, ICedeVaults } from '@store/types';
+import { ICedeVaults } from '@store/types';
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import useHasMounted from './useHasMounted';
@@ -24,7 +24,6 @@ export const useCedeProvider = () => {
 
 export const useVault = () => {
   const [vault] = useAtom(vaults);
-
   const [currentVault, setCurrentVault] = useState<ICedeVaults>();
 
   useEffect(() => {
@@ -38,12 +37,9 @@ export const useVault = () => {
 export const useVaultBalances = () => {
   const [balances, setBalances] = useState<any>();
   const [loading, setLoading] = useState<boolean>(true);
-
-  const { cedeProvider } = useCedeProvider();
-
   const { isActive, accounts, id } = useVault();
 
-  const [vault] = useAtom(vaults);
+  const { cedeProvider } = useCedeProvider();
 
   const getBalances = async () => {
     try {
@@ -55,10 +51,11 @@ export const useVaultBalances = () => {
         params: {
           vaultId: id,
           accountNames: accountsName ? accountsName : [],
+          version: 1,
         },
       });
 
-      setBalances(data.data);
+      setBalances(data[0].balances);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -66,11 +63,47 @@ export const useVaultBalances = () => {
   };
 
   useEffect(() => {
-    if (!cedeProvider) return;
+    if (!accounts || !cedeProvider || !id) return;
 
     setLoading(true);
     getBalances();
   }, [accounts, isActive, cedeProvider, id]);
 
   return { balances, loading };
+};
+
+export const useVaultTransaction = () => {
+  const [transactions, setTransactions] = useState<any>();
+  const [loading, setLoading] = useState<boolean>(true);
+  const { isActive, accounts, id } = useVault();
+
+  const { cedeProvider } = useCedeProvider();
+
+  const getTransactions = async () => {
+    try {
+      const accountsName: string[] | undefined = accounts?.map(
+        (account) => account.accountName
+      );
+      const data = await cedeProvider.request({
+        method: 'transactions',
+        params: {
+          vaultId: id,
+          accountNames: accountsName ? accountsName : [],
+          version: 1,
+        },
+      });
+
+      setTransactions(data);
+      setLoading(false);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    if (!accounts || !cedeProvider || !id) return;
+
+    setLoading(true);
+    getTransactions();
+  }, [accounts, isActive, cedeProvider, id]);
+
+  return { transactions, loading };
 };

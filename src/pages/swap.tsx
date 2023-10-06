@@ -1,6 +1,6 @@
 import RootLayout from '@components/layout/layout';
 import { allTokens, balancesList, updateTokenListAtom } from '@store/store';
-import { useUserBalances } from '@views/Portfolio/hooks/useUserBalances';
+import { useUserBalancesFlat } from '@views/Portfolio/hooks/useUserBalances';
 import { useAtom, useAtomValue } from 'jotai';
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
@@ -12,7 +12,7 @@ export default function SwapPage() {
   const [, setTokens] = useAtom(allTokens);
   const [balances, setBalances] = useAtom(balancesList);
   const { address } = useAccount();
-  const { data } = useUserBalances(address ? String(address) : undefined);
+  const { data } = useUserBalancesFlat(address ? String(address) : '');
   const tokensList = useAtomValue(updateTokenListAtom);
   useEffect(() => {
     setBalances(data);

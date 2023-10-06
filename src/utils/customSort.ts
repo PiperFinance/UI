@@ -1,4 +1,5 @@
 export const sortData = (data: any[], ...keys: string[]) => {
+  if (!data || !Array.isArray(data)) return [];
   return data.sort((a, b) => {
     for (const key of keys) {
       if (Array.isArray(a)) {

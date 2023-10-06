@@ -1,7 +1,7 @@
 import type { IToken } from "@store/store";
 
 export interface ITokenBalanceTable {
-  balances: TTokenBalanceRow[];
+  balances: IToken[];
   isLoading: boolean;
   isFetched: boolean;
 }

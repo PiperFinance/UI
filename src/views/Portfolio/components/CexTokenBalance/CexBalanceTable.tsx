@@ -24,10 +24,10 @@ function CexTokenBalanceTable({ balances }: ICexTokenBalanceTable) {
       slice={slice}
       setPage={setPage}
     >
-      <TableHeader titleList={['Token', 'CEX', 'Price', 'Balance', '']} />
+      <TableHeader titleList={['Token', 'Price', 'Balance', '']} />
       <TableBody>
         {balances.map((token: ICEXBalanceList) => (
-          <CexTokenBalanceRow key={token.ticker} {...token} />
+          <CexTokenBalanceRow key={token.token} {...token} />
         ))}
       </TableBody>
     </Table>

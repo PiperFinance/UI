@@ -1,17 +1,18 @@
-import Flex from '@ui/Flex/Flex';
-import React, { useCallback } from 'react';
-import type { ListChildComponentProps } from 'react-window';
-import { FixedSizeList } from 'react-window';
-import type { IToken } from '@store/store';
-import { selectedChains } from '@store/store';
-import type { SetStateAction } from 'jotai';
-import { useAtom } from 'jotai';
-import { formatNumber } from '@utils/bignumber';
-import Input from '@ui/Input/Input';
-import Image from 'next/image';
-import { useAccount, useBalance } from 'wagmi';
+import TokenLogo from '@components/TokenLogo';
 import type { IChain } from '@constants/networkList';
 import { Chains } from '@constants/networkList';
+import type { IToken } from '@store/store';
+import { selectedChains } from '@store/store';
+import Flex from '@ui/Flex/Flex';
+import Input from '@ui/Input/Input';
+import { formatNumber } from '@utils/bignumber';
+import type { SetStateAction } from 'jotai';
+import { useAtom } from 'jotai';
+import Image from 'next/image';
+import { useCallback } from 'react';
+import type { ListChildComponentProps } from 'react-window';
+import { FixedSizeList } from 'react-window';
+import { useAccount, useBalance } from 'wagmi';
 import ModalHeader from '../ModalHeader';
 
 interface ITokenListModal {
@@ -81,14 +82,9 @@ export default function TokenListModal({
           }  cursor-pointer hover:text-wheat-400 transition`}
           alignItems="center"
         >
-          <img
-            src={
-              currency.detail.logoURI
-                ? currency.detail.logoURI
-                : '/assets/token-not-found.png'
-            }
-            alt={currency.detail.name}
-            className="h-11 w-11 rounded-full"
+          <TokenLogo
+            detail={currency.detail}
+            style={'h-11 w-11 rounded-full'}
           />
           <Flex justifyContent="center" direction="column" customStyle="ml-3">
             <h3 className="text-sm font-bold">{currency.detail.symbol}</h3>
@@ -117,7 +113,7 @@ export default function TokenListModal({
   return (
     <Flex
       direction="column"
-      customStyle="max-w-sm bg-gray-800 rounded-2xl p-5 space-y-4"
+      customStyle="max-w-sm bg-gray-800 rounded-2xl p-5 space-y-4 shadow-modal border border-gray-modalBorder"
     >
       <ModalHeader
         title="Token List"
@@ -132,9 +128,9 @@ export default function TokenListModal({
             onClick={() => toggleChain(chain)}
             className={`${
               currentChain.includes(chain)
-                ? 'border-green-300 hover:border-green-700'
+                ? 'shadow-3xl bg-wheat-122'
                 : 'border-gray-600 hover:border-gray-100'
-            } relative m-1 h-14 basis-1/6 cursor-pointer rounded-lg border  p-3 transition hover:border-gray-100`}
+            } relative m-1 h-14 basis-1/6 cursor-pointer rounded-lg  p-3 transition hover:shadow-hover`}
           >
             <Image src={chain.icon!} alt={chain.name} fill />
           </div>

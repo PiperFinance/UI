@@ -11,7 +11,10 @@ const ConnectCEDE = () => {
   const handleConnectCEDE = async () => {
     if (!cedeProvider) return;
     try {
-      await cedeProvider.request({ method: 'connect' });
+      await cedeProvider.request({
+        method: 'connect',
+        params: { version: 1 },
+      });
       const vaultPreview = await cedeProvider.getVaultPreviews();
       setVault(vaultPreview[0]);
     } catch (e) {

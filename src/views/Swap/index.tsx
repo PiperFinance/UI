@@ -1,6 +1,13 @@
+import CurrencyInputPanel from '@components/CurrencyInputPanel';
+import SwapRoute from '@components/SwapRoutes';
+import SwitchCurrencyInput from '@components/SwitchCurrencyInput';
+import { ToastError, ToastWarning } from '@components/Toast';
+import { useEthersSigner } from '@hooks/useEthersSigner';
+import { Route as lifiRoute } from '@lifi/sdk';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import {
-  destinationToken,
   IToken,
+  destinationToken,
   originToken,
   slippage,
   tokenAtom,
@@ -8,33 +15,19 @@ import {
 import { Button } from '@ui/Button/Button';
 import Container from '@ui/Container/Container';
 import Flex from '@ui/Flex/Flex';
+import { Skeleton } from '@ui/Skeleton';
+import Spinner from '@ui/Spinner/Spinner';
 import { calculateNumberDecimalContract } from '@utils/bignumber';
 import swap from '@utils/swap/swap';
+import { IRouteInfo } from '@utils/swap/types';
+import { trpc } from '@utils/trpc';
+import { Signer } from 'ethers';
 import { useAtom, useAtomValue } from 'jotai';
-import { Route as lifiRoute } from '@lifi/sdk';
-import React, { useEffect, useMemo, useState } from 'react';
-import {
-  useAccount,
-  useBalance,
-  useNetwork,
-  useSigner,
-  useSwitchNetwork,
-} from 'wagmi';
-import Spinner from '@ui/Spinner/Spinner';
-import CurrencyInputPanel from '@components/CurrencyInputPanel';
-import SwitchCurrencyInput from '@components/SwitchCurrencyInput';
-import SwapRoute from '@components/SwapRoutes';
+import { useEffect, useMemo, useState } from 'react';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import { toast } from 'react-hot-toast';
-import { ToastError, ToastWarning } from '@components/Toast';
-import { trpc } from '@utils/trpc';
-import { Skeleton } from '@ui/Skeleton';
-import { IRouteInfo, ISwapExactInSymbiosis } from '@utils/swap/types';
-import { Signer } from 'ethers';
 import { useDebounce } from 'react-use';
-import { ArrowPathIcon, Cog6ToothIcon } from '@heroicons/react/24/solid';
-import SwapSetting from './components/SwapSetting';
-import ConnectWallet from '@components/ConnectWalletButton';
+import { useAccount, useBalance, useNetwork, useSwitchNetwork } from 'wagmi';
 
 interface ISwap {
   amountIn: string;
@@ -45,6 +38,7 @@ interface ISwap {
 
 export default function Swap() {
   const tokenList = useAtomValue(tokenAtom);
+
   const [fromToken, setFormToken] = useAtom(originToken);
   const [toToken, setToToken] = useAtom(destinationToken);
   const [currentSlippage] = useAtom(slippage);
@@ -81,9 +75,7 @@ export default function Swap() {
     watch: true,
   });
 
-  const { data: signer } = useSigner({
-    chainId: chain?.id,
-  });
+  const signer = useEthersSigner();
 
   useEffect(() => setIsUserConnected(isConnected), [isConnected]);
 
@@ -148,6 +140,7 @@ export default function Swap() {
       !address
     )
       return;
+
     setIsLoading(true);
     const convertedAmountIn = calculateNumberDecimalContract(
       amount,
@@ -173,7 +166,7 @@ export default function Swap() {
         break;
       case 'lifiRoute':
         handleSwap
-          .executeLifiSwap(signer, response as lifiRoute, switchChainHook)
+          .executeLifiSwap(signer, response as lifiRoute)
           .then((res) => {
             setIsLoading(false);
           })
@@ -202,16 +195,16 @@ export default function Swap() {
             setIsLoading(false);
           });
         break;
-      case 'ISwapExactInSymbiosis':
-        handleSwap
-          .executeSymbiosisSwap(signer, response as ISwapExactInSymbiosis)
-          .then((res) => {
-            setIsLoading(false);
-          })
-          .catch((e) => {
-            setIsLoading(false);
-          });
-        break;
+      // case 'ISwapExactInSymbiosis':
+      //   handleSwap
+      //     .executeSymbiosisSwap(signer, response as ISwapExactInSymbiosis)
+      //     .then((res) => {
+      //       setIsLoading(false);
+      //     })
+      //     .catch((e) => {
+      //       setIsLoading(false);
+      //     });
+      //   break;
     }
   };
 
@@ -232,14 +225,17 @@ export default function Swap() {
   return (
     <Container customStyle="h-full flex items-center justify-center">
       <Flex customStyle="max-w-lg" alignItems="center" direction="column">
-        <h1 className="mb-5 text-4xl font-bold text-wheat-500">SWAP & BRIDGE</h1>
+        <h1 className="mb-5 text-4xl font-bold text-wheat-300">
+          SWAP & BRIDGE
+        </h1>
         <CurrencyInputPanel
           tokenList={tokenList}
           selectedCurrency={fromToken}
-          setToken={setFormToken}
+          setToken={setFormToken as any}
           currencyBalance={fromTokenBalance?.formatted}
           setAmount={setAmount}
           amount={amount}
+          placeholder="Enter amount"
         />
         <SwitchCurrencyInput
           setRefreshRoute={() => setRefreshRoute(!refreshRoute)}
@@ -247,8 +243,9 @@ export default function Swap() {
         <CurrencyInputPanel
           tokenList={tokenList}
           setAmount={() => {}}
+          placeholder="0.0"
           selectedCurrency={toToken}
-          setToken={setToToken}
+          setToken={setToToken as any}
           currencyBalance={toTokenBalance?.formatted}
           amount={selectedRoute ? selectedRoute.amountOut : ''}
           disabled
@@ -286,7 +283,9 @@ export default function Swap() {
         )}
 
         {!isUserConnected ? (
-          <ConnectWallet />
+          <div className="my-5">
+            <ConnectButton />
+          </div>
         ) : isLoading ? (
           <Button disable={true} width="half" intent="disablePrimary">
             <Flex width="auto" justifyContent="center" alignItems="center">
@@ -296,7 +295,7 @@ export default function Swap() {
           </Button>
         ) : (
           <Button
-            disable={insufficientBalance || !selectedRoute ? true : false}
+            disable={!insufficientBalance || !selectedRoute ? true : false}
             onClick={() =>
               chain?.id !== fromToken?.detail.chainId
                 ? handleSwitchNetwork()

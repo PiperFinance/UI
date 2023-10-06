@@ -2,16 +2,16 @@ import { Button } from '@ui/Button/Button';
 import Flex from '@ui/Flex/Flex';
 import Input from '@ui/Input/Input';
 
-import React, { useState } from 'react';
+import { CurrencyIcon } from '@components/CurrencyIcon';
+import useHasMounted from '@hooks/useHasMounted';
 import type { IToken } from '@store/store';
 import { searchAtom } from '@store/store';
-import { useAtom } from 'jotai';
-import { CurrencyIcon } from '@components/CurrencyIcon';
-import { formatNumber } from '@utils/bignumber';
-import useHasMounted from '@hooks/useHasMounted';
 import { CurrencyInputPanelSkeleton } from '@ui/Skeleton';
-import TokenListModal from '../TokenListModal';
+import { formatNumber } from '@utils/bignumber';
+import { useAtom } from 'jotai';
+import React, { useState } from 'react';
 import { Modal } from '../Modal/Modal';
+import TokenListModal from '../TokenListModal';
 
 interface ICurrencyInputPanel {
   disabled?: boolean;
@@ -20,6 +20,7 @@ interface ICurrencyInputPanel {
   selectedCurrency?: IToken;
   currencyBalance?: string;
   amount?: string;
+  placeholder?: string;
   tokenList: IToken[];
 }
 
@@ -31,6 +32,7 @@ export default function CurrencyInputPanel({
   setAmount,
   amount,
   tokenList,
+  placeholder,
 }: ICurrencyInputPanel) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useAtom(searchAtom);
@@ -44,13 +46,13 @@ export default function CurrencyInputPanel({
     <Flex
       direction="column"
       width="full"
-      customStyle="bg-gray-128 rounded-xl p-4 my-2 h-42 space-y-1"
+      customStyle={`rounded-xl p-4 h-42 space-y-1 bg-gray-800 shadow-3xl`}
     >
       <Flex
         customStyle="text-gray-300 px-2 text-xs font-semibold"
         justifyContent="between"
       >
-        <span>
+        <span className="text-wheat-300">
           Balance:{' '}
           {currencyBalance && Number(currencyBalance) > 0
             ? formatNumber(currencyBalance, 5)
@@ -75,23 +77,18 @@ export default function CurrencyInputPanel({
           autoComplete="off"
           spellCheck="false"
           inputMode="decimal"
-          placeholder="0"
+          placeholder={placeholder}
           disabled={disabled}
           onChange={(e) => setAmount(e.target.value)}
-          fontSize="xl"
+          fontSize="lg"
           value={amount}
         />
-        <Button onClick={() => setOpen(true)} intent="secondary">
+        <Button onClick={() => setOpen(true)} intent="wheat">
           {selectedCurrency ? (
             <Flex justifyContent="evenly" alignItems="center">
               <CurrencyIcon
                 size="lg"
-                src={
-                  selectedCurrency.detail?.logoURI
-                    ? selectedCurrency.detail?.logoURI
-                    : '/assets/token-not-found.png'
-                }
-                alt={selectedCurrency.detail?.name}
+                detail={selectedCurrency.detail}
                 chainId={selectedCurrency.detail?.chainId}
               />
               <h3>{selectedCurrency.detail?.symbol}</h3>

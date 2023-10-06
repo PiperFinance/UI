@@ -55,19 +55,19 @@ const SwitchCurrencyInput = (props: ISwitchCurrency) => {
         <AdjustmentsHorizontalIcon
           ref={SettingRef}
           onClick={() => setOpen(true)}
-          className="h-7 w-7 hover:bg-gray-900 rounded-md p-1 transition-all"
+          className="h-10 w-10 hover:shadow-hover hover:text-wheat-400 rounded-md p-2 transition-all"
         />
         {SettingVisible && SettingTooltip}
         <ArrowsUpDownIcon
           ref={SwitchRef}
-          className="h-7 w-7 hover:bg-gray-900 rounded-md p-1 transition-all"
+          className="h-10 w-10 hover:shadow-hover hover:text-wheat-400 rounded-md p-2 transition-all"
           onClick={() => handleSwitchInput()}
         />
         {SwitchVisible && SwitchTooltip}
         <ArrowPathIcon
           ref={RefreshRef}
           onClick={props.setRefreshRoute}
-          className="h-7 w-7 hover:bg-gray-900 rounded-md p-1 transition-all"
+          className="h-10 w-10 hover:shadow-hover hover:text-wheat-400 rounded-md p-2 transition-all"
         />
         {RefreshVisible && RefreshTooltip}
       </Flex>

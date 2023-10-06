@@ -1,41 +1,19 @@
-import { Chains } from "@constants/networkList";
-import { configureChains, createClient } from "wagmi";
-import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
-import { InjectedConnector } from "wagmi/connectors/injected";
-import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
-import { MetaMaskConnector } from "wagmi/connectors/metaMask";
-import { publicProvider } from "wagmi/providers/public";
+import { Chains } from '@constants/networkList';
+import { getDefaultWallets } from '@rainbow-me/rainbowkit';
+import { configureChains, createConfig } from 'wagmi';
+import { LedgerConnector } from 'wagmi/connectors/ledger';
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
+import { publicProvider } from 'wagmi/providers/public';
 
-export const { provider, chains } = configureChains(Chains, [
+export const { publicClient, chains } = configureChains(Chains, [
   publicProvider(),
 ]);
-
-export const injectedConnector = new InjectedConnector({
-  chains,
-  options: {
-    shimDisconnect: false,
-    shimChainChangedDisconnect: true,
-  },
-});
-
-export const coinbaseConnector = new CoinbaseWalletConnector({
-  chains,
-  options: {
-    appName: "Piper.finance",
-  },
-});
 
 export const walletConnectConnector = new WalletConnectConnector({
   chains,
   options: {
-    qrcode: true,
-  },
-});
-
-export const walletConnectNoQrCodeConnector = new WalletConnectConnector({
-  chains,
-  options: {
-    qrcode: false,
+    projectId: 'd5d08188a81a1d0e2ab92df6d3bb2d0b',
   },
 });
 
@@ -43,14 +21,26 @@ export const metaMaskConnector = new MetaMaskConnector({
   chains,
   options: {
     shimDisconnect: false,
-    shimChainChangedDisconnect: true,
   },
 });
 
-export const client = createClient({
+const ledgerConnector = new LedgerConnector({
+  options: {
+    projectId: 'd5d08188a81a1d0e2ab92df6d3bb2d0b',
+    enableDebugLogs: true,
+  },
+});
+
+const { connectors } = getDefaultWallets({
+  appName: 'Dezone.finance',
+  projectId: 'd5d08188a81a1d0e2ab92df6d3bb2d0b',
+  chains,
+});
+
+export const config = createConfig({
   autoConnect: true,
-  provider,
-  connectors: [metaMaskConnector, coinbaseConnector, walletConnectConnector],
+  publicClient,
+  connectors,
 });
 
 export const CHAIN_IDS = chains.map((c) => c.id);

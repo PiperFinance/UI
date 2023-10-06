@@ -1,3 +1,4 @@
+import { CurrencyIcon } from '@components/CurrencyIcon';
 import { Disclosure } from '@headlessui/react';
 import {
   ArrowsRightLeftIcon,
@@ -5,7 +6,6 @@ import {
 } from '@heroicons/react/20/solid';
 import { ChevronRightIcon, ClockIcon } from '@heroicons/react/24/solid';
 import { Badge } from '@ui/Badge/Badge';
-import { CurrencyIcon } from '@components/CurrencyIcon';
 import Flex from '@ui/Flex/Flex';
 import { formatNumber } from '@utils/bignumber';
 import type { IRouteInfo } from '@utils/swap/types';
@@ -30,11 +30,11 @@ export default function RouteRow({
       {({ open }) => (
         <Flex
           direction="column"
-          customStyle={`border ${
+          customStyle={`${
             selectedRoute.response === route.response
-              ? 'border-wheat-900 bg-wheat-122'
-              : 'border-gray-700 hover:border-wheat-900'
-          } p-4 rounded-2xl cursor-pointer transition max-h-96`}
+              ? 'shadow-3xl bg-wheat-122'
+              : 'shadow-hover'
+          } p-4 rounded-2xl cursor-pointer transition max-h-96 hover:shadow-hover transition-all`}
           onClick={() => {
             changeRoute(route);
             onDismiss();
@@ -42,10 +42,10 @@ export default function RouteRow({
         >
           <Flex justifyContent="between" alignItems="center">
             <Flex alignItems="center">
-              <h1 className="font-bold">
+              <h1 className="font-bold text-gray-50">
                 Receive: {formatNumber(amountOut, 6)}{' '}
               </h1>
-              <h4 className="text-sm">
+              <h4 className="text-sm text-gray-50">
                 &nbsp; &#8771; &nbsp;${amountOutValue}
               </h4>
             </Flex>
@@ -89,7 +89,7 @@ export default function RouteRow({
               {path?.map((step) => (
                 <Flex
                   key={step.type + step.fromToken.symbol}
-                  customStyle="mt-3 space-x-2 bg-gray-900 rounded-full p-1"
+                  customStyle="mt-3 space-x-2 bg-gray-900 rounded-full p-2"
                   justifyContent="between"
                   width="half"
                   alignItems="center"
@@ -101,7 +101,7 @@ export default function RouteRow({
                       className="rounded-full"
                     />
                   </div>
-                  <ChevronDoubleRightIcon className="w-3 text-gray-500" />
+                  <ChevronDoubleRightIcon className="w-5 text-gray-50" />
                   <Flex
                     width="half"
                     justifyContent="evenly"
@@ -117,23 +117,23 @@ export default function RouteRow({
                         }
                         alt={step.fromToken.name}
                         chainId={step.fromToken.chainId}
+                        detail={step.fromToken}
                       />
                     </Flex>
                     {step.type === 'bridge' ? (
                       <svg
                         width="16"
                         height="16"
-                        fill="none"
+                        fill="text-gray-50"
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
                           d="M14.5 12a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3ZM13.96 7.62c.34-.18.47-.61.29-.95C12.97 4.28 10.57 2.8 8 2.8 4.47 2.8 1.53 5.53.92 9.12A1.498 1.498 0 0 0 1.5 12c.83 0 1.5-.67 1.5-1.5 0-.53-.27-.99-.68-1.26C2.86 6.37 5.2 4.2 8 4.2c2.06 0 3.98 1.2 5.01 3.13.18.34.61.47.95.29Z"
-                          fill="currentColor"
-                          fill-opacity="0.4"
+                          fill="#f8fafc"
                         ></path>
                       </svg>
                     ) : (
-                      <ArrowsRightLeftIcon className="w-5 text-gray-500" />
+                      <ArrowsRightLeftIcon className="w-5 text-gray-50" />
                     )}
                     <div className="h-7 w-7 rounded-full bg-gray-100 ">
                       <CurrencyIcon
@@ -145,6 +145,7 @@ export default function RouteRow({
                         }
                         alt={step.toToken.name}
                         chainId={step.toToken.chainId}
+                        detail={step.toToken}
                       />
                     </div>
                   </Flex>

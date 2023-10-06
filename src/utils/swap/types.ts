@@ -1,15 +1,11 @@
-import { QuotePath, QuoteSimulationResult, SwapFee } from 'rango-sdk-basic/lib';
-import { Route as lifiRoute, LifiStep, Step } from '@lifi/sdk';
+import { LifiStep, Step, Route as lifiRoute } from '@lifi/sdk';
 import { ITokenDetail, ITokenDetailDefault } from '@store/store';
-import { Execute, Percent, Token, TokenAmount } from 'symbiosis-js-sdk';
+import { calculateNumberDecimal, formatNumber } from '@utils/bignumber';
 import { Signer } from 'ethers';
-import { calculateNumberDecimal } from '@utils/bignumber';
-import { formatNumber } from '@utils/bignumber';
+import { QuotePath, QuoteSimulationResult, SwapFee } from 'rango-sdk-basic/lib';
+import { Execute, Percent, Token, TokenAmount } from 'symbiosis-js-sdk';
 
-export type TSelectedRoute =
-  | lifiRoute
-  | ISwapExactInSymbiosis
-  | QuoteSimulationResult;
+export type TSelectedRoute = lifiRoute | QuoteSimulationResult;
 
 export interface IRouteInfoPathTool {
   title: string;
@@ -33,7 +29,6 @@ export interface IRouteRequest {
 
 export interface IFoundedRoutes {
   lifi: lifiRoute[] | undefined;
-  symbiosis: ISwapExactInSymbiosis | undefined;
   rango: QuoteSimulationResult | null;
 }
 
@@ -92,35 +87,35 @@ export class ConvertLifiRoute {
   }
 }
 
-export class ConvertSymbiosisRoute {
-  _ROUTE: IRouteInfo;
+// export class ConvertSymbiosisRoute {
+//   _ROUTE: IRouteInfo;
 
-  constructor(route: ISwapExactInSymbiosis, swapData: IRouteRequest) {
-    this._ROUTE = {
-      amountOut: route.tokenAmountOut.toFixed(),
-      amountOutValue: route.amountInUsd.toFixed(2),
-      totalGasFee: route.fee.toFixed(),
-      estimateTime: 0,
-      response: route,
-      path: this.getPath(swapData),
-      type: 'ISwapExactInSymbiosis',
-    };
-  }
+//   constructor(route: ISwapExactInSymbiosis, swapData: IRouteRequest) {
+//     this._ROUTE = {
+//       amountOut: route.tokenAmountOut.toFixed(),
+//       amountOutValue: route.amountInUsd.toFixed(2),
+//       totalGasFee: route.fee.toFixed(),
+//       estimateTime: 0,
+//       response: route,
+//       path: this.getPath(swapData),
+//       type: 'ISwapExactInSymbiosis',
+//     };
+//   }
 
-  private getPath(swapData: IRouteRequest): IRouteInfoPath[] {
-    return [
-      {
-        fromToken: swapData.fromToken as unknown as ITokenDetailDefault,
-        toToken: swapData.toToken as unknown as ITokenDetailDefault,
-        tool: {
-          title: 'Symbiosis',
-          logo: 'https://app.symbiosis.finance/9cde72ed4852592a6aec.png',
-        },
-        type: 'swap',
-      },
-    ];
-  }
-}
+//   private getPath(swapData: IRouteRequest): IRouteInfoPath[] {
+//     return [
+//       {
+//         fromToken: swapData.fromToken as unknown as ITokenDetailDefault,
+//         toToken: swapData.toToken as unknown as ITokenDetailDefault,
+//         tool: {
+//           title: 'Symbiosis',
+//           logo: 'https://app.symbiosis.finance/9cde72ed4852592a6aec.png',
+//         },
+//         type: 'swap',
+//       },
+//     ];
+//   }
+// }
 
 export class ConvertRangoRoute {
   _ROUTE: IRouteInfo;

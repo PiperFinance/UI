@@ -13,10 +13,11 @@ const buttonStyles = cva(
         danger:
           "border border-red-500 hover:bg-red-700 text-red-700 hover:text-gray-50",
         wheat:
-          "bg-wheat-900 hover:bg-wheat-600 text-primary-700 hover:text-gray-50",
+          "border border-gray-500 hover:border-none hover:shadow-hover text-gray-50 font-semibold hover:text-wheat-500",
         disablePrimary: "bg-primary-700 text-gray-100 hover:text-gray-50",
       },
       width: {
+        xs: "w-16",
         sm: "w-40",
         80: "w-4/5",
         half: "w-1/2",

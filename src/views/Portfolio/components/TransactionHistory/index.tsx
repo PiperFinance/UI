@@ -1,13 +1,13 @@
 import {
   useSaveTransactions,
   useTransactions,
-} from '@views/Portfolio/hooks/useTransactions';
-import { useEffect } from 'react';
-import { useAccount } from 'wagmi';
-import { Skeleton } from '@ui/Skeleton';
-import Flex from '@ui/Flex/Flex';
-import type { ITransaction } from './types';
-import { TransactionRow } from './TransactionRow';
+} from "@views/Portfolio/hooks/useTransactions";
+import { useEffect } from "react";
+import { useAccount } from "wagmi";
+import { Skeleton } from "@ui/Skeleton";
+import Flex from "@ui/Flex/Flex";
+import type { ITransaction } from "./types";
+import { TransactionRow } from "./TransactionRow";
 
 export default function TransactionHistory() {
   const { address } = useAccount();
@@ -24,7 +24,7 @@ export default function TransactionHistory() {
   const { data, isLoading, error } = useTransactions(
     address ? String(address) : undefined,
     // isSuccess,
-    10000,
+    20,
     1
   );
 

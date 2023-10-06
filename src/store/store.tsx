@@ -1,8 +1,8 @@
-import { atom } from 'jotai';
-import { atomWithStorage } from 'jotai/utils';
-import { atomsWithQuery } from 'jotai-tanstack-query';
-import { IChain, Chains } from '@constants/networkList';
+import { Chains, IChain } from '@constants/networkList';
 import { sortData } from '@utils/customSort';
+import { atom } from 'jotai';
+import { atomsWithQuery } from 'jotai-tanstack-query';
+import { atomWithStorage } from 'jotai/utils';
 import type { ICEXBalanceList, ICedeVaults } from './types';
 export const baseURL = 'https://piper.finance/api/';
 
@@ -26,7 +26,12 @@ export interface ITokenDetailDefault {
   decimals: number;
   name: string;
   chainId: number;
-  logoURI?: string;
+  logoURI?: string | null;
+}
+
+export interface IAddressReq {
+  userToken: IUserToken;
+  address: string;
 }
 
 export interface ITokenDetail extends ITokenDetailDefault {
@@ -46,6 +51,8 @@ export interface IUserToken {
 export const sidebar = atom<boolean>(false);
 
 export const toast = atom<JSX.Element>(<></>);
+
+export const importedWallets = atomWithStorage<string[]>('userWallets', []);
 
 export const userToken = atomWithStorage<IUserToken | undefined>(
   'userToken',
@@ -67,12 +74,13 @@ export const selectedChains = atom<IChain[]>(Chains);
 export const allTokens = atom<IToken[]>([]);
 export const balancesList = atom<IChainResponse[]>([]);
 
-export const [getAllTokens] = atomsWithQuery<ITokenResponse[]>(() => ({
+export const [getAllTokens] = atomsWithQuery(() => ({
   queryKey: ['allTokens'],
   queryFn: async () => {
     const res = await fetch(
       `https://raw.githubusercontent.com/PiperFinance/CD/main/tokens/outVerified/all_tokens.json`
     );
+
     return res.json();
   },
 }));
@@ -109,8 +117,8 @@ export const updateTokenListAtom = atom((get): IToken[] => {
 
   const tokensList = Object.values(
     updateTokenList(
-      tokens,
-      updateBalance<IChainResponse, ITokenResponse>(balances)
+      Object.values(tokens),
+      updateBalance<any, any>(balances)
     )
   );
   return tokensList;
@@ -129,7 +137,7 @@ export const updateBalance = <T, R>(balances: T[]): R[] => {
   try {
     Object.values(balances).forEach((chainBalance: any) => {
       Object.entries(chainBalance).forEach(([key, value]: any) => {
-        flatBalances[Number(key)] = value;
+        flatBalances[key] = value;
       });
     });
   } catch (e) {}
@@ -139,7 +147,4 @@ export const updateBalance = <T, R>(balances: T[]): R[] => {
 /// CEDE
 
 export const cexBalancesList = atom<ICEXBalanceList[]>([]);
-export const vaults = atomWithStorage<ICedeVaults | undefined>(
-  'cede.store',
-  undefined
-);
+export const vaults = atom<ICedeVaults | undefined>(undefined);
