@@ -3,11 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 export const baseURLFlat = `${
-  process.env.PS_URL ? process.env.PS_URL : 'https://ps.piper.finance'
+  process.env.PS_URL ? process.env.PS_URL : 'https://ps.dezone.finance'
 }/v2/tokens/balance/flat`;
 
 export const baseURL = `${
-  process.env.PS_URL ? process.env.PS_URL : 'https://ps.piper.finance'
+  process.env.PS_URL ? process.env.PS_URL : 'https://ps.dezone.finance'
 }/v2/tokens/balance`;
 
 const fetchUserBalances = async (wallet: string, flat: boolean) => {
