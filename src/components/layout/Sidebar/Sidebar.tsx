@@ -4,7 +4,7 @@ import { useAtom } from 'jotai';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { CiRainbow } from 'react-icons/ci';
-import { HiBeaker, HiDocumentText } from 'react-icons/hi';
+import { HiDocumentText } from 'react-icons/hi';
 import { MdInsertChartOutlined } from 'react-icons/md';
 import Logo from '../../Logo/Logo';
 
@@ -85,18 +85,18 @@ export default function Sidebar() {
           </Tab.List>
         </Tab.Group>
 
-        {/* <ul className="mt-4 space-y-6 border-t pt-4 border-gray-500">
+        <ul className="mt-4 space-y-6 border-t pt-4 border-gray-500">
           <li>
             <Link
               href="https://docs.piper.finance"
               target="_blank"
-              rel="noreferrer"
-              className="group flex items-center rounded-lg p-2 text-base font-normal text-gray-100 transition duration-75 hover:bg-gray-700"
+              className="flex space-x-5 items-center rounded-lg py-2 px-4 font-normal text-wheat-100 hover:shadow-hover  transition duration-75"
             >
               <HiDocumentText size="2rem" />
+              <span className="font-medium">Docs</span>
             </Link>
           </li>
-        </ul> */}
+        </ul>
       </div>
     </aside>
   );

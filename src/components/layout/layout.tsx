@@ -42,7 +42,7 @@ const RootLayout: FC<{ children: ReactNode; pageName: string }> = ({
       onClick={(e) => setSidebar(false)}
     >
       <Head>
-        <title>{`${pageName} |  Piper Finance`}</title>
+        <title>{`${pageName} |  Dezone.Finance`}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <ToastContainer />
